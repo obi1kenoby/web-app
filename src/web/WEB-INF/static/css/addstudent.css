@@ -1,0 +1,16 @@
+#student-modal-label{
+    color: #4caf50;
+}
+
+#create-btn {
+    float: right;
+    margin-top: 15px;
+}
+
+.inline {
+    display: flex;
+}
+
+.raw {
+    margin-bottom: 10px;
+}

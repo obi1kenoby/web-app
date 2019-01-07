@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Modal Value</title>
+    <link rel="stylesheet" th:href="@{/css/value.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div th:fragment="copy">
+
+    <div class="modal" id="valueModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-full" role="document">
+            <div class="modal-content">
+                <div class="modal-body" id="result">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div id="mark-user" class="col text-center font"></div>
+                            <div id="mark-subject" class="col text-center font"></div>
+                            <div id="mark-date" class="col text-center font"></div>
+                            <div class="mark-col text-center">
+                                <select name="" id="mark-value" class="form-control">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                            <div class="col text-center">
+                                <button id="save-btn" class="btn btn-success">Сохранить</button>
+                            </div>
+                            <div class="col text-center">
+                                <button id="delete-btn" class="btn btn-danger">Удалить</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="close text-right" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

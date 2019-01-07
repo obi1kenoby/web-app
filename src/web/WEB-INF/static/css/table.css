@@ -1,0 +1,12 @@
+tr > td:not(:first-child) {
+    text-align: center;
+    cursor: pointer;
+}
+
+button {
+    width: 100%;
+}
+
+#menuContainer {
+    margin-bottom: 30px;
+}

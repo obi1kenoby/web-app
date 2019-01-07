@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Common Modal</title>
+    <link rel="shortcut icon" th:href="@{/image/bee.png}"/>
+    <link rel="stylesheet" th:href="@{/css/removemodal.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div th:fragment="copy">
+
+    <div class="modal fade" id="remove-modal" tabindex="-1" role="dialog" aria-labelledby="remove-modal-label"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header" id="remove-header">
+                    <h4 class="modal-title" id="remove-modal-label"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul id="items" class="list-group"></ul>
+                </div>
+                <div class="modal-footer">
+                    <span id="counter" class="stat">0</span>
+                    <span class="mr-auto stat">entry will be deleted</span>
+                    <button id="delete" type="button" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="{/js/removemodal.js}"></script>
+
+</body>
+</html>
