@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Modal</title>
+    <link rel="shortcut icon" th:href="@{/image/bee.png}"/>
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div th:fragment="copy">
+
+    <div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="add-modal-label"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header" id="add-header">
+                    <h4 class="modal-title" id="add-modal-label"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row row">
+                        <input id="entity" class="form-control" placeholder="Entity Name" type="text">
+                    </div>
+                    <div class="form-row row">
+                        <div id="entity-label" class="col">
+                            <span id="child-entities"></span>
+                        </div>
+                    </div>
+                    <div class="form-row row">
+                        <div class="col">
+                            <ul id="children" class="list-group"></ul>
+                        </div>
+                    </div>
+                    <div class="form-row row">
+                        <div class="col">
+                            <button id="save" type="button" class="btn btn-success">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

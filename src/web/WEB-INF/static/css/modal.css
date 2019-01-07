@@ -1,0 +1,32 @@
+.modal-title {
+	font-weight: bold;
+    color: #ffffff;
+}
+
+.modal-header > button {
+	color: #ffffff;
+}
+
+#remove-header {
+	background-color: #ff4444;
+}
+
+#edit-header {
+	background-color: #689CD2; 
+}
+
+#add-header {
+	background-color: #4caf50;
+}
+
+#entity-label {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#child-entities {
+    font-weight: bold;
+    color: #4caf50;;
+}

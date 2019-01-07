@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <link rel="shortcut icon" th:href="@{/image/bee.png}"/>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+    <link rel="stylesheet" th:href="@{/css/addstudent.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div th:insert="~{header :: copy}"></div>
+
+<div th:insert="~{modal/remove :: copy}"></div>
+
+<div th:insert="~{modal/add :: copy}"></div>
+
+<div th:insert="~{modal/add-student :: copy}"></div>
+
+<div th:insert="~{modal/edit :: copy}"></div>
+
+<div class="con-vertical">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="block col-centered text-center">
+                    <div class="head">Student</div>
+                    <img th:src="@{/image/person.png}" alt="student" width="175" height="175">
+                    <div class="text-center">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <img class="add student" th:src="@{/image/add.png}" alt="add">
+                                </div>
+                                <div class="col">
+                                    <img class="edit student" th:src="@{/image/edit.png}" alt="edit">
+                                </div>
+                                <div class="col">
+                                    <img class="remove student" th:src="@{/image/remove.png}" alt="remove">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="block col-centered text-center">
+                    <div class="head">Department</div>
+                    <img th:src="@{/image/department.png}" alt="department" width="175" height="175">
+                    <div class="text-center">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <img class="add department" th:src="@{/image/add.png}" alt="add">
+                                </div>
+                                <div class="col">
+                                    <img class="edit department" th:src="@{/image/edit.png}" alt="edit">
+                                </div>
+                                <div class="col">
+                                    <img class="remove department" th:src="@{/image/remove.png}" alt="remove">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="block col-centered text-center">
+                    <div class="head">Subject</div>
+                    <img th:src="@{/image/subject.png}" alt="subject" width="175" height="175">
+                    <div class="text-center">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <img class="add subject" th:src="@{/image/add.png}" alt="add">
+                                </div>
+                                <div class="col">
+                                    <img class="edit subject" th:src="@{/image/edit.png}" alt="edit">
+                                </div>
+                                <div class="col">
+                                    <img class="remove subject" th:src="@{/image/remove.png}" alt="remove">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/header.js}"></script>
+
+<script th:src="@{/js/admin.js}"></script>
+
+<script th:src="@{/js/modal.js}"></script>
+
+<script th:src="@{/js/addstudent.js}"></script>
+
+</body>
+</html>

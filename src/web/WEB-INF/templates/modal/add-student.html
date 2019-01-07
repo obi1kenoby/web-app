@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Student</title>
+    <link rel="shortcut icon" th:href="@{/image/bee.png}"/>
+    <link rel="stylesheet" th:href="@{/css/addstudent.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div th:fragment="copy">
+
+<div class="modal fade" id="student-modal" tabindex="-1" role="dialog" aria-labelledby="student-modal-label"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="student-modal-label">Создать студента</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" modelAttribute="student" action="student/save">
+                    <div class="form-row raw">
+                        <div class="col">
+                            <input id="f-name" type="text" class="form-control" placeholder="Имя">
+                        </div>
+                        <div class="col">
+                            <input id="l-name" type="text" class="form-control" placeholder="Фамилия">
+                        </div>
+                    </div>
+                    <div class="form-row raw">
+                        <div class="col">
+                            <input id="pass" type="password" class="form-control" placeholder="Пароль">
+                        </div>
+                        <div class="col">
+                            <input id="c-pass" type="password" class="form-control" placeholder="Повторить Пароль">
+                        </div>
+                    </div>
+                    <div class="form-row raw">
+                        <div class="col">
+                            <input id="mail" type="email" class="form-control" placeholder="E-mail">
+                        </div>
+                        <div id="bth" class="col inline">
+                            <select id="bth-year" class="form-control"></select>
+                            <select id="bth-month" class="form-control"></select>
+                            <select id="bth-date" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="form-row raw">
+                        <div class="col">
+                            <select id="stud-dep" class="custom-select"></select>
+                        </div>
+                        <div class="col">
+                            <div class="custom-file">
+                                <input id="photo" type="file" class="custom-file-input">
+                                <label class="custom-file-label" for="photo">Загрузить Фото</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row raw">
+                        <div class="col">
+                            <button id="create-btn" class="btn btn-success">Создать</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+</body>
+</html>
