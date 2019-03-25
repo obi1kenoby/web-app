@@ -1,125 +1,124 @@
 package project.controller;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import project.model.Department;
+import project.model.Model;
+import project.model.Role;
 import project.model.Student;
+import project.service.Service;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
-import static java.util.stream.Collectors.toList;
-
-
-@Controller
+/**
+ * REST controller that handles requests
+ * for {@link Student} entites.
+ *
+ * @author Alexander Naumov.
+ */
+@RestController
+@RequestMapping("/api/student")
 public class StudentController {
-//
-//    @Autowired
-//    private DepartmentDao departmentDao;
-//    @Autowired
-//    private StudentDao studentDao;
-//
-//    @Autowired
-//    private BCryptPasswordEncoder encoder;
-//    private static Logger logger = Logger.getLogger(MarkController.class);
-//
-//
-//    @InitBinder
-//    public void initBinder(WebDataBinder binder) {
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//        sdf.setLenient(true);
-//        binder.registerCustomEditor(LocalDate.class, new CustomDateEditor(sdf, true));
-//    }
-//
-//    // gets table jsp page that represent of ratings.
-//
-//    @RequestMapping(value = "{department}/{subject}/marks", method = RequestMethod.GET)
-//    public String ratingBoard(@PathVariable("department") String department, @PathVariable("subject") String subject) {
-//        logger.info("loading ratings on " + subject + " for department ID:"  + department + "...");
-//        return "table";
-//    }
-//
-//    // returns student page and put into page this student and his average rating.
-//
-//    @RequestMapping(value = "/students/{id}", method = RequestMethod.GET)
-//    public String studentInfoPage(@PathVariable("id")long id, Model model){
-//        Student student = studentDao.findOne(id);
-//        String avg = studentDao.averageValue(student.getLast_name(), student.getFirst_name());
-//        model.addAttribute("student", student);
-//        model.addAttribute("avgValue", avg);
-//        return "student";
-//    }
-//
-//    // returns student object by its id in json format.
-//
-//    @RequestMapping(value = "/student/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public @ResponseBody Student getStudent(@PathVariable("id") long id){
-//        return studentDao.findOne(id);
-//    }
-//
-//    // save student with photo to DB and bounds him with appropriate department.
-//
-//    @RequestMapping(value = "student/save", method = RequestMethod.POST)
-//    public String addStudent(Model model, @ModelAttribute("student")Student student,
-//        @RequestParam("file")MultipartFile file, @RequestParam("dep")String department) throws IOException {
-//        String base64 = Base64.getEncoder().encodeToString(file.getBytes());
-//        student.setPhoto(base64);
-//        student.setDepartment(departmentDao.getByName(department));
-//        student.setPassword(encoder.encode(student.getPassword()));
-//        studentDao.save(student);
-//        logger.info("student " + student + " was successfully saved.");
-//        model.addAttribute("student", new Student());
-//        return "admin";
-//    }
-//
-//    // remove student by its ID.
-//
-//    @RequestMapping(value = "/student/{id}/delete", method = RequestMethod.GET)
-//    public @ResponseBody int deleteStudent(@PathVariable("id") long id){
-//        int result = studentDao.deleteById(id);
-//        if (result > 0){
-//            logger.info("student with ID is " + id + " successfully removed.");
-//        } else {
-//            logger.info("student with ID is" + id + " not exist or already removed earlier.");
-//        }
-//        return result;
-//    }
-//
-//    @RequestMapping(value = "/student/{first_name}/{last_name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public @ResponseBody Student getStudentByName(@PathVariable("first_name")String firstName, @PathVariable("last_name")String lastName) {
-//        return studentDao.getByNameAndLastName(firstName, lastName);
-//    }
-//
-//    // return all students of department from DB.
-//
-//    @RequestMapping(value = "/{department}/students", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public @ResponseBody List<Student> studentsOfDepartment(@PathVariable("department") long id){
-//        return studentDao.getByDepartment(id).stream().sorted().collect(toList());
-//    }
-//
-//    // removes student group from DB and return array of their IDs back as response.
-//
-//    @RequestMapping(value = "/delete-group", method = RequestMethod.POST)
-//    public @ResponseBody long[] deleteByGroup(@RequestParam(value="array[]") long[] id){
-//        if (id.length > 0){
-//            studentDao.deleteByGroup(id);
-//        }
-//        return id;
-//    }
-//
-//    // return all students of DB.
-//
-//    @RequestMapping(value = "/students", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public @ResponseBody List<Student> allStudents(){
-//        return studentDao.findAll().stream().sorted().collect(toList());
-//    }
+
+    @Autowired
+    @Qualifier("studentService")
+    private Service studentService;
+
+    @Autowired
+    @Qualifier("departmentService")
+    private Service departmentService;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
+    /**
+     * Returns all {@link Student} from database.
+     *
+     * @return set of students.
+     */
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<Model>> list() {
+        List<Model> students = this.studentService.getAll();
+        if (students.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(students, HttpStatus.OK);
+    }
+
+    /**
+     * Returns special {@link Student} instance, by ID.
+     *
+     * @param id department ID (primary key).
+     * @return special {@link Student}.
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Model> get(@PathVariable("id") Long id){
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Model model = this.studentService.getById(id);
+        if (model != null) {
+            return new ResponseEntity<>(model, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Save new instance of {@link Student} to DB.
+     *
+     * @param student {@link Student} instance for saving.
+     * @param photo {@link MultipartFile} photo.
+     * @param depId ID of {@link Department}.
+     * @throws IOException if photo can't produce bytes.
+     */
+    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Student> save(@ModelAttribute("student") Student student, @RequestParam(value = "file", required = false) MultipartFile photo,
+                                        @RequestParam("day")String day, @RequestParam("month")String month, @RequestParam("year")String year,
+                                        @RequestParam("depId")String depId) throws IOException {
+        if (student == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Department department = (Department)this.departmentService.getById(Long.parseLong(depId));
+        if (photo != null) {
+            student.setPhoto(Base64.getEncoder().encodeToString(photo.getBytes()));
+        }
+        try {
+            student.setPassword(encoder.encode(student.getPassword()));
+            student.setDepartment(department);
+            student.setBirthday(LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)));
+            student.setRole(Role.ROLE_USER);
+            this.studentService.save(student);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    /**
+     * Returns HTTP status of removing process of {@link Student} by their ID.
+     *
+     * @param id array of Students ID
+     * @return {@link HttpStatus}.
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Student> delete(@PathVariable("id")Long id) {
+        if (id == null || id == 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            if (this.studentService.deleteById(id)) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }
+    }
+
 }

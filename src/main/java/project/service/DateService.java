@@ -8,9 +8,7 @@ import java.util.List;
  * Service class that represents dates generator.
  *
  * @author Alexander Naumov
- * @version 1.0
  */
-
 public class DateService {
 
     public List<LocalDate> month(LocalDate current_date){

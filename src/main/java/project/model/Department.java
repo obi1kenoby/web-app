@@ -2,14 +2,14 @@ package project.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Simple JavaBean object that represents a Department.
+ * Simple JavaBean object that represents a Department
+ * and exended {@link Model} class.
  *
  * @author Alexander Naumov.
  */

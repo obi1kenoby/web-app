@@ -28,7 +28,7 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
         Session session = getSession();
         Query query = session.createQuery("SELECT DISTINCT d FROM Department d WHERE d.name =:name");
         query.setParameter("name", name);
-        return Optional.ofNullable((Department)query.getSingleResult());
+        return Optional.ofNullable((Department) query.getSingleResult());
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
         Session session = getSession();
         Query query = session.createQuery("SELECT DISTINCT s FROM Subject s WHERE s.name =:name");
         query.setParameter("name", name);
-        return Optional.ofNullable((Subject)query.getSingleResult());
+        return Optional.ofNullable((Subject) query.getSingleResult());
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
         Query query = session.createQuery("SELECT DISTINCT s FROM Student s WHERE s.first_name =:firstName AND s.last_name =:lastName");
         query.setParameter("firstName", firstName);
         query.setParameter("lastName", lastName);
-        return Optional.ofNullable((Student)query.getSingleResult());
+        return Optional.ofNullable((Student) query.getSingleResult());
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
         Session session = getSession();
         Query query = session.createQuery("SELECT DISTINCT s FROM Student s WHERE s.email =:email");
         query.setParameter("email", email);
-        return Optional.ofNullable((Student)query.getSingleResult());
+        return Optional.ofNullable((Student) query.getSingleResult());
     }
 
     @Override
@@ -61,7 +61,7 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
         Session session = getSession();
         Query query = session.createQuery("SELECT s FROM Student s WHERE s.department.id =:id");
         query.setParameter("id", id);
-        return Optional.ofNullable((List<Model>)query.getResultList());
+        return Optional.ofNullable((List<Model>) query.getResultList());
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
         query.setParameter("subject", subject);
         query.setParameter("since", since);
         query.setParameter("to", to);
-        return Optional.ofNullable((List<Model>)query.getResultList());
+        return Optional.ofNullable((List<Model>) query.getResultList());
     }
 
     @Override
@@ -104,21 +104,29 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
         Session session = getSession();
         Query query = session.createQuery("SELECT c FROM " + clazz.getName() + " c WHERE c.id IN :ids");
         query.setParameter("ids", Arrays.asList(ids));
-        return Optional.ofNullable((List<Model>)query.getResultList());
+        return Optional.ofNullable((List<Model>) query.getResultList());
     }
 
     @Override
-    public void deleteByid(Class<? extends Model> clazz, Long id) {
+    public int deleteByid(Class<? extends Model> clazz, Long id) {
         Session session = getSession();
-        if (clazz.equals(Department.class)) {
+        int res = 0;
+        if (!clazz.equals(Student.class)) {
             Query query = session.createQuery("DELETE FROM " + clazz.getName() + " d WHERE d.id =:id");
             query.setParameter("id", id);
-            query.executeUpdate();
+            res = query.executeUpdate();
+        } else {
+            Optional<Model> o = getById(Student.class, id);
+            if (o.isPresent()) {
+                try {
+                    session.delete(o.get());
+                    res = 1;
+                } catch (Exception e) {
+                    return  0;
+                }
+            }
         }
-        Model model = session.get(clazz, id);
-        if (model != null) {
-            session.delete(model);
-        }
+        return res;
     }
 
     /**

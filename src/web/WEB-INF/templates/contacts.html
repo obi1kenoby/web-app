@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacts</title>
+    <link rel="shortcut icon" th:href="@{/image/logo.png}"/>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/contacts.css}">
+</head>
+<body>
+
+<div th:insert="~{header :: copy}"></div>
+
+<div id="main">
+    <div id="board">
+        <div id="author">Created by Alexander Naumov</div>
+        <div id="contact">
+            <div class="board-row">
+                <img src="/image/mail.png" alt="mail"/>
+                <div id="mail">naumov.btm@gmail.com</div>
+            </div>
+            <div id="vk-link" class="board-row">
+                <img src="/image/vk.png" alt="vk"/>
+                <div id="vk">vk.com/vomuana</div>
+            </div>
+            <div id="github-link" class="board-row">
+                <img src="/image/git.png" alt="git"/>
+                <div id="git">github.com/obi1kenoby</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/contacts.js}"></script>
+
+<script th:src="@{/js/header.js}"></script>
+
+</body>
+</html>

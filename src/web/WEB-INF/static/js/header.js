@@ -1,42 +1,142 @@
-const department_api = '/api/department';
-const subject_api = "/api/subject";
+$('.item').mouseenter(function () {
+    if (this.innerHTML === 'Admin') {
+        $(this).css('color', '#e57373');
+    } else {
+        $(this).css('color', '#81d4fa');
+    }
+});
 
-$(document).ready(function () {
+$(".item").mouseleave(function () {
+    $(this).css('color', '#ffffff');
+});
+
+var inputs = $('.input-box').toArray();
+
+function isInputEmpty(elements) {
+    var array = new Array();
+    for (i in elements) {
+        var i = $(elements[i]);
+        if (!$(i).val()) {
+            array.push(i);
+        }
+    }
+    return array;
+}
+
+function close() {
+    $('#login-modal').css('display', 'none');
+    for (i in inputs) {
+        $(inputs[i]).val('');
+    }
+}
+
+$('.input-box').focus(function () {
+    for (i in inputs) {
+        $(inputs[i]).css('border-color', '#e0e0e0');
+    }
+});
+
+$("#login-btn").click(function () {
+    $('#login-modal').css('display', 'block');
+});
+
+$("#contacts-btn").click(function () {
+    console.log('====');
+});
+
+$(document).click(function (e) {
+    if (!$(e.target).closest('#login-btn, #login-content').length) {
+        close();
+    }
+});
+
+$('.close, #login-submit').click(function () {
+    if ($(this).attr('id') == 'login-submit') {
+        var array = $('.input-box').toArray();
+        var elements = isInputEmpty(array);
+        if (elements.length == 0) {
+            close();
+        } else {
+            for (i in elements) {
+                $(elements[i]).css('border-color', '#ef5350');
+            }
+        }
+    } else {
+        close();
+    }
+});
+
+$('#dep-btn, #deps').mouseenter(function () {
+    $('#deps').css('display', 'block');
+});
+
+$('#dep-btn, #deps').mouseleave(function () {
+    $('#deps').css('display', 'none');
+});
+
+$('#sub-btn, #subs').mouseenter(function () {
+    $('#subs').css('display', 'block');
+});
+
+$('#sub-btn, #subs').mouseleave(function () {
+    $('#subs').css('display', 'none');
+});
+
+$('#search').focus(function() {
+    $('#search-box').css({'-moz-box-shadow':'0 0 16px 3px #ffffff',
+        '-webkit-box-shadow':'0 0 16px 3px #ffffff',
+        'box-shadow':'0 0 16px 3px #ffffff'});
+});
+
+$('#search').focusout(function() {
+    $('#search-box').css({'-moz-box-shadow':'',
+        '-webkit-box-shadow':'',
+        'box-shadow':''});
+});
+
+function getDepartments() {
+    let departments = undefined;
     $.ajax({
-        url: department_api,
+        url: '/api/department',
         dataType: "json",
         async: false,
         type: "GET",
         success: function (data) {
-            let div = document.getElementById('my-departments');
-            for (let s in data) {
-                let a = document.createElement('a');
-                a.className = 'dropdown-item';
-                a.setAttribute('dep-index',data[s].id )
-                a.innerHTML = data[s].name;
-                a.href = '#';
-                div.appendChild(a);
-            }
+            departments = data;
         }
     });
-});
+    return departments;
+}
 
-$(document).ready(function () {
+function getSubjects() {
+    let subjects = undefined;
     $.ajax({
-        url: subject_api,
+        url: '/api/subject',
         dataType: "json",
         async: false,
         type: "GET",
         success: function (data) {
-            let div = document.getElementById('my-subjects');
-            for (let s in data) {
-                let a = document.createElement('a');
-                a.className = 'dropdown-item';
-                a.innerHTML = data[s].name;
-                a.setAttribute('sub-index', data[s].id);
-                div.appendChild(a);
-            }
+            subjects = data;
         }
     });
-});
+    return subjects;
+}
 
+$(document).ready(function() {
+    let departments =  document.getElementById('deps');
+    const deps = getDepartments();
+    for (let i in deps) {
+        let div = document.createElement('div');
+        div.innerHTML = deps[i].name;
+        div.classList.add("dep-item");
+        departments.appendChild(div);
+    }
+    let subjects =  document.getElementById('subs');
+    const subs = getSubjects();
+    for (let i in subs) {
+        let div = document.createElement('div');
+        div.innerHTML = subs[i].name;
+        div.classList.add("dep-item");
+        subjects.appendChild(div);
+    }
+});

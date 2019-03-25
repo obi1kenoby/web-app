@@ -1,0 +1,254 @@
+#student-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    align-items: center;
+    justify-content: center;
+}
+
+#student-content {
+    background-color: #ffffff;
+    width: 800px;
+    height: 400px;
+    color: #ffffff;
+    font-family: sans-serif;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+}
+
+#stud-content-head {
+    width: 100%;
+    height: 34px;
+    background-color: #66bb6a;
+    box-sizing: border-box;
+    position: relative;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #66bb6a;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+#stud-btn-line {
+    display: flex;
+    justify-content: center;
+}
+
+.stud-input-line {
+    height: 40px;
+    margin-left: 40px;
+    margin-right: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.stud-input-line:nth-child(2n) {
+    margin-bottom: 5px;
+}
+
+.brthday-line {
+    display: flex;
+    justify-content: space-between;
+    width: 45%;
+}
+
+.stud-label, .brthday-line, .stud-input-line > input {
+    width: 45%;
+    height: 100%;
+}
+
+#brthday-day, #brthday-year, .stud-label, #brthday-line, .stud-input-line > input:focus {
+    outline: none;
+}
+
+#brthday-year:focus {
+    -moz-box-shadow: 0 0 16px 3px #66bb6a;
+    -webkit-box-shadow: 0 0 16px 3px #66bb6a;
+    box-shadow: 0 0 16px 3px #66bb6a;
+    border: none;
+}
+
+#brthday-day:focus {
+    -moz-box-shadow: 0 0 16px 3px #66bb6a;
+    -webkit-box-shadow: 0 0 16px 3px #66bb6a;
+    box-shadow: 0 0 16px 3px #66bb6a;
+    border: none;
+}
+
+.stud-input-line > input:focus {
+    -moz-box-shadow: 0 0 16px 3px #66bb6a;
+    -webkit-box-shadow: 0 0 16px 3px #66bb6a;
+    box-shadow: 0 0 16px 3px #66bb6a;
+    border: none;
+}
+
+#deps-photo {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-line {
+    width: 45%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.mon-btn, #stud-btn {
+    color: #ffffff;
+    font-weight: bold;
+    background-color: #66bb6a;
+    border: none;
+    width: 150px;
+    height: 100%;
+    outline: none;
+    cursor: pointer;
+    height: 46px;
+}
+
+.mon-btn {
+    font-size: 14px;
+}
+
+#brthday-label, #brthday-value {
+    display: flex;
+    justify-content: space-between;
+}
+
+#brthday-day, #brth-day {
+    width: 50px;
+    height: 40px;
+}
+
+#brthday-year, #brth-year {
+    width: 90px;
+    height: 40px;
+}
+
+#brth-day {
+    width: 50px;
+    height: 40px;
+}
+
+#brth-mon {
+    width: 150px;
+    height: 40px;
+}
+
+#file {
+    cursor: pointer;
+}
+
+#brth-day, #brth-mon, #brth-year {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #66bb6a;
+}
+
+#brth-month {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border: none;
+    outline: none;
+}
+
+.stud-month {
+    height: 100%;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: #66bb6a;
+}
+
+.stud-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #66bb6a;
+}
+
+#months-content {
+    height: 120px;
+    display: block;
+    position: absolute;
+    z-index: 1;
+    background-color: #66bb6a;
+    width: auto;
+}
+
+.stud-box {
+    height: 100%;
+    flex-direction: column;
+    font-weight: bold;
+}
+
+.months-content {
+    display: none;
+    position: absolute;
+    min-width: 150px;
+    z-index: 1;
+    background-color: #66bb6a;
+    overflow: auto;
+    height: 120px;
+    background-color: #ffffff;
+}
+
+.months-content::-webkit-scrollbar {
+    width: 0;
+}
+
+.months-content > div {
+    height: 40px;
+    font-size: 14px;
+    color: #ffffff;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #66bb6a;
+}
+
+.months-content > div:hover {
+    background-color: #a5d6a7;
+}
+
+.months-content > div:not(:last-child) {
+    margin-bottom: 1px;
+}
+
+#stud-deps {
+    width: 310px;
+}
+
+#stud-dep-btn {
+    width: 310px;
+    background-color: #66bb6a;
+    color: #ffffff;
+}
+
+#file {
+    width: 200px;
+    padding: 10px;
+    background-color: #66bb6a;
+    display: table;
+    text-align: center;
+    color: #ffffff;
+}
+
+input[type="file"] {
+    display: none;
+}

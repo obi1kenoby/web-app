@@ -3,24 +3,33 @@ package project.controller;
 
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import project.config.ApplicationConfig;
 import project.config.DataConfig;
-import javax.servlet.ServletContext;
+import project.model.Department;
+import project.model.Model;
+import project.model.Subject;
+import project.service.DepartmentService;
+import project.service.SubjectService;
 
-import static org.hamcrest.Matchers.is;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -37,32 +46,32 @@ public class DepartmentControllerTest {
 
     private MockMvc mockMvc;
 
-    @Autowired
-    private WebApplicationContext context;
+    @Mock
+    private DepartmentService departmentService;
+
+    @Mock
+    private SubjectService subjectService;
+
+    @InjectMocks
+    private DepartmentController controller;
 
     @Before
     public void setup() {
         if (mockMvc == null) {
-            mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+            MockitoAnnotations.initMocks(this);
+            mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         }
     }
 
     @Test
-    public void webAppContextTest() {
-        ServletContext servletContext = context.getServletContext();
-        Assert.assertNotNull(servletContext);
-        Assert.assertTrue(servletContext instanceof MockServletContext);
-        Assert.assertNotNull(context.getBean("departmentController"));
-    }
-
-    /**
-     * OK
-     */
-    @Test
-    @Sql(scripts = "classpath:sql/tests/department-list-before.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:sql/tests/department-list-after.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void listTest() throws Exception {
+        List<Model> models = Arrays.asList(createDepartment(1L, "Dep_1"),
+        createDepartment(2L, "Dep_2"), createDepartment(3L, "Dep_3"));
+
+        when(departmentService.getAll()).thenReturn(models);
+
         MvcResult result = mockMvc.perform(get(PATH))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andReturn();
@@ -70,34 +79,76 @@ public class DepartmentControllerTest {
         String body = result.getResponse().getContentAsString();
         String[] objects = body.split(",");
         Assert.assertTrue(objects.length > 0);
+
+        verify(departmentService, only()).getAll();
+        verifyNoMoreInteractions(departmentService);
     }
 
-    /**
-     * OK
-     */
     @Test
-    @Sql(scripts = "classpath:sql/tests/save-department-before.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void saveTest() throws Exception {
-        mockMvc.perform(post( PATH + "/{name}", "TEMP")
-                .param("array[]", "995")
-                .param("array[]", "996")
-                .param("array[]", "997")
-                .param("array[]", "998")
-                .param("array[]", "999")
+        Long[] ids = {1L, 2L};
+        Department department = createDepartment(1L, "DepName");
+        List<Model> subjects = Arrays.asList(createSubject(ids[0], "Subject_1"),
+                createSubject(ids[1], "Subject_2"));
+
+        when(subjectService.getListById(ids)).thenReturn(subjects);
+        doNothing().when(departmentService).saveWithSubject(department, subjects);
+        when((departmentService).getByName("DepName")).thenReturn(department);
+
+
+        mockMvc.perform(post(PATH + "/{name}", "DepName")
+                .param("array[]", "1")
+                .param("array[]", "2")
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andDo(print())
                 .andExpect(status().isOk());
+
+        verify(subjectService, only()).getListById(ids);
+        verifyNoMoreInteractions(subjectService);
+        verify(departmentService, times(1)).saveWithSubject(any(), any());
+        verify(departmentService, times(1)).getByName(any());
+        verifyNoMoreInteractions(departmentService);
     }
 
-    /**
-     * OK
-     */
     @Test
-    @Sql(scripts = "classpath:sql/tests/get-department-by-name-before.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:sql/tests/get-department-by-name-after.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getDepartmentByIdTest() throws Exception {
-        mockMvc.perform(get(PATH + "/{id}", 999))
+        when(departmentService.getById(1L)).thenReturn(createDepartment(1L, "depName"));
+
+        MvcResult result = this.mockMvc.perform(get(PATH + "/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.id", is(999)));
+                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.name").value("depName"))
+                .andDo(print())
+                .andReturn();
+
+        Assert.assertEquals("application/json;charset=UTF-8", result.getResponse().getContentType());
+    }
+
+    @Test
+    public void deleteDeparmtnetTest() throws Exception {
+        when(departmentService.deleteById(1L)).thenReturn(true);
+
+        mockMvc.perform(delete(PATH + "/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        verify(departmentService, times(1)).deleteById(1L);
+        verifyNoMoreInteractions(departmentService);
+    }
+
+    private static Department createDepartment(Long id, String name) {
+        Department department = new Department();
+        department.setId(id);
+        department.setName(name);
+        return department;
+    }
+
+    private static Subject createSubject(Long id, String name) {
+        Subject subject = new Subject();
+        subject.setId(id);
+        subject.setName(name);
+        return subject;
     }
 }

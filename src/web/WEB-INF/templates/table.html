@@ -1,18 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Rating</title>
-    <link rel="shortcut icon" th:href="@{/image/bee.png}"/>
-    <link rel="stylesheet" th:href="@{/css/head.css}">
-    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="shortcut icon" th:href="@{/image/logo.png}"/>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/css/table.css}">
     <link rel="stylesheet" th:href="@{/css/value.css}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div th:insert="~{header :: copy}"></div>
@@ -23,8 +19,7 @@
 
     <script th:src="@{/js/table-event.js}"></script>
 
-    <div th:insert="~{value :: copy}"></div>
+<!--    <div th:insert="~{value :: copy}"></div>       -->
 
-    <!--<div th:insert="~{footer :: copy}"></div>-->
 </body>
 </html>

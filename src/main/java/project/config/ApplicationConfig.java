@@ -1,6 +1,5 @@
 package project.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -15,9 +14,7 @@ import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import project.repository.ModelRepository;
 import project.repository.ModelRepositoryImpl;
-import project.service.DepartmentService;
-import project.service.DateService;
-import project.service.SubjectService;
+import project.service.*;
 
 /**
  * Main configuration of application that
@@ -46,6 +43,7 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter implements Applic
     }
 
     @Bean
+    @Description("Thymeleaf Template Resolver")
     public SpringResourceTemplateResolver templateResolver(){
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(this.applicationContext);
@@ -57,6 +55,7 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter implements Applic
     }
 
     @Bean
+    @Description("Thymeleaf Template Engine")
     public SpringTemplateEngine templateEngine(){
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
@@ -95,13 +94,23 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter implements Applic
         return new ModelRepositoryImpl();
     }
 
-    @Bean
-    public DepartmentService departmentService() {
+    @Bean(name = "departmentService")
+    public Service departmentService() {
         return new DepartmentService();
     }
 
-    @Bean
-    public SubjectService subjectService() {
+    @Bean(name = "subjectService")
+    public Service subjectService() {
         return new SubjectService();
+    }
+
+    @Bean(name = "studentService")
+    public Service studentService() {
+        return new StudentService();
+    }
+
+    @Bean(name = "markService")
+    public Service markService() {
+        return new MarkService();
     }
 }

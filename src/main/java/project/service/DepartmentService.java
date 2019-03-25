@@ -6,46 +6,119 @@ import project.model.Model;
 import project.model.Subject;
 import project.repository.ModelRepository;
 
-import java.util.List;
-import java.util.Optional;
+import javax.annotation.PostConstruct;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
+ * Implimentation of {@link Service} interface.
  *
  * @author Alexander Naumov.
  */
-public class DepartmentService {
+public class DepartmentService implements Service {
+
+    private List<Model> cache;
 
     @Autowired
     private ModelRepository repository;
 
-    public Optional<List<Model>> getAll() {
-        return this.repository.getList(Department.class);
+    @PostConstruct
+    private void init() {
+        cache = new ArrayList<>();
+        cache = getAll();
     }
 
-    public Optional<List> getListById(Long[] ids) {
-        return repository.getListById(Department.class, ids);
+    @Override
+    public List<Model> getAll() {
+        if (cache.isEmpty()) {
+            Optional optional = repository.getList(Department.class);
+            if (optional.isPresent()) {
+                cache = new ArrayList<>((List<Model>) optional.get());
+            }
+        }
+        return cache;
     }
 
-    public Optional getById(Long id) {
-        return this.repository.getById(Department.class, id);
+    public List<Model> getListById(Long[] ids) {
+        List<Model> results = cache.stream()
+                .filter(model -> Arrays.asList(ids)
+                        .contains(model.getId())).collect(Collectors.toList());
+        if (results.size() == ids.length) {
+            return results;
+        }
+        Optional optional = repository.getListById(Department.class, ids);
+        if (optional.isPresent()) {
+            List<Model> models = (List<Model>) optional.get();
+            cache.stream().filter(model -> !cache.contains(model)).forEach(model -> cache.add(model));
+            return models;
+        }
+        return null;
     }
 
-    public void save(Department department, List<Model> subjects) {
-        subjects.forEach(model -> {
-            ((Subject)model).getDepartments().add(department);
-            this.repository.saveOrUpdate(model);
-        });
+    @Override
+    public Model getById(Long id) {
+        for (Model model : cache) {
+            if (model.getId() == id) {
+                return model;
+            }
+        }
+        Optional optional = repository.getById(Department.class, id);
+        if (optional.isPresent()) {
+            Model dep = (Model) optional.get();
+            cache.add(dep);
+            return dep;
+        }
+        return null;
     }
 
-    public void edit() {
-
+    public void saveWithSubject(Department department, List<Model> subjects) {
+        if (!cache.contains(subjects)) {
+            subjects.forEach(model -> {
+                ((Subject) model).getDepartments().add(department);
+                repository.saveOrUpdate(model);
+            });
+            cache.add(department);
+        }
     }
 
-    public void remove() {
-
+    @Override
+    public boolean save(Model model) {
+        try {
+            repository.saveOrUpdate(model);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
-    public Optional getByName(String name) {
-        return this.repository.getDepByName(name);
+    @Override
+    public boolean deleteById(Long id) {
+        try{
+            if (!cache.isEmpty()) {
+                Optional<Model> o = cache.stream().filter(d -> d.getId() == id).findAny();
+                if (o.isPresent()) {
+                    cache.remove(o.get());
+                }
+            }
+            repository.deleteByid(Department.class, id);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    public Model getByName(String name) {
+        for (Model model : cache) {
+            if (((Department) model).getName().equals(name)) {
+                return model;
+            }
+        }
+        Optional optional = repository.getDepByName(name);
+        if (optional.isPresent()) {
+            Model model = (Model) optional.get();
+            cache.add(model);
+            return model;
+        }
+        return null;
     }
 }

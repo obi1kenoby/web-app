@@ -2,7 +2,6 @@ package project.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -13,7 +12,8 @@ import java.time.LocalDate;
 import java.util.Set;
 
 /**
- * Simple JavaBean object that represents a Student.
+ * Simple JavaBean object that represents a Student
+ * and exended {@link Model} class.
  *
  * @author Alexander Naumov.
  */
@@ -54,7 +54,6 @@ public class Student extends Model implements Comparable<Student>{
     private String photo;
 
     @JsonIgnore
-    @Fetch(FetchMode.JOIN)
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "student")
     private Set<Mark> marks;
 
@@ -65,6 +64,7 @@ public class Student extends Model implements Comparable<Student>{
             inverseJoinColumns = { @JoinColumn(name = "SUB_ID") })
     private Set<Subject> subjects;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DEP_ID")
     private Department department;

@@ -2,9 +2,6 @@ package project.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -13,7 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Simple JavaBean object that represents a Subject.
+ * Simple JavaBean object that represents a Subject
+ * and exended {@link Model} class.
  *
  * @author Alexander Naumov.
  */
@@ -29,7 +27,6 @@ public class Subject extends Model {
     private String name;
 
     @JsonIgnore
-//    @Fetch(FetchMode.JOIN)
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "SUBJECT_DEPARTMENT",
             joinColumns = @JoinColumn(name = "SUB_ID"),
