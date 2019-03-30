@@ -9,10 +9,10 @@ public enum Role {
     /**
      * Access rights for simple application users.
      */
-    ROLE_USER,
+    USER,
 
     /**
      * Access rights for application admin.
      */
-    ADMIN_ROLE
+    ROLE
 }

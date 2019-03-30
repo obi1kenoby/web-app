@@ -132,7 +132,7 @@ public class ModelRepositoryTest {
         expected.setLast_name("LAST-NAME");
         expected.setPassword("PASSWORD");
         expected.setEmail("EMAIL");
-        expected.setRole(Role.ROLE_USER);
+        expected.setRole(Role.USER);
         expected.setBirthday(LocalDate.of(2001, 4, 14));
         expected.setDepartment(department);
         repository.saveOrUpdate(expected);

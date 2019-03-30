@@ -1,8 +1,8 @@
 package project.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
@@ -13,16 +13,15 @@ import java.util.Set;
 
 /**
  * Simple JavaBean object that represents a Student
- * and exended {@link Model} class.
+ * and extended {@link Model} class.
  *
  * @author Alexander Naumov.
  */
-
 @Entity
 @Table(name = "STUDENT")
 @Data
 @EqualsAndHashCode(exclude = {"marks", "subjects", "department"}, callSuper = true)
-@ToString(exclude = {"marks", "subjects", "password", "photo", "department", "confirmedPassword"})
+@ToString(exclude = {"marks", "subjects", "password", "photo", "department"})
 @NoArgsConstructor
 public class Student extends Model implements Comparable<Student>{
 
@@ -32,7 +31,7 @@ public class Student extends Model implements Comparable<Student>{
     @Column(name = "LAST_NAME")
     private String last_name;
 
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern="yyyy-MM-dd")
     @Column(name = "BIRTHDAY")
     private LocalDate birthday;
 
@@ -42,9 +41,6 @@ public class Student extends Model implements Comparable<Student>{
     @Column(name = "PASSWORD")
     private String password;
 
-    @Transient
-    private String confirmedPassword;
-
     @Enumerated(EnumType.STRING)
     @Column(name  = "ROLE")
     private Role role;
@@ -53,7 +49,6 @@ public class Student extends Model implements Comparable<Student>{
     @Column(name = "PHOTO")
     private String photo;
 
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "student")
     private Set<Mark> marks;
 

@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 /**
  * Simple JavaBean object that represents a Mark
- * and exended {@link Model} class.
+ * and extended {@link Model} class.
  *
  * @author Alexander Naumov.
  */

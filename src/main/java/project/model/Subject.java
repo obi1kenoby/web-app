@@ -11,7 +11,7 @@ import java.util.Set;
 
 /**
  * Simple JavaBean object that represents a Subject
- * and exended {@link Model} class.
+ * and extended {@link Model} class.
  *
  * @author Alexander Naumov.
  */

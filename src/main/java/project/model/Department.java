@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * Simple JavaBean object that represents a Department
- * and exended {@link Model} class.
+ * and extended {@link Model} class.
  *
  * @author Alexander Naumov.
  */
@@ -24,7 +24,6 @@ public class Department extends Model implements Comparable<Department> {
     @Column(name = "NAME", length = 60)
     private String name;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "department")
     private Set<Student> students;
 

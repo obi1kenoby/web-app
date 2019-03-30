@@ -94,7 +94,7 @@ public class StudentController {
             student.setPassword(encoder.encode(student.getPassword()));
             student.setDepartment(department);
             student.setBirthday(LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)));
-            student.setRole(Role.ROLE_USER);
+            student.setRole(Role.USER);
             this.studentService.save(student);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
