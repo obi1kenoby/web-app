@@ -33,8 +33,7 @@ public class Mark extends Model {
     @JoinColumn(name = "STUD_ID")
     private Student student;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "SUBJ_ID")
     private Subject subject;
 }

@@ -1,5 +1,5 @@
-const today = new Date();
-const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+var today = new Date();
+var months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
     "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
 
 $(document).ready(function () {
@@ -9,8 +9,8 @@ $(document).ready(function () {
 });
 
 $('#bth-month').change(function () {
-    let value = parseInt(this.options[this.selectedIndex].value);
-    let dates = document.getElementById('bth-date');
+    var value = parseInt(this.options[this.selectedIndex].value);
+    var dates = document.getElementById('bth-date');
     $(dates).empty();
     if (value < 3) {
         if (value === 1) {
@@ -36,11 +36,11 @@ $('#bth-month').change(function () {
 });
 
 function fillYear() {
-    let year = document.getElementById('bth-year');
+    var year = document.getElementById('bth-year');
     $(year).empty();
-    let currYear = today.getFullYear();
-    for (let i = currYear - 37; i < currYear - 7; i++) {
-        let option = document.createElement('option');
+    var currYear = today.getFullYear();
+    for (var i = currYear - 37; i < currYear - 7; i++) {
+        var option = document.createElement('option');
         option.value = i;
         option.innerHTML = i;
         year.appendChild(option);
@@ -48,11 +48,11 @@ function fillYear() {
 }
 
 function fillMonth() {
-    let month = document.getElementById('bth-month');
+    var month = document.getElementById('bth-month');
     $(month).empty();
-    let val = 1;
-    for (let i in months) {
-        let option = document.createElement('option');
+    var val = 1;
+    for (var i in months) {
+        var option = document.createElement('option');
         option.value = val;
         option.innerHTML = months[i];
         month.appendChild(option);
@@ -61,10 +61,10 @@ function fillMonth() {
 }
 
 function fillDates(n) {
-    let date = document.getElementById('bth-date');
+    var date = document.getElementById('bth-date');
     $(date).empty();
-    for (let i = 1; i <= n; i++) {
-        let option = document.createElement('option');
+    for (var i = 1; i <= n; i++) {
+        var option = document.createElement('option');
         option.value = i;
         option.innerHTML = i;
         date.appendChild(option);

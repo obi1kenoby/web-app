@@ -121,4 +121,19 @@ public class StudentController {
         }
     }
 
+    /**
+     * Returns list of {@link Student} by its {@link Department} ID.
+     *
+     * @param id of {@link Department}.
+     * @return {@link List<Student>}.
+     */
+    @RequestMapping(value = "/department/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<Student>> getStudentsByDep(@PathVariable("id") String id) {
+        if (id == null || id.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        List<Student> students = new ArrayList<>(((Department) departmentService.getById(Long.parseLong(id))).getStudents());
+        Collections.sort(students);
+        return new ResponseEntity<>(students, HttpStatus.OK);
+    }
 }

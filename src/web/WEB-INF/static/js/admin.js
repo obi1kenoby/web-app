@@ -1,5 +1,5 @@
 $('.control-btn').mouseenter(function () {
-    let type = $(this).attr("alt");
+    var type = $(this).attr("alt");
     if (type == "+") {
         $(this).attr("src", "/image/green-add.png");
     } else if (type == "-") {
@@ -10,7 +10,7 @@ $('.control-btn').mouseenter(function () {
 });
 
 $(".control-btn").mouseleave(function () {
-    let type = $(this).attr("alt");
+    var type = $(this).attr("alt");
     if (type == "+") {
         $(this).attr("src", "/image/add.png");
     } else if (type == "-") {
@@ -21,9 +21,9 @@ $(".control-btn").mouseleave(function () {
 });
 
 $(".control-btn").click(function () {
-    let alt = $(this).attr('alt');
-    let action = undefined;
-    let admin_item = $(this).parent().parent().attr('id');
+    var alt = $(this).attr('alt');
+    var action = undefined;
+    var admin_item = $(this).parent().parent().attr('id');
     switch (alt) {
         case '+':
             action = 'Add';
@@ -35,9 +35,9 @@ $(".control-btn").click(function () {
             action = 'Edit';
             break;
     }
-    let strings = admin_item.split('-');
-    let id = strings[strings.length - 1];
-    let entity = undefined;
+    var strings = admin_item.split('-');
+    var id = strings[strings.length - 1];
+    var entity = undefined;
     switch (id) {
         case 'dep':
             entity = 'Department';
@@ -83,16 +83,12 @@ $(".close").click(function () {
 $(document).click(function (e) {
     if (!$(e.target).closest('.control-btn, #common-content').length) {
         $('#common-modal').css('display', 'none');
-        //clear();
-        //console.log('COMMON CLOSE');
     }
 });
 
 $(document).click(function (e) {
     if (!$(e.target).closest('.control-btn, #student-content').length) {
         $('#student-modal').css('display', 'none');
-        //clear();
-        //console.log('STUDENT CLOSE');
     }
 });
 
@@ -108,21 +104,21 @@ $('#months').mouseleave(function () {
     $('#months').css('display', 'none');
 });
 
-let ids = new Array();
+var ids = new Array();
 
 $('.common-li').click(function () {
-   const event = $('#common-title').text().split(' ')[0];
-   let value = $(this).attr('value');
+   var event = $('#common-title').text().split(' ')[0];
+   var value = $(this).attr('value');
    if (event.toUpperCase() === "DELETE") {
        if ($(this).find('img').length == 0) {
-           let img = document.createElement('img');
+           var img = document.createElement('img');
            img.src = '/image/ok.png';
            img.classList.add('ok');
            $(this).append(img);
            ids.push(value);
        } else {
            this.removeChild(this.lastChild);
-           let index = ids.indexOf(value);
+           var index = ids.indexOf(value);
            if (index !== -1) {
                ids.splice(index, 1);
            }
@@ -136,7 +132,7 @@ $('.common-li').click(function () {
 });
 
 function deleteEnties(array, name) {
-    let status = undefined;
+    var status = undefined;
     console.log('/api/' + name);
     $.ajax({
         url: '/api/' + name,
@@ -152,8 +148,8 @@ function deleteEnties(array, name) {
 }
 
 $('#button-submit').click(function () {
-    const buttonName  = $(this).text().toUpperCase();
-    const entity = $('#common-title').text().split(' ')[1];
+    var buttonName  = $(this).text().toUpperCase();
+    var entity = $('#common-title').text().split(' ')[1];
     console.log(buttonName);
     if (buttonName === 'ADD') {
 
@@ -165,8 +161,8 @@ $('#button-submit').click(function () {
 });
 
 $('.mon-item').click(function () {
-    let month = $(this).text();
-    let value = $(this).attr('value');
+    var month = $(this).text();
+    var value = $(this).attr('value');
     $('#mon-btn').text(month);
     $('#months').css('display', 'none');
     document.getElementById("mon-v").value = value;
@@ -181,18 +177,18 @@ $('#stud-deps').mouseleave(function () {
 });
 
 $('body').on('click', '.dep-item', function() {
-    let dep = $(this).text();
-    let value = $(this).attr('value');
+    var dep = $(this).text();
+    var value = $(this).attr('value');
     $('#stud-deps').css('display', 'none');
     $('#stud-dep-btn').text(dep);
     document.getElementById("dep-v").value = value;
 });
 
 $(document).ready(function() {
-    let departments =  document.getElementById('stud-deps');
-    const deps = getDepartments();
-    for (let i in deps) {
-        let div = document.createElement('div');
+    var departments =  document.getElementById('stud-deps');
+    var deps = getDepartments();
+    for (var i in deps) {
+        var div = document.createElement('div');
         div.innerHTML = deps[i].name;
         div.classList.add("dep-item");
         $(div).attr('value', deps[i].id);

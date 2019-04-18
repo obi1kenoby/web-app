@@ -1,6 +1,6 @@
 $(document).on("click", ".item", function () {
-    const background = $(this).css("background-color");
-    const white = "rgb(255, 255, 255)";
+    var background = $(this).css("background-color");
+    var white = "rgb(255, 255, 255)";
     var counter = document.getElementById('counter');
     var count = parseInt(counter.innerHTML);
     if (background !== white) {

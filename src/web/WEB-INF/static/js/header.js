@@ -41,7 +41,7 @@ $("#login-btn").click(function () {
 });
 
 $("#contacts-btn").click(function () {
-    console.log('====');
+    window.location = '/contacts';
 });
 
 $(document).click(function (e) {
@@ -95,7 +95,7 @@ $('#search').focusout(function() {
 });
 
 function getDepartments() {
-    let departments = undefined;
+    var departments = undefined;
     $.ajax({
         url: '/api/department',
         dataType: "json",
@@ -109,7 +109,7 @@ function getDepartments() {
 }
 
 function getSubjects() {
-    let subjects = undefined;
+    var subjects = undefined;
     $.ajax({
         url: '/api/subject',
         dataType: "json",
@@ -123,18 +123,18 @@ function getSubjects() {
 }
 
 $(document).ready(function() {
-    let departments =  document.getElementById('deps');
-    const deps = getDepartments();
-    for (let i in deps) {
-        let div = document.createElement('div');
+    var departments =  document.getElementById('deps');
+    var deps = getDepartments();
+    for (var i in deps) {
+        var div = document.createElement('div');
         div.innerHTML = deps[i].name;
         div.classList.add("dep-item");
         departments.appendChild(div);
     }
-    let subjects =  document.getElementById('subs');
-    const subs = getSubjects();
-    for (let i in subs) {
-        let div = document.createElement('div');
+    var subjects =  document.getElementById('subs');
+    var subs = getSubjects();
+    for (var i in subs) {
+        var div = document.createElement('div');
         div.innerHTML = subs[i].name;
         div.classList.add("dep-item");
         subjects.appendChild(div);

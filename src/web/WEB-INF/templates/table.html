@@ -11,15 +11,36 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
+
     <div th:insert="~{header :: copy}"></div>
 
     <script th:src="@{/js/header.js}"></script>
 
+    <div id="main-container">
+        <div id="left-container">
+            <img id="left-clicker" src="/image/left.png" alt="left">
+        </div>
+        <div id="table-container">
+            <table id="table"></table>
+        </div>
+        <div id="right-container">
+            <img id="right-clicker" src="/image/right.png" alt="right">
+        </div>
+    </div>
+
+    <div id="menu-container">
+        <select id="month"></select>
+        <input id="year" type="text" maxlength="4">
+        <select id="department"></select>
+        <select id="subject"></select>
+        <button id="ok">Ok</button>
+    </div>
+
     <script th:src="@{/js/table.js}"></script>
 
-    <script th:src="@{/js/table-event.js}"></script>
+    <script th:src="@{/js/table-menu.js}"></script>
 
-<!--    <div th:insert="~{value :: copy}"></div>       -->
+    <script th:src="@{/js/table-events.js}"></script>
 
 </body>
 </html>
