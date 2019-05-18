@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
@@ -26,7 +27,7 @@ import project.service.*;
 @Configuration
 @Import({DataConfig.class})
 @ComponentScan("project")
-public class ApplicationConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware{
+public class ApplicationConfig implements ApplicationContextAware, WebMvcConfigurer {
 
     @Autowired
     private ApplicationContext applicationContext;

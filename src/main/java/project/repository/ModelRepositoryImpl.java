@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Implimentation of {@link ModelRepository} interface.
+ * Implementation of {@link ModelRepository} interface.
  *
  * @author Alexander Naumov.
  */
@@ -108,7 +108,7 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
     }
 
     @Override
-    public int deleteByid(Class<? extends Model> clazz, Long id) {
+    public int deleteById(Class<? extends Model> clazz, Long id) {
         Session session = getSession();
         int res = 0;
         if (!clazz.equals(Student.class)) {

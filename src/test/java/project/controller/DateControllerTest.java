@@ -53,7 +53,6 @@ public class DateControllerTest {
                 .andDo(print())
                 .andExpect(jsonPath("$", hasSize(23)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
+                .andExpect(status().isOk());
     }
 }

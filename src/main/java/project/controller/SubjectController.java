@@ -80,7 +80,7 @@ public class SubjectController {
         if (id == 0) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (this.subjectService.deleteById(id)) {
+        if (this.subjectService.deleteById(id) > 0) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

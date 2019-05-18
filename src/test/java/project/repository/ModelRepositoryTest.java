@@ -38,7 +38,7 @@ public class ModelRepositoryTest {
     @Sql(scripts = "classpath:sql/tests/delete_student.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void deleteMarkByIdTest() {
-        repository.deleteByid(Mark.class, 1L);
+        repository.deleteById(Mark.class, 1L);
         Optional optional = repository.getById(Mark.class, 1L);
         if (optional.isPresent()) {
             fail("optional must be empty!");
@@ -49,7 +49,7 @@ public class ModelRepositoryTest {
     @Sql(scripts = "classpath:sql/tests/delete_subject.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void deleteSubjectByIdTest() {
-        repository.deleteByid(Subject.class, 1L);
+        repository.deleteById(Subject.class, 1L);
         Optional optional = repository.getById(Subject.class, 1L);
         if (optional.isPresent()) {
             fail("optional must be empty!");
@@ -60,7 +60,7 @@ public class ModelRepositoryTest {
     @Sql(scripts = "classpath:sql/tests/delete_student.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void deleteStudentByIdTest() {
-        repository.deleteByid(Student.class, 1L);
+        repository.deleteById(Student.class, 1L);
         Optional optional = repository.getById(Student.class, 1L);
         if (optional.isPresent()) {
             fail("optional must be empty!");
@@ -71,7 +71,7 @@ public class ModelRepositoryTest {
     @Sql(scripts = "classpath:sql/tests/delete_department.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void deleteDepartmentByIdTest() {
-        repository.deleteByid(Department.class, 1L);
+        repository.deleteById(Department.class, 1L);
         Optional optional = repository.getById(Department.class, 1L);
         if (optional.isPresent()) {
             fail("optional must be empty!");

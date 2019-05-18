@@ -103,7 +103,7 @@ public class DepartmentController {
         if (id == null || id == 0) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (this.departmentService.deleteById(id)) {
+        if (this.departmentService.deleteById(id) > 0) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -113,7 +113,7 @@ public class StudentController {
         if (id == null || id == 0) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            if (this.studentService.deleteById(id)) {
+            if (this.studentService.deleteById(id) > 0) {
                 return new ResponseEntity<>(HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

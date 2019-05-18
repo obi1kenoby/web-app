@@ -108,7 +108,7 @@ public class SubjectControllerTest {
 
     @Test
     public void deleteTest() throws Exception {
-        when(subjectService.deleteById(1L)).thenReturn(true);
+        when(subjectService.deleteById(1L)).thenReturn(1);
 
         mockMvc.perform(delete(path + "/{id}", 1L))
                 .andDo(print())

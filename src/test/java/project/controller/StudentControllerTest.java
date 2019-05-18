@@ -119,7 +119,7 @@ public class StudentControllerTest {
         assertNotNull(mock);
 
         Long id = 1L;
-        when(studentService.deleteById(id)).thenReturn(true);
+        when(studentService.deleteById(id)).thenReturn(1);
 
         mock.perform(delete(path + "/{id}", id))
                 .andDo(print())

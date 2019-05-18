@@ -1,82 +1,73 @@
 package project.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import project.model.Model;
 import project.model.Student;
 import project.repository.ModelRepository;
 
-import javax.annotation.PostConstruct;
+
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
- * Implimentation of {@link Service} interface.
+ * Implementation of {@link Service} interface.
  *
  * @author Alexander Naumov.
  */
+@Slf4j
 public class StudentService implements Service {
 
     @Autowired
     private ModelRepository repository;
 
-    private List<Model> cache;
-
-    @PostConstruct
-    private void init() {
-        cache = new ArrayList<>();
-        cache = getAll();
-    }
 
     @Override
     public List<Model> getAll() {
-        if (cache.isEmpty()) {
-            Optional optional = repository.getList(Student.class);
-            if (optional.isPresent()) {
-                cache = new ArrayList<>((List<Model>) optional.get());
-            }
+        List<Model> models = null;
+        try {
+            Optional o = repository.getList(Student.class);
+            models = (List<Model>) o.get();
+            log.info("IN getAll, all " + models.size() + " students were successfully loaded.");
+        } catch (Exception e) {
+            log.error("IN getAll, error while loading.");
         }
-        return cache;
+        return models;
     }
 
     @Override
     public Model getById(Long id) {
-        Optional<Model> optional = cache.stream().filter(stundet -> stundet.getId() == id).findAny();
-        if (optional.isPresent()) {
-            return optional.get();
-        } else {
+        Model model = null;
+        try {
             Optional o = repository.getById(Student.class, id);
-            if (optional.isPresent()) {
-                Model model = (Model) o.get();
-                cache.add(model);
-                return model;
-            }
+            model = (Model) o.get();
+            log.info("IN getById, student with id: {} was successfully loaded.", id);
+        } catch (Exception e) {
+            log.error("IN getById, student with id: {} was error while loaded.", id);
         }
-        return null;
+        return model;
     }
 
     @Override
     public boolean save(Model model) {
         try {
             repository.saveOrUpdate(model);
-            cache.add(model);
+            log.info("IN save, subject: {} was successfully saved.", model);
+            return true;
         } catch (Exception e) {
-            return false;
+            log.error("IN save, subject: {} error while saving.", model);
         }
-        return true;
+        return false;
     }
 
     @Override
-    public boolean deleteById(Long id) {
-        if (!cache.isEmpty()) {
-            Optional<Boolean> o = cache.stream().filter(s -> s.getId() == id).map(s -> cache.remove(s)).findAny();
-            if (o.isPresent() && o.get()) {
-                try {
-                    repository.deleteByid(Student.class, id);
-                } catch (Exception e) {
-                    return false;
-                }
-            }
+    public int deleteById(Long id) {
+        int res = 0;
+        try {
+            res = repository.deleteById(Student.class, id);
+            log.info("IN deleteById, student with id: {} was successfully removed.", id);
+        } catch (Exception e) {
+            log.error("IN deleteById, student with id: {} error while removing.", id);
         }
-        return true;
+        return res;
     }
 }

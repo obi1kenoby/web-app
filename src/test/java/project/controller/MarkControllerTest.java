@@ -107,7 +107,7 @@ public class MarkControllerTest {
     @Test
     public void deleteMark() throws Exception {
         Mark mark = createMark(1L, 2, LocalDate.of(2001, 1, 1));
-        when(markService.deleteById(mark.getId())).thenReturn(true);
+        when(markService.deleteById(mark.getId())).thenReturn(1);
 
         mockMvc.perform(delete(path + "/{id}", mark.getId()))
                 .andDo(print())

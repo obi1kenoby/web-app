@@ -7,7 +7,7 @@ function createTable(department_id, date, subject_id) {
     fio.innerHTML = 'Student';
     tr.appendChild(fio);
     var dates = getDates(date);
-    for (var d in dates) {
+    for (d in dates) {
         var th = document.createElement('th');
         var day = dates[d][2];
         if (day < 10) {
@@ -17,7 +17,7 @@ function createTable(department_id, date, subject_id) {
         tr.appendChild(th);
     }
     table.appendChild(tr);
-    for (var n in students) {
+    for (n in students) {
         var tr = document.createElement('tr');
         var td = document.createElement('td');
         var student = students[n];
@@ -39,8 +39,6 @@ function createTable(department_id, date, subject_id) {
     }
     var container = document.getElementById('table-container');
     container.appendChild(table);
-    var year = document.getElementById('year');
-    year.value = date.split('-')[0];
 }
 
 function getDates(date) {
@@ -75,7 +73,7 @@ function getStudents(department_id) {
 function getSubject(subject_id) {
     var student;
     $.ajax({
-        url: "http://localhost:8080/api/subject/" + subject_id,
+        url: "/api/subject/" + subject_id,
         dataType: "json",
         async: false,
         type: "GET",
@@ -104,5 +102,3 @@ function isStudentHaveValue(marks, subject, date) {
     }
     return null;
 }
-
-createTable(1, '2019-03-01', 1);

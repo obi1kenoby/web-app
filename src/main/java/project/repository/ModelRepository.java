@@ -104,5 +104,5 @@ public interface ModelRepository<T> {
      * @param id student ID.
      * @return 1 if deleting was success else 0.
      */
-    int deleteByid(Class<? extends T> clazz, Long id);
+    int deleteById(Class<? extends T> clazz, Long id);
 }

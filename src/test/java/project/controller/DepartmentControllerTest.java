@@ -127,7 +127,7 @@ public class DepartmentControllerTest {
 
     @Test
     public void deleteDeparmtnetTest() throws Exception {
-        when(departmentService.deleteById(1L)).thenReturn(true);
+        when(departmentService.deleteById(1L)).thenReturn(1);
 
         mockMvc.perform(delete(PATH + "/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))

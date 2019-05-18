@@ -27,7 +27,7 @@ import java.util.List;
 @RequestMapping("api/mark")
 public class MarkController {
 
-    private static DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
     @Autowired
     @Qualifier("markService")
@@ -60,14 +60,14 @@ public class MarkController {
      * Returns HTTP status of removing process of {@link Mark} by their ID.
      *
      * @param id array of marks ID's.
-     * @return {@link HttpStatus}.
+     * @return {@link Mark}.
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Model> delete(@PathVariable("id") Long id) {
         if (id == null || id == 0) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (!this.markService.deleteById(id)) {
+        if (this.markService.deleteById(id) == 0) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -77,7 +77,7 @@ public class MarkController {
     /**
      * Returns all {@link Mark} instances, for special month.
      *
-     * @return list of marks.
+     * @return list of {@link Mark}.
      */
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<Model>> getMarksByDateRange(@RequestParam("date") String string) {
@@ -96,11 +96,11 @@ public class MarkController {
     /**
      * Returns {@link HttpStatus} of saving new or already existed {@link Mark}.
      *
-     * @param id     of existed {@link Mark}.
-     * @param value  of existed or new {@link Mark}.
-     * @param date   of existed {@link Mark}.
-     * @param studId ID of {@link Student} that coresponds this {@link Mark}.
-     * @param subId  ID of {@link Subject} that coresponds this {@link Mark}.
+     * @param id of existed {@link Mark}.
+     * @param value of existed or new {@link Mark}.
+     * @param date of existed {@link Mark}.
+     * @param studId ID of {@link Student} that corresponds this {@link Mark}.
+     * @param subId ID of {@link Subject} that corresponds this {@link Mark}.
      * @return {@link HttpStatus}.
      */
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -116,8 +116,10 @@ public class MarkController {
         if (student == null || subject == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Mark mark = Mark.builder().student(student).subject(subject).value(Integer.parseInt(value)).date(LocalDate.parse(date, formatter)).build();
-        if (id != null || id.isEmpty()) {
+        Mark mark = Mark.builder().student(student).
+                subject(subject).value(Integer.parseInt(value))
+                .date(LocalDate.parse(date, formatter).plusDays(1)).build();
+        if (id != null && !id.isEmpty()) {
             mark.setId(Integer.parseInt(id));
         }
         if (this.markService.save(mark)) {

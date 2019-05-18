@@ -1,123 +1,96 @@
 package project.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import project.model.Model;
 import project.model.Subject;
 import project.repository.ModelRepository;
 
-import javax.annotation.PostConstruct;
+
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
- * Implimentation of {@link Service} interface.
+ * Implementation of {@link Service} interface.
  *
  * @author Alexander Naumov.
  */
+@Slf4j
 public class SubjectService implements Service {
-
-    private List<Model> cache;
 
     @Autowired
     private ModelRepository repository;
 
-    @PostConstruct
-    private void init() {
-        cache = new ArrayList<>();
-        cache = getAll();
-    }
-
     @Override
     public List<Model> getAll() {
-        if (cache.isEmpty()) {
-            Optional optional = repository.getList(Subject.class);
-            if (optional.isPresent()) {
-                cache = new ArrayList<>((List<Model>) optional.get());
-            }
-
+        List<Model> models = null;
+        try {
+            Optional o = repository.getList(Subject.class);
+            models = (List<Model>) o.get();
+            log.info("IN getAll, all subjects were successfully loaded.");
+        } catch (Exception e) {
+            log.error("IN getAll, error while loading.");
         }
-        return cache;
+        return models;
     }
 
     public List<Model> getListById(Long[] ids) {
-        List<Model> models = new ArrayList<>();
-        if (!cache.isEmpty()) {
-            for (Long id : ids) {
-                Optional<Model> o = cache.stream().filter(s -> s.getId() == id).findAny();
-                if (o.isPresent()) {
-                    models.add(o.get());
-                } else {
-                    Optional op = repository.getById(Subject.class, id);
-                    if (op.isPresent()) models.add((Model) op.get());
-                }
-            }
-        } else {
-            models.addAll(Arrays.stream(ids).map(id -> repository.getById(Subject.class, id)).filter(Optional::isPresent).map(o -> (Subject) o.get()).collect(Collectors.toList()));
+        List<Model> models = null;
+        try {
+            Optional o = repository.getListById(Subject.class, ids);
+            models = (List<Model>) o.get();
+            log.info("IN getListById, subjects with ids:{} successfully loaded.", ids);
+        } catch (Exception e) {
+            log.error("IN getListById, subjects with ids:{} error while loading.", ids);
         }
         return models;
     }
 
     @Override
     public Model getById(Long id) {
-        if (!cache.isEmpty()) {
-            Optional<Model> o = cache.stream().filter(s -> s.getId() == id).findAny();
-            if (o.isPresent()) {
-                return o.get();
-            } else {
-                Optional<Model> op = repository.getById(Subject.class, id);
-                if (op.isPresent()) {
-                    cache.add(op.get());
-                }
-                return op.get();
-            }
-        } else {
-            Optional<Model> op = repository.getById(Subject.class, id);
-            if (op.isPresent()) {
-                cache.add(op.get());
-            }
-            return op.get();
+        Model model = null;
+        try {
+            Optional o = repository.getById(Subject.class, id);
+            model = (Model) o.get();
+            log.info("IN getById, subject with id:{} successfully loaded.", id);
+        } catch (Exception e) {
+            log.error("IN getById, subject with id:{} error while loading.", id);
         }
+        return model;
     }
 
     @Override
-    public boolean deleteById(Long id) {
-        if (!cache.isEmpty()) {
-            Optional<Boolean> o = cache.stream().filter(s -> s.getId() == id).map(s -> cache.remove(s)).findAny();
-            if (o.isPresent() && o.get()) {
-                try {
-                    repository.deleteByid(Subject.class, id);
-                } catch (Exception e) {
-                    return false;
-                }
-            }
+    public int deleteById(Long id) {
+        int res = 0;
+        try {
+           res = repository.deleteById(Subject.class, id);
+           log.info("IN deleteById, subject with id:{} successfully removed.", id);
+        } catch (Exception e) {
+            log.error("IN deleteById, subject with id:{} error while removing.", id);
         }
-        return true;
+        return res;
     }
 
     @Override
     public boolean save(Model model) {
         try {
             repository.saveOrUpdate(model);
+            log.info("IN save, subject:{} successfully loaded.", model);
         } catch (Exception e) {
+            log.error("IN save, subject:{} error while saving.", model);
             return false;
         }
         return true;
     }
 
     public Model getByName(String name) {
-        if (!cache.isEmpty()) {
-            Optional<Model> op = cache.stream().filter(s -> ((Subject) s).getName().equals(name)).findAny();
-            if (op.isPresent()) {
-                return op.get();
-            } else {
-                Optional<Model> o = repository.getSubjectByName(name);
-                o.ifPresent(model -> cache.add(model));
-                return o.get();
-            }
-        } else {
-            Optional<Model> o = repository.getSubjectByName(name);
-            o.ifPresent(model -> cache.add(model));
-            return o.get();
+        Model model = null;
+        try {
+            Optional o = repository.getSubjectByName(name);
+            model = (Model) o.get();
+            log.info("IN getByName, subject with name:{} successfully loaded.");
+        } catch (Exception e) {
+            log.error("IN getByName, subject with name:{} error while loading.");
         }
+        return model;
     }
 }

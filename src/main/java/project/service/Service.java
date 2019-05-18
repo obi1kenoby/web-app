@@ -30,9 +30,9 @@ public interface Service {
      * Delete {@link Model} from database and cache.
      *
      * @param id of {@link Model}.
-     * @return true if deleting was success else false.
+     * @return 1 if deleting was success else 0.
      */
-    boolean deleteById(Long id);
+    int deleteById(Long id);
 
     /**
      * Save model to database and cache.

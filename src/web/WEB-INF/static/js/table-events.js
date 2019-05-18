@@ -6,49 +6,85 @@ $(document).ready(function () {
     var s = $($('#subject')).find(":selected").val();
     var d = $($('#department')).find(":selected").val();
 
-    if (y === '') {
+    if (y == '') {
         y = new Date().getFullYear();
-        y.val(y);
+        $('#year').val(y);
+    }
+
+    if (!t.firstChild) {
+        createTable(d, y + '-0' + m + '-01', s);
     }
 
     var mon;
 
-    function clickLeft() {
+    function prev() {
+        var m = $($('#month')).find(":selected").val();
         if (m > 0 && m < 10) {
-            mon = '0' + m;
-            if (m === 1) {
-                m = 13;
+            if (m == 1) {
+                m = 12;
+                mon = m;
                 $('#year').val(--y);
+            } else {
+                m--;
+                mon = '0' + m;
             }
         } else {
             mon = m;
+            if (m == 10) {
+                m--;
+                mon = '0' + m;
+            } else {
+                m--;
+                mon = m;
+            }
         }
-        $('#month').val(--m);
+        $('#month').val(m);
         createTable(d, y + '-' + mon  + '-01', s);
     }
 
-    function clickRight() {
+    function next() {
+        var m = $($('#month')).find(":selected").val();
         if (m > 0 && m < 10) {
-            mon = '0' + m;
+            m++;
+            if (m == 10) {
+                mon = m;
+            } else {
+                mon = '0' + m;
+            }
         } else {
-            mon = m;
-            if (m === 12) {
-                m = 0;
+            if (m == 12) {
+                m = 1;
                 $('#year').val(++y);
+            } else {
+                m ++;
+                mon = m;
             }
         }
-        $('#month').val(++m);
+        $('#month').val(m);
         createTable(d, y + '-' + mon + '-01', s);
     }
 
     $("#left-container").click(function () {
         clearTable();
-        clickLeft();
+        prev();
     });
 
     $("#right-container").click(function () {
         clearTable();
-        clickRight();
+        next();
+    });
+
+    $("#ok").click(function() {
+        var m = $($('#month')).find(":selected").val();
+        var d = $($('#department')).find(":selected").val();
+        var s = $($('#subject')).find(":selected").val();
+        clearTable();
+        if (m > 0 && m < 10) {
+            mon = '0' + m;
+        } else {
+            mon = m;
+        }
+        createTable(d, y + '-' + mon + '-01', s);
     });
 
     function clearTable() {
