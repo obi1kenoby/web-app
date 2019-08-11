@@ -1,6 +1,6 @@
 package project.config;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,6 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-import java.beans.PropertyVetoException;
 import java.util.Properties;
 
 /**
@@ -32,22 +31,21 @@ public class DataConfig {
     private Environment env;
 
     @Bean
-    public DataSource dataSource() throws PropertyVetoException {
-        ComboPooledDataSource dataSource = new ComboPooledDataSource();
-        dataSource.setDriverClass(env.getProperty("db.driver"));
-        dataSource.setJdbcUrl(env.getProperty("db.url"));
-        dataSource.setUser(env.getProperty("db.username"));
+    public DataSource dataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName(env.getProperty("db.driver"));
+        dataSource.setUrl(env.getProperty("db.url"));
+        dataSource.setUsername(env.getProperty("db.username"));
         dataSource.setPassword(env.getProperty("db.password"));
-        dataSource.setMinPoolSize(Integer.parseInt(env.getProperty("c3p0.minPoolSize")));
-        dataSource.setMaxPoolSize(Integer.parseInt(env.getProperty("c3p0.maxPoolSize")));
-        dataSource.setMaxStatements(Integer.parseInt(env.getProperty("c3p0.maxStatements")));
-        dataSource.setCheckoutTimeout(Integer.parseInt(env.getProperty("c3p0.timeout")));
-        dataSource.setMaxIdleTime(Integer.parseInt(env.getProperty("c3p0.maxIdleTime")));
+        dataSource.setMaxTotal(Integer.parseInt(env.getProperty("dbcp.maxPoolSize")));
+        dataSource.setMaxWaitMillis(Long.parseLong(env.getProperty("dbcp.timeout")));
+        dataSource.setMaxIdle(Integer.parseInt(env.getProperty("dbcp.maxIdleTime")));
+        dataSource.setMaxOpenPreparedStatements(Integer.parseInt(env.getProperty("dbcp.maxStatements")));
         return dataSource;
     }
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory() throws PropertyVetoException {
+    public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("project.model");
@@ -63,6 +61,7 @@ public class DataConfig {
                 setProperty("hibernate.generate_statistics", env.getProperty("hibernate.generate_statistics"));
                 setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
                 setProperty("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
+                setProperty("hibernate.jdbc.time_zone", env.getProperty("hibernate.jdbc.time_zone"));
                 setProperty("hibernate.enable_lazy_load_no_trans", env.getProperty("hibernate.enable_lazy_load_no_trans"));
                 setProperty("hibernate.connection.characterEncoding", env.getProperty("hibernate.connection.characterEncoding"));
                 setProperty("hibernate.connection.useUnicode", env.getProperty("hibernate.connection.useUnicode"));

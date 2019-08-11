@@ -21,7 +21,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TES
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
 /**
- * Test class for {@link ModelRepository} class.
+ * Integration test class for {@link ModelRepository} class.
  *
  * @author Alexander Naumov.
  */
@@ -32,8 +32,7 @@ public class ModelRepositoryTest {
 
     @Autowired
     private ModelRepository repository;
-
-
+    
     @Test
     @Sql(scripts = "classpath:sql/tests/delete_student.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)

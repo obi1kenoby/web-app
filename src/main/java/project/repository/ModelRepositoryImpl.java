@@ -122,7 +122,7 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
                     session.delete(o.get());
                     res = 1;
                 } catch (Exception e) {
-                    return  0;
+                    return 0;
                 }
             }
         }
