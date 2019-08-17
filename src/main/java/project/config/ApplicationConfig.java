@@ -9,7 +9,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -25,7 +24,7 @@ import project.service.*;
  */
 @EnableWebMvc
 @Configuration
-@Import({DataConfig.class})
+@Import(value = {DataConfig.class, SecurityConfig.class})
 @ComponentScan("project")
 public class ApplicationConfig implements ApplicationContextAware, WebMvcConfigurer {
 
@@ -95,23 +94,23 @@ public class ApplicationConfig implements ApplicationContextAware, WebMvcConfigu
         return new ModelRepositoryImpl();
     }
 
-    @Bean(name = "departmentService")
-    public Service departmentService() {
+    @Bean
+    public DepartmentService departmentService() {
         return new DepartmentService();
     }
 
-    @Bean(name = "subjectService")
-    public Service subjectService() {
+    @Bean
+    public SubjectService subjectService() {
         return new SubjectService();
     }
 
-    @Bean(name = "studentService")
-    public Service studentService() {
+    @Bean
+    public StudentService studentService() {
         return new StudentService();
     }
 
-    @Bean(name = "markService")
-    public Service markService() {
+    @Bean
+    public MarkService markService() {
         return new MarkService();
     }
 }

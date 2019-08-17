@@ -6,11 +6,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.stereotype.Repository;
 import project.model.Model;
 import project.model.Role;
 import project.model.Student;
-import project.repository.ModelRepository;
 import project.repository.ModelRepositoryImpl;
 
 import java.time.LocalDate;
@@ -19,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**

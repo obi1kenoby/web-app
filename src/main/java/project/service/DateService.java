@@ -7,14 +7,15 @@ import java.util.List;
 /**
  * Service class that represents dates generator.
  *
- * @author Alexander Naumov
+ * @author Alexander Naumov.
  */
 public class DateService {
 
     /**
+     * Calculates and returns all weekdays within month.
      *
-     * @param current_date
-     * @return
+     * @param current_date represents date that in needed month.
+     * @return list of dates {@link List<LocalDate>}.
      */
     public List<LocalDate> month(LocalDate current_date){
         List<LocalDate> dates = new ArrayList<>();

@@ -7,11 +7,11 @@ import project.model.Model;
 import project.model.Subject;
 import project.repository.ModelRepository;
 
-
 import java.util.*;
 
+
 /**
- * Implementation of {@link Service} interface.
+ * Implementation of {@link Service} interface for departments.
  *
  * @author Alexander Naumov.
  */
@@ -21,6 +21,11 @@ public class DepartmentService implements Service {
     @Autowired
     private ModelRepository repository;
 
+    /**
+     * Implementation of {@link Service#getAll()}.
+     *
+     * @return list of departments {@link List<Department>}.
+     */
     @Override
     public List<Model> getAll() {
         List<Model> models = null;
@@ -34,6 +39,13 @@ public class DepartmentService implements Service {
         return models;
     }
 
+    /**
+     * Implementation of {@link Service#getListById(Long[])}.
+     *
+     * @param ids {@link Long[]} of departments {@link Department}.
+     * @return list of departments {@link List<Department>}.
+     */
+    @Override
     public List<Model> getListById(Long[] ids) {
         List<Model> models = null;
         try {
@@ -46,6 +58,12 @@ public class DepartmentService implements Service {
         return models;
     }
 
+    /**
+     * Implementation of {@link Service#getById(Long)}.
+     *
+     * @param id of {@link Department}.
+     * @return instance of {@link Department}.
+     */
     @Override
     public Model getById(Long id) {
         Model model = null;
@@ -60,6 +78,13 @@ public class DepartmentService implements Service {
         return model;
     }
 
+    /**
+     * Save department {@link Department} with subjects {@link Subject}.
+     *
+     * @param department for saving.
+     * @param subjects of department.
+     * @return boolean result.
+     */
     public boolean saveWithSubject(Department department, List<Model> subjects) {
         try {
             subjects.forEach(m -> {
@@ -74,6 +99,12 @@ public class DepartmentService implements Service {
         return false;
     }
 
+    /**
+     * Implementation of {@link Service#save(Model)}.
+     *
+     * @param model {@link Department}.
+     * @return boolean result.
+     */
     @Override
     public boolean save(Model model) {
         try {
@@ -86,6 +117,12 @@ public class DepartmentService implements Service {
         return false;
     }
 
+    /**
+     * Implementation of {@link Service#deleteById(Long)}.
+     *
+     * @param id of {@link Department}.
+     * @return int result.
+     */
     @Override
     public int deleteById(Long id) {
         int res = 0;
@@ -98,6 +135,12 @@ public class DepartmentService implements Service {
         return res;
     }
 
+    /**
+     * Get instance of {@link Department} by their name.
+     *
+     * @param name of department.
+     * @return instance of {@link Department}.
+     */
     public Model getByName(String name) {
         Model model = null;
         try {

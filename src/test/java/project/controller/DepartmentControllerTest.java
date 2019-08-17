@@ -92,7 +92,7 @@ public class DepartmentControllerTest {
                 createSubject(ids[1], "Subject_2"));
 
         when(subjectService.getListById(ids)).thenReturn(subjects);
-        doNothing().when(departmentService).saveWithSubject(department, subjects);
+        when(departmentService.saveWithSubject(department, subjects)).thenReturn(true);
         when((departmentService).getByName("DepName")).thenReturn(department);
 
 

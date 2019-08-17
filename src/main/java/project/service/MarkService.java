@@ -7,13 +7,14 @@ import project.model.Model;
 import project.repository.ModelRepository;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * Implementation of {@link Service} interface.
+ * Implementation of {@link Service} interface for mark {@link Mark}.
  *
  * @author Alexander Naumov.
  */
@@ -23,6 +24,11 @@ public class MarkService implements Service {
     @Autowired
     private ModelRepository repository;
 
+    /**
+     * Implementation of {@link Service#getAll()}.
+     *
+     * @return list of marks {@link List<Mark>}.
+     */
     @Override
     public List<Model> getAll() {
         Optional o;
@@ -37,12 +43,36 @@ public class MarkService implements Service {
         return models;
     }
 
+    /**
+     * Implementation of {@link Service#getListById(Long[])}.
+     *
+     * @param ids of marks {@link Mark}.
+     * @return list of marks {@link List<Mark>}.
+     */
+    @Override
+    public List<Model> getListById(Long[] ids) {
+        List<Model> models = null;
+        try {
+            Optional o = repository.getListById(Mark.class, ids);
+            models = (List<Model>) o .get();
+            log.info("IN getListById, all marks with ids: {}, were successfully loaded.", Arrays.toString(ids));
+        } catch (Exception e) {
+            log.error("IN getListById, error while loading marks with ids: {}", Arrays.toString(ids));
+        }
+        return models;
+    }
+
+    /**
+     * Implementation of {@link Service#getById(Long)}.
+     *
+     * @param id of mark {@link Mark}.
+     * @return unique mark {@link Mark}.
+     */
     @Override
     public Model getById(Long id) {
-        Optional o;
         Model model = null;
         try {
-            o = repository.getById(Mark.class, id);
+            Optional o = repository.getById(Mark.class, id);
             model = (Model) o.get();
             log.info("IN getById, mark with id: {} successfully loaded.", id);
         } catch (Exception e) {
@@ -51,6 +81,12 @@ public class MarkService implements Service {
         return model;
     }
 
+    /**
+     * Implementation of {@link Service#deleteById(Long)}.
+     *
+     * @param id of mark {@link Model}.
+     * @return boolean result of deleting.
+     */
     @Override
     public int deleteById(Long id) {
         int res = 0;
@@ -63,6 +99,12 @@ public class MarkService implements Service {
         return res;
     }
 
+    /**
+     * Implementation of {@link Service#save(Model)}.
+     *
+     * @param model for saving {@link Mark}.
+     * @return boolean result of saving.
+     */
     @Override
     public boolean save(Model model) {
         try {
@@ -75,6 +117,13 @@ public class MarkService implements Service {
         return true;
     }
 
+    /**
+     * Get list of all marks {@link Mark} whose date falls within the month range which is
+     * formed by the specified date.
+     *
+     * @param date of month {@link LocalDate}.
+     * @return list of marks {@link List<Mark>}.
+     */
     public List<Model> getMarksByDateRange(LocalDate date) {
         LocalDate start = date.withDayOfMonth(1);
         LocalDate end = date.withDayOfMonth(date.lengthOfMonth());

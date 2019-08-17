@@ -6,11 +6,11 @@ import project.model.Model;
 import project.model.Subject;
 import project.repository.ModelRepository;
 
-
 import java.util.*;
 
+
 /**
- * Implementation of {@link Service} interface.
+ * Implementation of {@link Service} interface for subject {@link Subject}.
  *
  * @author Alexander Naumov.
  */
@@ -20,6 +20,11 @@ public class SubjectService implements Service {
     @Autowired
     private ModelRepository repository;
 
+    /**
+     * Implementation of {@link Service#getAll}
+     *
+     * @return list of subjects {@link List<Subject>}.
+     */
     @Override
     public List<Model> getAll() {
         List<Model> models = null;
@@ -33,6 +38,12 @@ public class SubjectService implements Service {
         return models;
     }
 
+    /**
+     * Implementation of  {@link Service#getListById(Long[])}.
+     *
+     * @param ids of subjects {@link Subject}.
+     * @return list of subjects {@link List<Subject>}.
+     */
     public List<Model> getListById(Long[] ids) {
         List<Model> models = null;
         try {
@@ -45,6 +56,12 @@ public class SubjectService implements Service {
         return models;
     }
 
+    /**
+     * Implementation of {@link Service#getById(Long)}.
+     *
+     * @param id of subject {@link Subject}.
+     * @return unique subject {@link Subject}.
+     */
     @Override
     public Model getById(Long id) {
         Model model = null;
@@ -58,6 +75,12 @@ public class SubjectService implements Service {
         return model;
     }
 
+    /**
+     * Implementation of {@link Service#deleteById(Long)}.
+     *
+     * @param id of {@link Subject}.
+     * @return int result.
+     */
     @Override
     public int deleteById(Long id) {
         int res = 0;
@@ -70,6 +93,12 @@ public class SubjectService implements Service {
         return res;
     }
 
+    /**
+     * Implementation of {@link Service#save(Model)}.
+     *
+     * @param model for saving {@link Subject}.
+     * @return boolean result.
+     */
     @Override
     public boolean save(Model model) {
         try {
@@ -82,14 +111,20 @@ public class SubjectService implements Service {
         return true;
     }
 
+    /**
+     * Get instance of subject {@link Subject} by their name.
+     *
+     * @param name of subject {@link Subject}.
+     * @return instance of model {@link Subject}.
+     */
     public Model getByName(String name) {
         Model model = null;
         try {
             Optional o = repository.getSubjectByName(name);
             model = (Model) o.get();
-            log.info("IN getByName, subject with name:{} successfully loaded.");
+            log.info("IN getByName, subject with name:{} successfully loaded.", name);
         } catch (Exception e) {
-            log.error("IN getByName, subject with name:{} error while loading.");
+            log.error("IN getByName, subject with name:{} error while loading.", name);
         }
         return model;
     }

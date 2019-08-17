@@ -1,5 +1,7 @@
 package project.repository;
 
+import org.hibernate.NonUniqueResultException;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,25 @@ public class ModelRepositoryTest {
 
     @Autowired
     private ModelRepository repository;
-    
+
+    @Test
+    public void getDepByNameNonexistentDepTest() {
+        final String wrongName = "NON EXISTENT NAME";
+        Optional optional = repository.getDepByName(wrongName);
+        if (optional.isPresent()) {
+            fail("optional must be empty!");
+        }
+    }
+
+    @Test(expected = NonUniqueResultException.class)
+    @Sql(scripts = "classpath:sql/tests/add_identical_departments.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
+    public void getDepByNameMultipleResult() {
+        final String name = "NON UNIQUE NAME";
+        Optional optional = repository.getDepByName(name);
+        Assert.assertTrue(optional.isEmpty());
+    }
+
     @Test
     @Sql(scripts = "classpath:sql/tests/delete_student.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
@@ -59,7 +79,8 @@ public class ModelRepositoryTest {
     @Sql(scripts = "classpath:sql/tests/delete_student.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void deleteStudentByIdTest() {
-        repository.deleteById(Student.class, 1L);
+        int result = repository.deleteById(Student.class, 1L);
+        Assert.assertEquals(1, result);
         Optional optional = repository.getById(Student.class, 1L);
         if (optional.isPresent()) {
             fail("optional must be empty!");
@@ -75,6 +96,18 @@ public class ModelRepositoryTest {
         if (optional.isPresent()) {
             fail("optional must be empty!");
         }
+    }
+
+    @Test
+    public void deleteNonexistentDepTest() {
+        int result = repository.deleteById(Department.class, 4L);
+        Assert.assertEquals(0, result);
+    }
+
+    @Test
+    public void deleteNonexistentStudTest() {
+        int result = repository.deleteById(Student.class, 4L);
+        Assert.assertEquals(0, result);
     }
 
     @Test

@@ -6,11 +6,11 @@ import project.model.Model;
 import project.model.Student;
 import project.repository.ModelRepository;
 
-
 import java.util.*;
 
+
 /**
- * Implementation of {@link Service} interface.
+ * Implementation of {@link Service} interface for student {@link Student}.
  *
  * @author Alexander Naumov.
  */
@@ -21,19 +21,49 @@ public class StudentService implements Service {
     private ModelRepository repository;
 
 
+    /**
+     * Implementation of {@link Service#getAll()}.
+     *
+     * @return list of students {@link Student}.
+     */
     @Override
     public List<Model> getAll() {
         List<Model> models = null;
         try {
             Optional o = repository.getList(Student.class);
             models = (List<Model>) o.get();
-            log.info("IN getAll, all " + models.size() + " students were successfully loaded.");
+            log.info("IN getAll, all {} students were successfully loaded.", models.size());
         } catch (Exception e) {
             log.error("IN getAll, error while loading.");
         }
         return models;
     }
 
+    /**
+     * Implementation of {@link Service#getListById(Long[])}.
+     *
+     * @param ids of students {@link Student}.
+     * @return list of students {@link Student}.
+     */
+    @Override
+    public List<Model> getListById(Long[] ids) {
+        List<Model> models = null;
+        try {
+            Optional o = repository.getListById(Student.class, ids);
+            models = (List<Model>) o.get();
+            log.info("IN getListById, students with ids: {}, were successfully loaded.", Arrays.toString(ids));
+        } catch (Exception e) {
+            log.error("IN getListById, error while loading students with ids: {}", Arrays.toString(ids));
+        }
+        return models;
+    }
+
+    /**
+     * Implementation of {@link Service#getById(Long)}.
+     *
+     * @param id of student {@link Student}.
+     * @return unique student {@link Student}.
+     */
     @Override
     public Model getById(Long id) {
         Model model = null;
@@ -47,6 +77,12 @@ public class StudentService implements Service {
         return model;
     }
 
+    /**
+     * Implementation of {@link Service#save(Model)}.
+     *
+     * @param model student for saving {@link Student}.
+     * @return boolean result of saving.
+     */
     @Override
     public boolean save(Model model) {
         try {
@@ -59,6 +95,12 @@ public class StudentService implements Service {
         return false;
     }
 
+    /**
+     * Implementation of {@link Service#deleteById(Long)}.
+     *
+     * @param id of student {@link Student}.
+     * @return boolean result of deleting.
+     */
     @Override
     public int deleteById(Long id) {
         int res = 0;

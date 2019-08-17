@@ -14,9 +14,17 @@ public interface Service {
     /**
      * Get all {@link Model} from cache or database.
      *
-     * @return list of {@link Model}.
+     * @return list of models {@link List<Model>}.
      */
     List<Model> getAll();
+
+    /**
+     * Get list of {@link Model} by their ids.
+     *
+     * @param ids of {@link Model}.
+     * @return list of models {@link List<Model>}.
+     */
+    List<Model> getListById(Long[] ids);
 
     /**
      * Get {@link Model} from cache or database.

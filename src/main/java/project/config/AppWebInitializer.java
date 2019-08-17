@@ -3,6 +3,7 @@ package project.config;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.ServletContext;
@@ -22,6 +23,9 @@ public class AppWebInitializer implements WebApplicationInitializer {
 
         context.setConfigLocation("project.config");
         container.addListener(new ContextLoaderListener(context));
+
+        container.addFilter("springSecurityFilterChain", new DelegatingFilterProxy("springSecurityFilterChain"))
+                .addMappingForUrlPatterns(null, false, "/*");
 
         ServletRegistration.Dynamic dispatcher = container
                 .addServlet("dispatcher", new DispatcherServlet(context));

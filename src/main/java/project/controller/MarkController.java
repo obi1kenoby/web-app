@@ -118,7 +118,7 @@ public class MarkController {
         }
         Mark mark = Mark.builder().student(student).
                 subject(subject).value(Integer.parseInt(value))
-                .date(LocalDate.parse(date, formatter).plusDays(1)).build();
+                .date(LocalDate.parse(date, formatter)).build();
         if (id != null && !id.isEmpty()) {
             mark.setId(Integer.parseInt(id));
         }
