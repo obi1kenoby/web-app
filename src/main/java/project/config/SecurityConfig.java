@@ -1,44 +1,57 @@
 package project.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import project.security.StudentDetailService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 
 /**
  * Security configuration of application.
  *
  * @author Alexander Naumov.
  */
-//TODO: configure application security.
-//@Configuration
-//@EnableWebSecurity
+@Configuration
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("admin").password("admin").roles("USER");
-    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-//        http.formLogin()
-//                .loginPage("/login")
-//                .loginProcessingUrl("/perform_login")
-//                .defaultSuccessUrl("/home",true)
-//                .failureUrl("/login?error=true");
-
+        http.csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/home", "/contacts").hasRole("USER")
+                .antMatchers("/admin").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/contacts.html")
+                .logoutUrl("/logout")
+                .and()
+                .httpBasic();
     }
 
-
+    /**
+     * Temp solution.
+     */
+    @Bean
+    public UserDetailsService userDetailsService() {
+        User.UserBuilder users = User.withDefaultPasswordEncoder();
+        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+        manager.createUser(users.username("user").password("123").roles("USER").build());
+        manager.createUser(users.username("admin").password("123").roles("ADMIN").build());
+        return manager;
+    }
 
     @Bean
-    public StudentDetailService studentDetailService() {
-        return new StudentDetailService();
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
+
 }
