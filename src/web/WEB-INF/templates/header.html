@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="utf-8"/>
     <title>Header</title>
     <link rel="shortcut icon" th:href="@{/image/logo.png}"/>
     <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet"
-          th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"/>
 </head>
 <body>
 
-<div th:fragment="copy">
+<div th:fragment="header">
     <div id="head-container">
         <div id="left">
             <div id="logo">
@@ -39,17 +38,13 @@
                     Contacts
                 </button>
             </div>
-            <span id="search-box">
-            <input id="search" type="text">
-            <img id="ico" th:src="@{/image/search.png}" width="16" height="16" alt="search">
-        </span>
         </div>
         <div id="right">
             <div class="head-box" id="admin">
-                <button id="admin-btn" class="box-btn">Admin</button>
+                <button sec:authorize="hasAuthority('ADMIN')" id="admin-btn" class="box-btn">Admin</button>
             </div>
             <div class="head-box" id="login">
-                <button id="login-btn" class="box-btn">Login</button>
+                <button onclick="location.href='/logout'" sec:authorize="isAuthenticated()" id="logout-btn" class="box-btn">Logout</button>
             </div>
         </div>
     </div>

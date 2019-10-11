@@ -54,4 +54,14 @@ public class RedirectController {
     public String table() {
         return "table";
     }
+
+    /**
+     * Redirect to login URL.
+     *
+     * @return login page.
+     */
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
+    }
 }

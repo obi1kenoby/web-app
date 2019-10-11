@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Contacts</title>
@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<div th:insert="~{header :: copy}"></div>
+<div th:replace="header.html :: header"></div>
 
 <div id="main">
     <div id="board">

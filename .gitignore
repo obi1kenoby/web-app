@@ -1,6 +1,7 @@
 /.idea
 /target
 /.gradle
+/tomcat.8080
 /build
 /classes
 *.iml

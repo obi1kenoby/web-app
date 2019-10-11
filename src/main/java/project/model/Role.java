@@ -1,7 +1,7 @@
 package project.model;
 
 /**
- * Simple JavaBean object that represents role of {@link Student}
+ * Simple JavaBean object that represents role of {@link Student}.
  *
  * @author Alexander Naumov.
  */
@@ -14,5 +14,5 @@ public enum Role {
     /**
      * Access rights for application admin.
      */
-    ROLE
+    ADMIN
 }

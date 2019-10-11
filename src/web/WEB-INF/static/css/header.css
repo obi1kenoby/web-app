@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    padding: 0;
     overflow-x: hidden;
 }
 
@@ -13,7 +14,7 @@ input:focus {
 
 #head-container {
     width: 100%;
-    height: 80px;
+    height: 60px;
     background-color: #66bb6a;
     display: flex;
     align-items: center;
@@ -80,137 +81,4 @@ input:focus {
 
 .dropdown-content div:hover {
     background-color: #a5d6a7;
-}
-
-#search-box {
-    margin-left: 10px;
-    right: 30px;
-    background-color: #ffffff;
-    display: flex;
-    align-items: center;
-}
-
-#search {
-    margin-left: 10px;
-    font-size: 16px;
-    width: 15em;
-    height: 20px;
-    border-radius: 3px;
-    border: none;
-}
-
-#ico {
-    margin-left: 3px;
-    margin-right: 3px;
-}
-
-#login-modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-#login-content {
-    background-color: #ffffff;
-    margin: 15% auto;
-    width: 300px;
-    height: 220px;
-    display: flex;
-    flex-direction: column;
-}
-
-#login-head {
-    width: 100%;
-    height: 38px;
-    background-color: #66bb6a;
-    box-sizing: border-box;
-    position: relative;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #ffffff;
-    font-family: sans-serif;
-    font-weight: bold;
-    background-color: #66bb6a;
-    font-size: 14px;
-}
-
-.close {
-    position: absolute;
-    padding-right: 6px;
-    padding-left: 6px;
-    color: #ffffff;
-    right: 0;
-    top: 0;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover {
-    background-color: #a5d6a7;
-}
-
-#login-body {
-    display: flex;
-    flex-direction: column;
-    top: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.login-row {
-    width: 100%;
-}
-
-#input-row {
-    height: 70%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#button-row {
-    height: 30%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#login-submit {
-    color: #ffffff;
-    font-weight: bold;
-    background-color: #66bb6a;
-    border: none;
-    width: 100px;
-    height: 30px;
-    outline: none;
-    cursor: pointer;
-}
-
-#login-submit:hover {
-    background-color: #a5d6a7;
-}
-
-.input-box {
-    width: 80%;
-    margin-bottom: 5px;
-    margin-top: 20px;
-    font-size: 16px;
-    padding: 10px;
-    border: 1px solid #bdbdbd;
-}
-
-.input-box:focus {
-    -moz-box-shadow: 0 0 16px 3px #66bb6a;
-    -webkit-box-shadow: 0 0 16px 3px #66bb6a;
-    box-shadow: 0 0 16px 3px #66bb6a;
 }

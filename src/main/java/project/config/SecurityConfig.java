@@ -1,16 +1,16 @@
 package project.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import project.security.StudentDetailService;
 
 
 /**
@@ -22,36 +22,42 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/home", "/contacts").hasRole("USER")
-                .antMatchers("/admin").hasRole("ADMIN")
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    @Override
+    protected void configure(final HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/css/**", "/js/**", "/image/**").permitAll()
+                .antMatchers("/contacts").access("hasAuthority('USER')")
+                .antMatchers("/api/**").access("hasAuthority('USER')")
+                .antMatchers("/admin/**").access("hasAuthority('ADMIN')")
                 .anyRequest().authenticated()
                 .and()
-                .logout()
-                .logoutSuccessUrl("/contacts.html")
-                .logoutUrl("/logout")
+                .formLogin()
+                .loginPage("/login").loginProcessingUrl("/perform_login").permitAll()
+                .defaultSuccessUrl("/contacts", true)
+                .failureUrl("/login.html?error=true")
                 .and()
-                .httpBasic();
+                .logout().logoutSuccessUrl("/login")
+                .and()
+                .csrf()
+                .disable();
     }
 
-    /**
-     * Temp solution.
-     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Bean
     public UserDetailsService userDetailsService() {
-        User.UserBuilder users = User.withDefaultPasswordEncoder();
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(users.username("user").password("123").roles("USER").build());
-        manager.createUser(users.username("admin").password("123").roles("ADMIN").build());
-        return manager;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+        return new StudentDetailService();
     }
 
 }

@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
- * Basic abstact class that represents application entity.
+ * Basic abstract class that represents application entity.
  *
  * @author Alexander Naumov.
  */
