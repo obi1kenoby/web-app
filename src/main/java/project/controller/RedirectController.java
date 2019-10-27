@@ -14,16 +14,6 @@ import project.model.Student;
 public class RedirectController {
 
     /**
-     * Redirect to home URL.
-     *
-     * @return homepage name.
-     */
-    @GetMapping("/")
-    public String homePage() {
-        return "home";
-    }
-
-    /**
      * Redirect to admin URL.
      *
      * @return admin page.

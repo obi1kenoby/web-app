@@ -7,8 +7,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 
+import org.springframework.jdbc.datasource.init.DatabasePopulator;
+import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -41,6 +46,7 @@ public class DataConfig {
         dataSource.setMaxWaitMillis(Long.parseLong(env.getProperty("dbcp.timeout")));
         dataSource.setMaxIdle(Integer.parseInt(env.getProperty("dbcp.maxIdleTime")));
         dataSource.setMaxOpenPreparedStatements(Integer.parseInt(env.getProperty("dbcp.maxStatements")));
+        DatabasePopulatorUtils.execute(dbInitializer(), dataSource);
         return dataSource;
     }
 
@@ -51,6 +57,15 @@ public class DataConfig {
         sessionFactory.setPackagesToScan("project.model");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
+    }
+
+    private DatabasePopulator dbInitializer() {
+        ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
+        resourceDatabasePopulator.setContinueOnError(true);
+        Resource createSchema = new ClassPathResource("sql/build/schema.sql");
+        Resource initData = new ClassPathResource("sql/build/data.sql");
+        resourceDatabasePopulator.addScripts(createSchema, initData);
+        return resourceDatabasePopulator;
     }
 
     private Properties hibernateProperties() {

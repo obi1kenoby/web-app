@@ -35,6 +35,12 @@
         <commons.io.version>2.5</commons.io.version>
         <commons-fileupload.version>1.3.3</commons-fileupload.version>
         <jaxb.version>2.3.1</jaxb.version>
+        <!-- sql plugin params -->
+        <db.driver>org.h2.Driver</db.driver>
+        <db.url>jdbc:h2:file:/home/alex/data/testdb</db.url>
+        <db.user>sa</db.user>
+        <db.password>sa</db.password>
+        <db.script>src/main/resources/sql/tests/delete_all.sql</db.script>
     </properties>
 
     <dependencies>
@@ -321,6 +327,39 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.2.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sql-maven-plugin</artifactId>
+                <version>1.5</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>${h2.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <driver>${db.driver}</driver>
+                    <username>${db.user}</username>
+                    <password>${db.password}</password>
+                    <url>${db.url}</url>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>prepare-tests</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <autocommit>true</autocommit>
+                            <srcFiles>
+                                <srcFile>${db.script}</srcFile>
+                            </srcFiles>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

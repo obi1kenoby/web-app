@@ -17,19 +17,19 @@
                 <img th:src="@{/image/logo.png}" width="36" height="36" alt="logo">
             </div>
             <div id="dep" class="head-box">
-                <button id="dep-btn" class="box-btn">
+                <button id="dep-btn" class="box-btn" sec:authorize="isAuthenticated()">
                     Departments<i class="fa fa-caret-down"></i>
                 </button>
                 <div id="deps" class="dropdown-content"></div>
             </div>
             <div id="sub" class="head-box">
-                <button id="sub-btn" class="box-btn">
+                <button id="sub-btn" class="box-btn" sec:authorize="isAuthenticated()">
                     Subjects<i class="fa fa-caret-down"></i>
                 </button>
                 <div id="subs" class="dropdown-content"></div>
             </div>
             <div id="values" class="head-box">
-                <button id="values-btn" class="box-btn">
+                <button id="values-btn" class="box-btn" sec:authorize="isAuthenticated()">
                     Values
                 </button>
             </div>

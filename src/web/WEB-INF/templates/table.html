@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <title>Rating</title>
@@ -12,35 +11,35 @@
 </head>
 <body>
 
-    <div th:insert="~{header :: copy}"></div>
+<div th:replace="header.html :: header"></div>
 
-    <script th:src="@{/js/header.js}"></script>
-
-    <div id="main-container">
-        <div id="left-container">
-            <img id="left-clicker" src="/image/left.png" alt="left">
-        </div>
-        <div id="table-container">
-            <table id="table"></table>
-        </div>
-        <div id="right-container">
-            <img id="right-clicker" src="/image/right.png" alt="right">
-        </div>
+<div id="main-container">
+    <div id="left-container">
+        <img id="left-clicker" src="/image/left.png" alt="left">
     </div>
-
-    <div id="menu-container">
-        <select id="month"></select>
-        <input id="year" type="text" maxlength="4">
-        <select id="department"></select>
-        <select id="subject"></select>
-        <button id="ok">Ok</button>
+    <div id="table-container">
+        <table id="table"></table>
     </div>
+    <div id="right-container">
+        <img id="right-clicker" src="/image/right.png" alt="right">
+    </div>
+</div>
 
-    <script th:src="@{/js/table.js}"></script>
+<div id="menu-container">
+    <select id="month"></select>
+    <input id="year" type="text" maxlength="4">
+    <select id="department"></select>
+    <select id="subject"></select>
+    <button id="ok">Ok</button>
+</div>
 
-    <script th:src="@{/js/table-menu.js}"></script>
+<script th:src="@{/js/header.js}"></script>
 
-    <script th:src="@{/js/table-events.js}"></script>
+<script th:src="@{/js/table.js}"></script>
+
+<script th:src="@{/js/table-menu.js}"></script>
+
+<script th:src="@{/js/table-events.js}"></script>
 
 </body>
 </html>

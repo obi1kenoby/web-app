@@ -292,10 +292,10 @@ public class ModelRepositoryTest {
     @Sql(scripts = "classpath:sql/tests/add_student.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void getByIdTest() {
-        Optional optional = repository.getById(Department.class, 1L);
+        Optional optional = repository.getById(Department.class, ((Model)repository.getDepByName("DEPARTMENT").get()).getId());
         if (optional.isPresent()) {
             Department department = (Department) optional.get();
-            assertEquals(1L, department.getId());
+            assertNotNull(department.getId());
         } else {
             fail("optional can't be empty!");
         }
