@@ -41,7 +41,7 @@
         </div>
         <div id="right">
             <div class="head-box" id="admin">
-                <button sec:authorize="hasAuthority('ADMIN')" id="admin-btn" class="box-btn">Admin</button>
+                <button onclick="location.href='/admin'" sec:authorize="hasAuthority('ADMIN')" id="admin-btn" class="box-btn">Admin</button>
             </div>
             <div class="head-box" id="login">
                 <button onclick="location.href='/logout'" sec:authorize="isAuthenticated()" id="logout-btn" class="box-btn">Logout</button>
