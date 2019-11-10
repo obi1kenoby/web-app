@@ -20,8 +20,8 @@ public class AppWebInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext container) {
         AnnotationConfigWebApplicationContext context
                 = new AnnotationConfigWebApplicationContext();
+        context.register(ApplicationConfig.class);
 
-        context.setConfigLocation("project.config");
         container.addListener(new ContextLoaderListener(context));
 
         container.addFilter("springSecurityFilterChain", new DelegatingFilterProxy("springSecurityFilterChain"))

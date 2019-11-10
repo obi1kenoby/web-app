@@ -26,9 +26,7 @@
 }
 
 .board-row:hover {
-    -moz-box-shadow: 0 0 16px 3px #66bb6a;
-    -webkit-box-shadow: 0 0 16px 3px #66bb6a;
-    box-shadow: 0 0 16px 3px #66bb6a;
+    background-color: #a5d6a7;
 }
 
 #vk, #mail, #git {

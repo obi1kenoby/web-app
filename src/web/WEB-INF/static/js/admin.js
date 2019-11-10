@@ -70,24 +70,32 @@ $(".control-btn").click(function () {
 });
 
 function clear() {
-    console.log('CLEAR');
-    $('img.ok').remove();
+    var input = $('#input-entity');
+    if (input.attr('disabled') === 'true') {
+        input.attr('disabled', 'false');
+    }
 }
 
 $(".close").click(function () {
-    $('#common-modal').css('display', 'none');
-    $('#student-modal').css('display', 'none');
     clear();
+    var item = $('#common-modal').css('display');
+    if (item != 'none') {
+        item.css('none');
+    } else {
+        $('#student-modal').css('display', 'none');
+    }
 });
 
 $(document).click(function (e) {
     if (!$(e.target).closest('.control-btn, #common-content').length) {
+        clear();
         $('#common-modal').css('display', 'none');
     }
 });
 
 $(document).click(function (e) {
     if (!$(e.target).closest('.control-btn, #student-content').length) {
+        clear();
         $('#student-modal').css('display', 'none');
     }
 });
@@ -123,11 +131,8 @@ $('.common-li').click(function () {
                ids.splice(index, 1);
            }
        }
-   } else {
-       if (event.toUpperCase() === "EDIT") {
+   } else if (event.toUpperCase() === "EDIT") {
            console.log("EDIT EVENT");
-           //TODO: open edit.
-       }
    }
 });
 
