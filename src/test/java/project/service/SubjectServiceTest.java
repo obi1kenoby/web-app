@@ -1,11 +1,10 @@
 package project.service;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import project.model.Model;
 import project.model.Subject;
 import project.repository.ModelRepositoryImpl;
@@ -16,6 +15,10 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
@@ -23,7 +26,7 @@ import static org.mockito.Mockito.*;
  *
  * @author Alexander Naumov.
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SubjectServiceTest {
 
     private static Random random = new Random();
@@ -41,10 +44,10 @@ public class SubjectServiceTest {
 
         List<Model> subjects = service.getAll();
 
-        Assert.assertNotNull(subjects);
-        Assert.assertTrue(!subjects.isEmpty());
-        subjects.forEach(s -> Assert.assertTrue(s instanceof Subject));
-        Assert.assertArrayEquals(list.toArray(), subjects.toArray());
+        assertNotNull(subjects);
+        assertTrue(!subjects.isEmpty());
+        subjects.forEach(s -> assertTrue(s instanceof Subject));
+        assertArrayEquals(list.toArray(), subjects.toArray());
         verify(repository, only()).getList(Subject.class);
         verifyNoMoreInteractions(repository);
     }
@@ -57,10 +60,10 @@ public class SubjectServiceTest {
 
         List<Model> subjects = service.getListById(ids);
 
-        Assert.assertNotNull(subjects);
-        Assert.assertTrue(!subjects.isEmpty());
-        subjects.forEach(s -> Assert.assertTrue(s instanceof Subject));
-        Assert.assertArrayEquals(list.toArray(), subjects.toArray());
+        assertNotNull(subjects);
+        assertTrue(!subjects.isEmpty());
+        subjects.forEach(s -> assertTrue(s instanceof Subject));
+        assertArrayEquals(list.toArray(), subjects.toArray());
         verify(repository, only()).getListById(Subject.class, ids);
         verifyNoMoreInteractions(repository);
     }
@@ -71,9 +74,9 @@ public class SubjectServiceTest {
 
         Model subject = service.getById(100L);
 
-        Assert.assertNotNull(subject);
-        Assert.assertTrue(subject instanceof Subject);
-        Assert.assertEquals(subject.getId(), 100L);
+        assertNotNull(subject);
+        assertTrue(subject instanceof Subject);
+        assertEquals(subject.getId(), 100L);
         verify(repository, only()).getById(Subject.class, 100L);
         verifyNoMoreInteractions(repository);
     }
@@ -84,7 +87,7 @@ public class SubjectServiceTest {
 
         int result = service.deleteById(100L);
 
-        Assert.assertTrue(result > 0);
+        assertTrue(result > 0);
         verify(repository, only()).deleteById(Subject.class, 100L);
         verifyNoMoreInteractions(repository);
     }
@@ -96,7 +99,7 @@ public class SubjectServiceTest {
 
         boolean result = service.save(subject);
 
-        Assert.assertTrue(result);
+        assertTrue(result);
         verify(repository, only()).saveOrUpdate(subject);
         verifyNoMoreInteractions(repository);
     }
@@ -110,9 +113,9 @@ public class SubjectServiceTest {
 
         Model result = service.getByName(name);
 
-        Assert.assertNotNull(result);
-        Assert.assertTrue(result instanceof Subject);
-        Assert.assertEquals(((Subject) result).getName(), name);
+        assertNotNull(result);
+        assertTrue(result instanceof Subject);
+        assertEquals(((Subject) result).getName(), name);
         verify(repository, only()).getSubjectByName(name);
         verifyNoMoreInteractions(repository);
     }

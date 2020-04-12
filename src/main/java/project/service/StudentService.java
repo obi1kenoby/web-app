@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import project.model.Model;
 import project.model.Student;
 import project.repository.ModelRepository;
+import project.repository.ModelRepositoryImpl;
 
 import java.util.*;
 
@@ -30,9 +31,11 @@ public class StudentService implements Service {
     public List<Model> getAll() {
         List<Model> models = null;
         try {
-            Optional o = repository.getList(Student.class);
-            models = (List<Model>) o.get();
-            log.info("IN getAll, all {} students were successfully loaded.", models.size());
+            Optional<List<Model>> o = repository.getList(Student.class);
+            if (o.isPresent()) {
+                models = o.get();
+                log.info("IN getAll, all {} students were successfully loaded.", models.size());
+            }
         } catch (Exception e) {
             log.error("IN getAll, error while loading.");
         }
@@ -49,9 +52,11 @@ public class StudentService implements Service {
     public List<Model> getListById(Long[] ids) {
         List<Model> models = null;
         try {
-            Optional o = repository.getListById(Student.class, ids);
-            models = (List<Model>) o.get();
-            log.info("IN getListById, students with ids: {}, were successfully loaded.", Arrays.toString(ids));
+            Optional<List<Model>> o = repository.getListById(Student.class, ids);
+            if (o.isPresent()) {
+                models = o.get();
+                log.info("IN getListById, students with ids: {}, were successfully loaded.", Arrays.toString(ids));
+            }
         } catch (Exception e) {
             log.error("IN getListById, error while loading students with ids: {}", Arrays.toString(ids));
         }
@@ -68,9 +73,11 @@ public class StudentService implements Service {
     public Model getById(Long id) {
         Model model = null;
         try {
-            Optional o = repository.getById(Student.class, id);
-            model = (Model) o.get();
-            log.info("IN getById, student with id: {} was successfully loaded.", id);
+            Optional<Model> o = repository.getById(Student.class, id);
+            if (o.isPresent()) {
+                model = o.get();
+                log.info("IN getById, student with id: {} was successfully loaded.", id);
+            }
         } catch (Exception e) {
             log.error("IN getById, student with id: {} was error while loaded.", id);
         }

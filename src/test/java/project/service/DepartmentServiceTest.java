@@ -1,11 +1,10 @@
 package project.service;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import project.model.Department;
 import project.model.Model;
 import project.model.Subject;
@@ -14,6 +13,9 @@ import project.repository.ModelRepositoryImpl;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 
@@ -22,7 +24,7 @@ import static org.mockito.Mockito.*;
  *
  * @author Alexander Naumov.
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class DepartmentServiceTest {
 
     private static Random random = new Random();
@@ -40,9 +42,9 @@ public class DepartmentServiceTest {
 
         List<Model> departments = service.getAll();
 
-        Assert.assertNotNull(departments);
-        Assert.assertTrue(!departments.isEmpty());
-        departments.forEach(d -> Assert.assertTrue(d instanceof Department));
+        assertNotNull(departments);
+        assertTrue(!departments.isEmpty());
+        departments.forEach(d -> assertTrue(d instanceof Department));
         verify(repository, only()).getList(Department.class);
         verifyNoMoreInteractions(repository);
     }
@@ -55,23 +57,23 @@ public class DepartmentServiceTest {
 
         List<Model> departments = service.getListById(ids);
 
-        Assert.assertNotNull(departments);
-        Assert.assertTrue(!departments.isEmpty());
-        departments.forEach(d -> Assert.assertTrue(d instanceof  Department));
+        assertNotNull(departments);
+        assertTrue(!departments.isEmpty());
+        departments.forEach(d -> assertTrue(d instanceof  Department));
         verify(repository, only()).getListById(Department.class, ids);
         verifyNoMoreInteractions(repository);
     }
 
     @Test
-    public void getById() {
+    public void testGetById() {
         Department department = createDepartment(100L);
         when(repository.getById(Department.class, 100L)).thenReturn(Optional.of(department));
 
         Model result = service.getById(100L);
 
-        Assert.assertNotNull(result);
-        Assert.assertTrue(result instanceof Department);
-        Assert.assertEquals(result.getId(), 100L);
+        assertNotNull(result);
+        assertTrue(result instanceof Department);
+        assertEquals(result.getId(), 100L);
         verify(repository, only()).getById(Department.class, 100L);
         verifyNoMoreInteractions(repository);
     }
@@ -84,7 +86,7 @@ public class DepartmentServiceTest {
 
         boolean result = service.saveWithSubject(department, subjects);
 
-        Assert.assertTrue(result);
+        assertTrue(result);
         verify(repository, times(subjects.size())).saveOrUpdate(any());
         verifyNoMoreInteractions(repository);
     }
@@ -96,7 +98,7 @@ public class DepartmentServiceTest {
 
         boolean result = service.save(department);
 
-        Assert.assertTrue(result);
+        assertTrue(result);
         verify(repository, only()).saveOrUpdate(department);
         verifyNoMoreInteractions(repository);
     }
@@ -107,7 +109,7 @@ public class DepartmentServiceTest {
 
         int result = service.deleteById(100L);
 
-        Assert.assertTrue(result > 0);
+        assertTrue(result > 0);
         verify(repository, only()).deleteById(Department.class, 100L);
         verifyNoMoreInteractions(repository);
     }
@@ -121,9 +123,9 @@ public class DepartmentServiceTest {
 
         Model result = service.getByName(name);
 
-        Assert.assertNotNull(result);
-        Assert.assertTrue(result instanceof Department);
-        Assert.assertEquals(((Department)result).getName(), name);
+        assertNotNull(result);
+        assertTrue(result instanceof Department);
+        assertEquals(((Department)result).getName(), name);
         verify(repository, only()).getDepByName(name);
         verifyNoMoreInteractions(repository);
     }

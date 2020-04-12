@@ -1,54 +1,43 @@
 package project.service;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Test class for {@link DateService} class.
  *
  * @author Alexander Naumov.
  */
-@RunWith(Parameterized.class)
 public class DateServiceTest {
 
     private static DateService service;
 
-    private LocalDate inputDate;
-    private int dateSize;
-
-    public DateServiceTest(LocalDate inputDate, int dateSize) {
-        this.inputDate = inputDate;
-        this.dateSize = dateSize;
+    static Stream<Arguments> data() {
+        return Stream.of(
+                Arguments.of(LocalDate.of(2001, 1, 1), 23),
+                Arguments.of(LocalDate.of(2008, 3, 1), 21),
+                Arguments.of(LocalDate.of(2014, 11, 1), 20),
+                Arguments.of(LocalDate.of(1996, 9, 1), 21),
+                Arguments.of(LocalDate.of(2019, 9, 1), 21)
+        );
     }
 
-    @Parameters
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][]{
-                {LocalDate.of(2001, 1, 1), 23},
-                {LocalDate.of(2008, 3, 1), 21},
-                {LocalDate.of(2014, 11, 1), 20},
-                {LocalDate.of(1996, 9, 1), 21},
-                {LocalDate.of(2019, 9, 1), 21}
-        });
-    }
-
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         service = new DateService();
     }
 
-    @Test
-    public void month() {
-        assertThat(service.month(inputDate).size(), is(dateSize));
+    @ParameterizedTest(name = "date = {0}, weekdays = {1}")
+    @MethodSource("data")
+    public void month(LocalDate inputDate, int datesSize) {
+        assertThat(service.month(inputDate).size(), is(datesSize));
     }
 }

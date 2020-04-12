@@ -1,18 +1,12 @@
 package project.controller;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import project.config.ApplicationConfig;
-
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -27,10 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Alexander Naumov.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = ApplicationConfig.class)
-public class DateControllerTest {
+public class DateControllerTest extends BaseControllerTest {
 
     private static final String path = "/api/date";
 
@@ -39,13 +30,13 @@ public class DateControllerTest {
     @Autowired
     private WebApplicationContext webAppContext;
 
-    @Before
+    @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
     }
 
     @Test
-    public void monthTest() throws Exception {
+    public void testSingleDate() throws Exception {
         final String date = "2001-01-01";
 
         mockMvc.perform(get(path)
@@ -54,5 +45,25 @@ public class DateControllerTest {
                 .andExpect(jsonPath("$", hasSize(23)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testWrongFormat() throws Exception {
+        final String date = "2001/11/21";
+
+        mockMvc.perform(get(path)
+                .param("date", date))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testEmptyArgument() throws Exception {
+        String date = "";
+
+        mockMvc.perform(get(path)
+                .param("date", date))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 }

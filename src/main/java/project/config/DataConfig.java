@@ -19,6 +19,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -42,10 +43,10 @@ public class DataConfig {
         dataSource.setUrl(env.getProperty("db.url"));
         dataSource.setUsername(env.getProperty("db.username"));
         dataSource.setPassword(env.getProperty("db.password"));
-        dataSource.setMaxTotal(Integer.parseInt(env.getProperty("dbcp.maxPoolSize")));
-        dataSource.setMaxWaitMillis(Long.parseLong(env.getProperty("dbcp.timeout")));
-        dataSource.setMaxIdle(Integer.parseInt(env.getProperty("dbcp.maxIdleTime")));
-        dataSource.setMaxOpenPreparedStatements(Integer.parseInt(env.getProperty("dbcp.maxStatements")));
+        dataSource.setMaxTotal(Integer.parseInt(Objects.requireNonNull(env.getProperty("dbcp.maxPoolSize"))));
+        dataSource.setMaxWaitMillis(Long.parseLong(Objects.requireNonNull(env.getProperty("dbcp.timeout"))));
+        dataSource.setMaxIdle(Integer.parseInt(Objects.requireNonNull(env.getProperty("dbcp.maxIdleTime"))));
+        dataSource.setMaxOpenPreparedStatements(Integer.parseInt(Objects.requireNonNull(env.getProperty("dbcp.maxStatements"))));
         DatabasePopulatorUtils.execute(dbInitializer(), dataSource);
         return dataSource;
     }

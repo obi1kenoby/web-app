@@ -29,9 +29,9 @@ import project.service.*;
 @ComponentScan("project")
 public class ApplicationConfig implements ApplicationContextAware, WebMvcConfigurer {
 
-    @Autowired
     private ApplicationContext applicationContext;
 
+    @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
@@ -97,22 +97,22 @@ public class ApplicationConfig implements ApplicationContextAware, WebMvcConfigu
     }
 
     @Bean
-    public DepartmentService departmentService() {
+    public Service departmentService() {
         return new DepartmentService();
     }
 
     @Bean
-    public SubjectService subjectService() {
+    public Service subjectService() {
         return new SubjectService();
     }
 
     @Bean
-    public StudentService studentService() {
+    public Service studentService() {
         return new StudentService();
     }
 
     @Bean
-    public MarkService markService() {
+    public Service markService() {
         return new MarkService();
     }
 }

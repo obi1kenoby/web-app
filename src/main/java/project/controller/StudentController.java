@@ -1,5 +1,6 @@
 package project.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -20,10 +21,11 @@ import java.util.*;
 
 /**
  * REST controller that handles requests
- * for {@link Student} entites.
+ * for {@link Student} entities.
  *
  * @author Alexander Naumov.
  */
+@Slf4j
 @RestController
 @RequestMapping("/api/student")
 public class StudentController {
@@ -44,10 +46,11 @@ public class StudentController {
      *
      * @return set of students.
      */
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<Model>> list() {
         List<Model> students = this.studentService.getAll();
         if (students.isEmpty()) {
+            log.info("IN list: students not found.");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(students, HttpStatus.OK);
@@ -59,15 +62,17 @@ public class StudentController {
      * @param id department ID (primary key).
      * @return special {@link Student}.
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Model> get(@PathVariable("id") Long id){
-        if (id == null) {
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Model> getById(@PathVariable("id") Long id){
+        if (id == null || id <= 0) {
+            log.info("IN getById: ID is NULL or less then 1.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Model model = this.studentService.getById(id);
         if (model != null) {
             return new ResponseEntity<>(model, HttpStatus.OK);
         }
+        log.info("IN getById: student with id: {}, not found.", id);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -79,11 +84,12 @@ public class StudentController {
      * @param depId ID of {@link Department}.
      * @throws IOException if photo can't produce bytes.
      */
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Student> save(@ModelAttribute("student") Student student, @RequestParam(value = "file", required = false) MultipartFile photo,
                                         @RequestParam("day")String day, @RequestParam("month")String month, @RequestParam("year")String year,
                                         @RequestParam("depId")String depId) throws IOException {
         if (student == null) {
+            log.info("IN save: student can't be NULL.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Department department = (Department)this.departmentService.getById(Long.parseLong(depId));
@@ -97,6 +103,7 @@ public class StudentController {
             student.setRole(Role.USER);
             this.studentService.save(student);
         } catch (Exception e) {
+            log.info("IN save: saving user was failed.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -108,15 +115,17 @@ public class StudentController {
      * @param id array of Students ID
      * @return {@link HttpStatus}.
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Student> delete(@PathVariable("id")Long id) {
-        if (id == null || id == 0) {
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Student> deleteById(@PathVariable("id") Long id) {
+        if (id == null || id < 1) {
+            log.info("IN deleteById: student id is NULL or less then 1.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             if (this.studentService.deleteById(id) > 0) {
                 return new ResponseEntity<>(HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                log.info("IN deleteById: deleting student with id: {} is impossible.", id);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         }
     }
@@ -124,15 +133,16 @@ public class StudentController {
     /**
      * Returns list of {@link Student} by its {@link Department} ID.
      *
-     * @param id of {@link Department}.
+     * @param depId of {@link Department}.
      * @return {@link List<Student>}.
      */
     @RequestMapping(value = "/department/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<Student>> getStudentsByDep(@PathVariable("id") String id) {
-        if (id == null || id.isEmpty()) {
+    public ResponseEntity<List<Student>> getStudentsByDep(@PathVariable("id") String depId) {
+        if (depId == null || Long.parseLong(depId) < 1L) {
+            log.info("IN getStudentByDep: department id is NULL or less then 1.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        List<Student> students = new ArrayList<>(((Department) departmentService.getById(Long.parseLong(id))).getStudents());
+        List<Student> students = new ArrayList<>(((Department) departmentService.getById(Long.parseLong(depId))).getStudents());
         Collections.sort(students);
         return new ResponseEntity<>(students, HttpStatus.OK);
     }

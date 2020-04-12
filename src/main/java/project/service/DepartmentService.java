@@ -6,6 +6,7 @@ import project.model.Department;
 import project.model.Model;
 import project.model.Subject;
 import project.repository.ModelRepository;
+import project.repository.ModelRepositoryImpl;
 
 import java.util.*;
 
@@ -30,9 +31,11 @@ public class DepartmentService implements Service {
     public List<Model> getAll() {
         List<Model> models = null;
         try {
-            Optional o = repository.getList(Department.class);
-            models = (List<Model>) o.get();
-            models.forEach(m -> log.info("IN getAll, department: {} successfully loaded", m));
+            Optional<List<Model>> o = repository.getList(Department.class);
+            if (o.isPresent()) {
+                models = o.get();
+                models.forEach(m -> log.info("IN getAll, department: {} successfully loaded", m));
+            }
         } catch (Exception e) {
             log.error("IN getAll, error while loading.");
         }
@@ -49,11 +52,13 @@ public class DepartmentService implements Service {
     public List<Model> getListById(Long[] ids) {
         List<Model> models = null;
         try {
-            Optional o = repository.getListById(Department.class, ids);
-            models = (List<Model>) o.get();
-            models.forEach(m -> log.info("IN getListById, departments with ids: {} successfully loaded", ids));
+            Optional<List<Model>> o = repository.getListById(Department.class, ids);
+            if (o.isPresent()) {
+                models = o.get();
+                models.forEach(m -> log.info("IN getListById, departments with ids: {} successfully loaded", Arrays.toString(ids)));
+            }
         } catch (Exception e) {
-            log.error("IN getListById, departments with ids: {} error while loading.", ids);
+            log.error("IN getListById, departments with ids: {} error while loading.", Arrays.toString(ids));
         }
         return models;
     }
@@ -67,11 +72,12 @@ public class DepartmentService implements Service {
     @Override
     public Model getById(Long id) {
         Model model = null;
-        Optional o;
         try {
-            o = repository.getById(Department.class, id);
-            model = (Model) o.get();
-            log.info("IN getById, department with id: {} successfully loaded.", id);
+            Optional<Model> o = repository.getById(Department.class, id);
+            if (o.isPresent()) {
+                model = o.get();
+                log.info("IN getById, department with id: {} successfully loaded.", id);
+            }
         } catch (Exception e) {
             log.error("IN getById, department with id: {} error while loading.", id);
         }
@@ -144,9 +150,11 @@ public class DepartmentService implements Service {
     public Model getByName(String name) {
         Model model = null;
         try {
-            Optional o = repository.getDepByName(name);
-            model = (Model) o.get();
-            log.info("IN getByName, department with name: {} successfully loaded.", name);
+            Optional<Model> o = repository.getDepByName(name);
+            if (o.isPresent()) {
+                model = o.get();
+                log.info("IN getByName, department with name: {} successfully loaded.", name);
+            }
         } catch (Exception e) {
             log.error("IN getByName, department with name: {} error while loading.", name);
         }

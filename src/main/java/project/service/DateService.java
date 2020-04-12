@@ -22,8 +22,8 @@ public class DateService {
         for (int i = 1; i <= current_date.lengthOfMonth(); i++) {
             int year = current_date.getYear();
             int month = current_date.getMonthValue();
-            if (LocalDate.of(year, month, i).getDayOfWeek().getValue() < 6){
-                dates.add(LocalDate.of(year, month , i));
+            if (LocalDate.of(year, month, i).getDayOfWeek().getValue() < 6) {
+                dates.add(LocalDate.of(year, month, i));
             }
         }
         return dates;

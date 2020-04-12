@@ -1,20 +1,14 @@
 package project.controller;
 
 import org.hamcrest.Matchers;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import project.config.ApplicationConfig;
-import project.config.DataConfig;
 import project.model.Department;
 import project.model.Subject;
 import project.service.DepartmentService;
@@ -35,13 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Test class for controller {@link SubjectController} class.
  *
- * @author Alexander Naumov
- * @version 1.0
+ * @author Alexander Naumov.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {ApplicationConfig.class, DataConfig.class})
-public class SubjectControllerTest {
+public class SubjectControllerTest extends BaseControllerTest {
 
     private static final String path = "/api/subject";
 
@@ -56,7 +46,7 @@ public class SubjectControllerTest {
     @Mock
     private DepartmentService departmentService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         if (mockMvc == null) {
             MockitoAnnotations.initMocks(this);

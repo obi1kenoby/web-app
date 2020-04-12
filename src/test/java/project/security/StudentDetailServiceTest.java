@@ -1,14 +1,12 @@
 package project.security;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,17 +18,20 @@ import project.repository.ModelRepository;
 import java.time.LocalDate;
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static project.model.Role.USER;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class StudentDetailServiceTest {
 
     @InjectMocks
     private StudentDetailService detailService;
 
-    @Spy
+    @Mock
     private ModelRepository repository;
 
     private UserDetails userDetails;
@@ -44,10 +45,7 @@ public class StudentDetailServiceTest {
     final LocalDate birthday = LocalDate.of(2019, 10, 8);
     final Role role = USER;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
-
-    @Before
+    @BeforeEach
     public void setUp() {
         student = new Student();
         student.setFirst_name(firstName);
@@ -64,9 +62,9 @@ public class StudentDetailServiceTest {
     public void loadUserByUsername() {
         when(repository.getStudByEmail(any())).thenReturn(Optional.of(student));
 
-        Assert.assertNotNull(detailService);
+        assertNotNull(detailService);
         UserDetails details = detailService.loadUserByUsername(email);
-        Assert.assertEquals(details, userDetails);
+        assertEquals(details, userDetails);
 
         verify(repository, only()).getStudByEmail(email);
         verifyNoMoreInteractions(repository);
@@ -75,11 +73,10 @@ public class StudentDetailServiceTest {
     @Test
     public void wrongUsername() {
         when(repository.getStudByEmail(incorrectEmail)).thenReturn(Optional.empty());
-        exceptionRule.expect(UsernameNotFoundException.class);
-        exceptionRule.expectMessage("User not found.");
 
-        Assert.assertNotNull(detailService);
-        detailService.loadUserByUsername(incorrectEmail);
+        UsernameNotFoundException exception = assertThrows(UsernameNotFoundException.class,
+                () -> detailService.loadUserByUsername(incorrectEmail));
+        assertEquals("User not found.", exception.getMessage());
 
         verify(repository, only()).getStudByEmail(incorrectEmail);
         verifyNoMoreInteractions(repository);

@@ -5,9 +5,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
+import project.model.Model;
 import project.model.Student;
 import project.repository.ModelRepository;
+import project.repository.ModelRepositoryImpl;
 
 import java.util.Optional;
 
@@ -24,7 +26,7 @@ public class StudentDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional o = repository.getStudByEmail(email);
+        Optional<Model> o = repository.getStudByEmail(email);
         User.UserBuilder builder;
         if (o.isPresent()) {
             Student user = (Student) o.get();

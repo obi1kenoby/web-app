@@ -1,11 +1,11 @@
 package project.service;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import project.model.Model;
 import project.model.Role;
 import project.model.Student;
@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
@@ -24,7 +28,7 @@ import static org.mockito.Mockito.*;
  *
  * @author Alexander Naumov.
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class StudentServiceTest {
 
     private static Random random = new Random();
@@ -42,9 +46,9 @@ public class StudentServiceTest {
 
         List<Model> students = service.getAll();
 
-        Assert.assertNotNull(students);
-        Assert.assertTrue(!students.isEmpty());
-        Assert.assertArrayEquals(list.toArray(), students.toArray());
+        assertNotNull(students);
+        assertTrue(!students.isEmpty());
+        assertArrayEquals(list.toArray(), students.toArray());
         verify(repository, only()).getList(Student.class);
         verifyNoMoreInteractions(repository);
     }
@@ -55,9 +59,9 @@ public class StudentServiceTest {
 
         Model student = service.getById(100L);
 
-        Assert.assertNotNull(student);
-        Assert.assertEquals(student.getId(), 100L);
-        Assert.assertTrue(student instanceof Student);
+        assertNotNull(student);
+        assertEquals(student.getId(), 100L);
+        assertTrue(student instanceof Student);
         verify(repository, only()).getById(Student.class, 100L);
         verifyNoMoreInteractions(repository);
     }
@@ -79,7 +83,7 @@ public class StudentServiceTest {
 
         int res = service.deleteById(100L);
 
-        Assert.assertTrue(res > 0);
+        assertTrue(res > 0);
         verify(repository, only()).deleteById(Student.class, 100L);
         verifyNoMoreInteractions(repository);
     }

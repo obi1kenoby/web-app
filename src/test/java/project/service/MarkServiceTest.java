@@ -1,11 +1,10 @@
 package project.service;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import project.model.Mark;
 import project.model.Model;
 import project.repository.ModelRepositoryImpl;
@@ -16,6 +15,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
@@ -23,7 +26,7 @@ import static org.mockito.Mockito.*;
  *
  * @author Alexander Naumov.
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class MarkServiceTest {
 
     @InjectMocks
@@ -40,9 +43,9 @@ public class MarkServiceTest {
 
         Model model = service.getById(1L);
 
-        Assert.assertNotNull(model);
-        Assert.assertEquals(model.getId(), 1L);
-        Assert.assertTrue(model instanceof Mark);
+        assertNotNull(model);
+        assertEquals(model.getId(), 1L);
+        assertTrue(model instanceof Mark);
         verify(repository, only()).getById(Mark.class, 1L);
         verifyNoMoreInteractions(repository);
     }
@@ -53,7 +56,7 @@ public class MarkServiceTest {
 
         Model model = service.getById(-1L);
 
-        Assert.assertNull(model);
+        assertNull(model);
         verify(repository, only()).getById(Mark.class, -1L);
         verifyNoMoreInteractions(repository);
     }
@@ -65,9 +68,9 @@ public class MarkServiceTest {
 
         List<Model> res = service.getAll();
 
-        res.forEach(m -> Assert.assertTrue(m instanceof Mark));
-        Assert.assertNotNull(marks);
-        Assert.assertEquals(marks.size(), res.size());
+        res.forEach(m -> assertTrue(m instanceof Mark));
+        assertNotNull(marks);
+        assertEquals(marks.size(), res.size());
         verify(repository, only()).getList(Mark.class);
         verifyNoMoreInteractions(repository);
     }
@@ -78,7 +81,7 @@ public class MarkServiceTest {
 
         int result = service.deleteById(1L);
 
-        Assert.assertEquals(result, 1);
+        assertEquals(result, 1);
         verify(repository).deleteById(Mark.class, 1L);
         verifyNoMoreInteractions(repository);
     }
@@ -90,7 +93,7 @@ public class MarkServiceTest {
 
         boolean res = service.save(mark);
 
-        Assert.assertTrue(res);
+        assertTrue(res);
         verify(repository, only()).saveOrUpdate(mark);
         verifyNoMoreInteractions(repository);
     }
@@ -103,9 +106,9 @@ public class MarkServiceTest {
 
         List<Model> marks = service.getMarksByDateRange(LocalDate.of(2001, mon, 1));
 
-        Assert.assertNotNull(marks);
-        Assert.assertEquals(marks.size(), models.size());
-        marks.forEach(m -> Assert.assertTrue(((Mark)m).getDate().getMonthValue() == mon));
+        assertNotNull(marks);
+        assertEquals(marks.size(), models.size());
+        marks.forEach(m -> assertTrue(((Mark)m).getDate().getMonthValue() == mon));
         verify(repository).getList(Mark.class);
         verifyNoMoreInteractions(repository);
     }

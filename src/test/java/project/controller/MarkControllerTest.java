@@ -1,21 +1,15 @@
 package project.controller;
 
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import project.config.ApplicationConfig;
-import project.config.DataConfig;
 import project.model.Mark;
 import project.model.Student;
 import project.model.Subject;
@@ -24,6 +18,7 @@ import project.service.StudentService;
 import project.service.SubjectService;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -39,15 +34,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Test class for controller {@link MarkController} class.
  *
- * @author Alexander Naumov
- * @version 1.0
+ * @author Alexander Naumov.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {ApplicationConfig.class, DataConfig.class})
-@WebAppConfiguration
-public class MarkControllerTest {
+public class MarkControllerTest extends BaseControllerTest {
 
-    public static final String path = "/api/mark";
+    private static final String path = "/api/mark";
 
     private MockMvc mockMvc;
 
@@ -63,7 +54,7 @@ public class MarkControllerTest {
     @Mock
     private SubjectService subjectService;
 
-    @Before
+    @BeforeEach
     public void init() {
         if (mockMvc == null) {
             MockitoAnnotations.initMocks(this);
@@ -85,7 +76,32 @@ public class MarkControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$", hasSize(3)));
 
-        verify(markService, times(1)).getMarksByDateRange(date);
+        verify(markService, only()).getMarksByDateRange(date);
+        verifyNoMoreInteractions(markService);
+    }
+
+    @Test
+    public void getMarksByDateRangeBadDate() throws Exception {
+        final String[] dates = {"$3sf5", "2001/11/01", "2001-dec-31"};
+        for (String date: dates) {
+            mockMvc.perform(get(path).param("date", date))
+                    .andDo(print())
+                    .andExpect(status().isBadRequest());
+        }
+    }
+
+    @Test
+    public void getMarksByDateRangeMarksNotFound() throws Exception {
+        final String date = "1999-01-01";
+        final LocalDate localDate = LocalDate.of(1999, 1, 1);
+        when(markService.getMarksByDateRange(localDate))
+                .thenReturn(new ArrayList<>());
+
+        mockMvc.perform(get(path).param("date", date))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+        verify(markService, only()).getMarksByDateRange(localDate);
         verifyNoMoreInteractions(markService);
     }
 
@@ -105,7 +121,31 @@ public class MarkControllerTest {
     }
 
     @Test
-    public void deleteMark() throws Exception {
+    public void getMarkByIdIncorrectId() throws Exception {
+        final Long[] ids = {-1L, 0L, null};
+
+        for (Long id : ids) {
+            mockMvc.perform(get(path + "/{id}", id))
+                    .andDo(print())
+                    .andExpect(status().isBadRequest());
+        }
+    }
+
+    @Test
+    public void getMarkByIdNonexistentMark() throws Exception {
+        final long id = 100L;
+        when(markService.getById(id)).thenReturn(null);
+
+        mockMvc.perform(get(path + "/{id}", id))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+        verify(markService, only()).getById(id);
+        verifyNoMoreInteractions(markService);
+    }
+
+    @Test
+    public void deleteMarkById() throws Exception {
         Mark mark = createMark(1L, 2, LocalDate.of(2001, 1, 1));
         when(markService.deleteById(mark.getId())).thenReturn(1);
 
@@ -113,7 +153,31 @@ public class MarkControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        verify(markService, times(1)).deleteById(mark.getId());
+        verify(markService, only()).deleteById(mark.getId());
+        verifyNoMoreInteractions(markService);
+    }
+
+    @Test
+    public void deleteMarkByIdIncorrectId() throws Exception {
+        final Long[] ids = {-1L, 0L};
+
+        for (Long id : ids) {
+            mockMvc.perform(delete(path + "/{id}", id))
+                    .andDo(print())
+                    .andExpect(status().isBadRequest());
+        }
+    }
+
+    @Test
+    public void deleteMarkByIdNonexistentMark() throws Exception {
+        final long id = 100L;
+        when(markService.deleteById(id)).thenReturn(0);
+
+        mockMvc.perform(delete(path + "/{id}", id))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+        verify(markService, only()).deleteById(id);
         verifyNoMoreInteractions(markService);
     }
 
@@ -153,28 +217,5 @@ public class MarkControllerTest {
         verifyNoMoreInteractions(markService);
         verifyNoMoreInteractions(studentService);
         verifyNoMoreInteractions(subjectService);
-    }
-
-    private static Mark createMark(Long id, Integer value, LocalDate date) {
-        Mark mark = new Mark();
-        mark.setId(id);
-        mark.setDate(date);
-        mark.setValue(value);
-        return mark;
-    }
-
-    private static Student createStudent(Long id, String firstName, String lastName) {
-        Student student = new Student();
-        student.setId(id);
-        student.setFirst_name(firstName);
-        student.setLast_name(lastName);
-        return student;
-    }
-
-    private static Subject createSubject(Long id, String name) {
-        Subject subject = new Subject();
-        subject.setId(id);
-        subject.setName(name);
-        return subject;
     }
 }

@@ -22,7 +22,7 @@ import java.util.Optional;
  */
 @Slf4j
 @Transactional
-public class ModelRepositoryImpl implements ModelRepository<Model> {
+public class ModelRepositoryImpl implements ModelRepository {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -36,10 +36,10 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
     @Override
     public Optional<Model> getDepByName(String name) {
         Session session = getSession();
-        Query query = session.createQuery("SELECT DISTINCT d FROM Department d WHERE d.name =:name");
+        Query<Model> query = session.createQuery("SELECT DISTINCT d FROM Department d WHERE d.name =:name", Model.class);
         query.setParameter("name", name);
         try {
-            List models = query.getResultList();
+            List<Model> models = query.getResultList();
             if (!models.isEmpty()) {
                 if (models.size() > 1) {
                     throw new NonUniqueResultException(models.size());
@@ -64,7 +64,7 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
     @Override
     public Optional<Model> getSubjectByName(String name) {
         Session session = getSession();
-        Query query = session.createQuery("SELECT DISTINCT s FROM Subject s WHERE s.name =:name");
+        Query<Model> query = session.createQuery("SELECT DISTINCT s FROM Subject s WHERE s.name =:name", Model.class);
         query.setParameter("name", name);
         Subject result = (Subject) query.getSingleResult();
         if (result == null) {
@@ -86,7 +86,7 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
     @Override
     public Optional<Model> getStudByFullName(String firstName, String lastName) {
         Session session = getSession();
-        Query query = session.createQuery("SELECT DISTINCT s FROM Student s WHERE s.first_name =:firstName AND s.last_name =:lastName");
+        Query<Model> query = session.createQuery("SELECT DISTINCT s FROM Student s WHERE s.first_name =:firstName AND s.last_name =:lastName", Model.class);
         query.setParameter("firstName", firstName);
         query.setParameter("lastName", lastName);
         Student result = (Student) query.getSingleResult();
@@ -108,7 +108,7 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
     @Override
     public Optional<Model> getStudByEmail(String email) {
         Session session = getSession();
-        Query query = session.createQuery("SELECT DISTINCT s FROM Student s WHERE s.email =:email");
+        Query<Model> query = session.createQuery("SELECT DISTINCT s FROM Student s WHERE s.email =:email", Model.class);
         query.setParameter("email", email);
         Student result = (Student) query.getSingleResult();
         if (result == null) {
@@ -129,9 +129,9 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
     @Override
     public Optional<List<Model>> getStudsByDepId(Long id) {
         Session session = getSession();
-        Query query = session.createQuery("SELECT s FROM Student s WHERE s.department.id =:id");
+        Query<Model> query = session.createQuery("SELECT s FROM Student s WHERE s.department.id =:id", Model.class);
         query.setParameter("id", id);
-        List result = (List<Model>) query.getResultList();
+        List<Model> result = query.getResultList();
         if (result.isEmpty()) {
             log.info("IN getStudsByDepId, the students with department id: {} are missing in DB.", id);
             return Optional.empty();
@@ -154,12 +154,12 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
     @Override
     public Optional<List<Model>> getMarksForMonth(Long depId, String subject, LocalDate since, LocalDate to) {
         Session session = getSession();
-        Query query = session.createQuery("SELECT m FROM Mark m WHERE m.date BETWEEN :since AND :to AND (m.subject.name =:subject) AND (m.student IN (SELECT s FROM Student s WHERE s.department.id =:depId))");
+        Query<Model> query = session.createQuery("SELECT m FROM Mark m WHERE m.date BETWEEN :since AND :to AND (m.subject.name =:subject) AND (m.student IN (SELECT s FROM Student s WHERE s.department.id =:depId))", Model.class);
         query.setParameter("depId", depId);
         query.setParameter("subject", subject);
         query.setParameter("since", since);
         query.setParameter("to", to);
-        List result = (List<Model>) query.getResultList();
+        List<Model> result = query.getResultList();
         if (result.isEmpty()) {
             log.info("IN getMarksForMonth, the marks with subject: {}, department id:{} and date between" +
                     "{} and {} are missing in DB.", subject, depId, since, to);
@@ -167,11 +167,11 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
             log.info("IN getMarksForMonth, the marks with subject: {}, department id:{} and date between" +
                     "{} and {} were successfully loaded from DB.", subject, depId, since, to);
         }
-        return Optional.ofNullable((List<Model>) query.getResultList());
+        return Optional.ofNullable(query.getResultList());
     }
 
     /**
-     * Implementation of ${@link ModelRepository#saveOrUpdate(Object)}.
+     * Implementation of ${@link ModelRepository#saveOrUpdate(Model)}.
      *
      * @param model {@link Model} that need save or update.
      */
@@ -220,8 +220,8 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
     @Override
     public Optional<List<Model>> getList(Class<? extends Model> clazz) {
         Session session = getSession();
-        Query query = session.createQuery("SELECT c FROM " + clazz.getName() + " c");
-        List result = query.getResultList();
+        Query<Model> query = session.createQuery("SELECT c FROM " + clazz.getName() + " c",  Model.class);
+        List<Model> result = query.getResultList();
         if (result.isEmpty()) {
             log.info("IN getList, the instances of {}, are missing in DB.", clazz);
             return Optional.empty();
@@ -241,9 +241,9 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
     @Override
     public Optional<List<Model>> getListById(Class<? extends Model> clazz, Long[] ids) {
         Session session = getSession();
-        Query query = session.createQuery("SELECT c FROM " + clazz.getName() + " c WHERE c.id IN :ids");
+        Query<Model> query = session.createQuery("SELECT c FROM " + clazz.getName() + " c WHERE c.id IN :ids", Model.class);
         query.setParameter("ids", Arrays.asList(ids));
-        List result = query.getResultList();
+        List<Model> result = query.getResultList();
         if (result.isEmpty()) {
             log.info("IN getListById, you try to get non existing instances of {}, " +
                     "with ids: {}, from DB.", clazz, Arrays.toString(ids));
@@ -267,8 +267,9 @@ public class ModelRepositoryImpl implements ModelRepository<Model> {
         Session session = getSession();
         int res = 0;
         if (!clazz.equals(Student.class)) {
-            Query query = session.createQuery("DELETE FROM " + clazz.getName() + " d WHERE d.id =:id");
-            query.setParameter("id", id);
+            Query query = session
+                    .createQuery("DELETE FROM " + clazz.getName() + " d WHERE d.id =:id")
+                    .setParameter("id", id);
             res = query.executeUpdate();
         } else {
             Optional<Model> o = getById(Student.class, id);

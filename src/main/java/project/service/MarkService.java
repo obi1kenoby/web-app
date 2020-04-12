@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import project.model.Mark;
 import project.model.Model;
 import project.repository.ModelRepository;
+import project.repository.ModelRepositoryImpl;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -31,11 +32,12 @@ public class MarkService implements Service {
      */
     @Override
     public List<Model> getAll() {
-        Optional o;
         List<Model> models = null;
         try {
-            o = repository.getList(Mark.class);
-            models = (List<Model>) o.get();
+            Optional<List<Model>> o = repository.getList(Mark.class);
+            if (o.isPresent()) {
+                models = o.get();
+            }
             log.info("IN getAll, all marks successfully loaded.");
         } catch (Exception e) {
             log.error("IN getAll, error while loading.");
@@ -53,9 +55,11 @@ public class MarkService implements Service {
     public List<Model> getListById(Long[] ids) {
         List<Model> models = null;
         try {
-            Optional o = repository.getListById(Mark.class, ids);
-            models = (List<Model>) o .get();
-            log.info("IN getListById, all marks with ids: {}, were successfully loaded.", Arrays.toString(ids));
+            Optional<List<Model>> o = repository.getListById(Mark.class, ids);
+            if (o.isPresent()) {
+                models = o.get();
+                log.info("IN getListById, all marks with ids: {}, were successfully loaded.", Arrays.toString(ids));
+            }
         } catch (Exception e) {
             log.error("IN getListById, error while loading marks with ids: {}", Arrays.toString(ids));
         }
@@ -72,9 +76,11 @@ public class MarkService implements Service {
     public Model getById(Long id) {
         Model model = null;
         try {
-            Optional o = repository.getById(Mark.class, id);
-            model = (Model) o.get();
-            log.info("IN getById, mark with id: {} successfully loaded.", id);
+            Optional<Model> o = repository.getById(Mark.class, id);
+            if (o.isPresent()) {
+                model = o.get();
+                log.info("IN getById, mark with id: {} successfully loaded.", id);
+            }
         } catch (Exception e) {
             log.error("IN getById, mark with id: {} error while loaded.", id);
         }

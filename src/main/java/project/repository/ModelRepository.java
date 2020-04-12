@@ -11,40 +11,40 @@ import java.util.Optional;
  *
  * @author Alexander Naumov.
  */
-public interface ModelRepository<T> {
+public interface ModelRepository {
 
     /**
-     * Gets needed {@link T} from DB by name.
+     * Gets needed {@link Model} from DB by name.
      *
      * @param name of department.
-     * @return {@link T}.
+     * @return {@link Model}.
      */
-    Optional<T> getDepByName(String name);
+    Optional<Model> getDepByName(String name);
 
     /**
-     * Gets needed {@link T} from DB by name.
+     * Gets needed {@link Model} from DB by name.
      *
      * @param name of subject.
-     * @return {@link T}.
+     * @return {@link Model}.
      */
-    Optional<T> getSubjectByName(String name);
+    Optional<Model> getSubjectByName(String name);
 
     /**
-     * Gets needed {@link T} from DB, by first name and last name.
+     * Gets needed {@link Model} from DB, by first name and last name.
      *
      * @param firstName of student.
      * @param lastName of student.
      * @return {@link Subject}.
      */
-    Optional<T> getStudByFullName(String firstName, String lastName);
+    Optional<Model> getStudByFullName(String firstName, String lastName);
 
     /**
-     * Gets needed {@link T} from DB, by e-mail.
+     * Gets needed {@link Model} from DB, by e-mail.
      *
      * @param email of student.
-     * @return {@link T}.
+     * @return {@link Model}.
      */
-    Optional<T> getStudByEmail(String email);
+    Optional<Model> getStudByEmail(String email);
 
     /**
      * Gets needed {@link Student}'s from DB, by {@link Department} ID.
@@ -52,7 +52,7 @@ public interface ModelRepository<T> {
      * @param id of department.
      * @return list of {@link Student}.
      */
-    Optional<List<T>> getStudsByDepId(Long id);
+    Optional<List<Model>> getStudsByDepId(Long id);
 
     /**
      * Gets needed {@link Mark}'s from DB, by {@link Subject} name, {@link Department} ID,
@@ -64,45 +64,45 @@ public interface ModelRepository<T> {
      * @param to end date.
      * @return list of {@link Mark}.
      */
-    Optional<List<T>> getMarksForMonth(Long depId, String subject, LocalDate since, LocalDate to);
+    Optional<List<Model>> getMarksForMonth(Long depId, String subject, LocalDate since, LocalDate to);
 
     /**
-     * Saves or updates {@link T} to DB.
+     * Saves or updates {@link Model} to DB.
      *
      * @param t entity for saving.
      */
-    void saveOrUpdate(T t);
+    void saveOrUpdate(Model t);
 
     /**
-     * Gets neeeded {@link T} from DB, by ID.
+     * Gets needed {@link Model} from DB, by ID.
      *
      * @param clazz {@link Class} of entity.
      * @param id of mark.
-     * @return {@link T}.
+     * @return {@link Model}.
      */
-    Optional<T> getById(Class<? extends T> clazz, Long id);
+    Optional<Model> getById(Class<? extends Model> clazz, Long id);
 
     /**
-     * Gets all {@link T} from DB.
+     * Gets all {@link Model} from DB.
      *
      * @param clazz {@link Class} of entity.
-     * @return list of {@link T}.
+     * @return list of {@link Model}.
      */
-    Optional<List<T>> getList(Class<? extends T> clazz);
+    Optional<List<Model>> getList(Class<? extends Model> clazz);
 
     /**
-     * Gets needed list of {@link T} from DB by their IDs.
+     * Gets needed list of {@link Model} from DB by their IDs.
      *
      * @param ids array of needed departments.
-     * @return List of {@link T}.
+     * @return List of {@link Model}.
      */
-    Optional<List<T>> getListById(Class<? extends T> clazz, Long[] ids);
+    Optional<List<Model>> getListById(Class<? extends Model> clazz, Long[] ids);
 
     /**
-     * Deletes needed {@link T} from DB, by it ID.
+     * Deletes needed {@link Model} from DB, by it ID.
      *
      * @param id student ID.
      * @return 1 if deleting was success else 0.
      */
-    int deleteById(Class<? extends T> clazz, Long id);
+    int deleteById(Class<? extends Model> clazz, Long id);
 }
