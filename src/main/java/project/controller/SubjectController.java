@@ -42,7 +42,7 @@ public class SubjectController {
      *
      * @return set of {@link ResponseEntity}.
      */
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Model>> list() {
         List<Model> models = this.subjectService.getAll();
         if (models == null || models.isEmpty()) {
@@ -57,7 +57,7 @@ public class SubjectController {
      * @param id department ID (primary key).
      * @return {@link ResponseEntity}.
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> getByid(@PathVariable("id")Long id) {
         Model model = this.subjectService.getById(id);
         if (id == null || id == 0) {
@@ -75,7 +75,7 @@ public class SubjectController {
      * @param id array of subjects ID's.
      * @return {@link HttpStatus}.
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> delete(@PathVariable("id")Long id) {
         if (id == 0) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -95,7 +95,7 @@ public class SubjectController {
      * @param name subject name.
      * @return just created {@link Subject} instance.
      */
-    @RequestMapping(value = "/{name}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/{name}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> save(@PathVariable("name")String name, @RequestParam("ids")Long[] ids) {
         if (name == null || name.isEmpty() || ids.length < 1) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

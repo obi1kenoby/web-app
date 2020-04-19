@@ -69,7 +69,7 @@ public class SubjectControllerTest extends BaseControllerTest {
         when(subjectService.getAll()).thenReturn(Arrays.asList(sub1, sub2, sub3));
         mockMvc.perform(get(path))
                 .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(status().isOk());
 
@@ -87,7 +87,7 @@ public class SubjectControllerTest extends BaseControllerTest {
 
         mockMvc.perform(get(path + "/{id}", 1L))
                 .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.id", Matchers.is(1)))
                 .andExpect(jsonPath("$.name", Matchers.is("Sub1")))
                 .andExpect(status().isOk());

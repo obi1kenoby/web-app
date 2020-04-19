@@ -82,10 +82,6 @@ public class DataConfig {
                 setProperty("hibernate.connection.characterEncoding", env.getProperty("hibernate.connection.characterEncoding"));
                 setProperty("hibernate.connection.useUnicode", env.getProperty("hibernate.connection.useUnicode"));
                 setProperty("hibernate.event.merge.entity_copy_observer", env.getProperty("hibernate.event.merge.entity_copy_observer"));
-                setProperty("hibernate.cache.use_second_level_cache", env.getProperty("hibernate.cache.use_second_level_cache"));
-                setProperty("hibernate.cache.region.factory_class", env.getProperty("hibernate.cache.region.factory_class"));
-                setProperty("hibernate.cache.use_query_cache", env.getProperty("hibernate.cache.use_query_cache"));
-                setProperty("hibernate.cache.provider_configuration", env.getProperty("hibernate.cache.provider_configuration"));
             }
         };
     }

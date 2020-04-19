@@ -43,7 +43,7 @@ public class DateControllerTest extends BaseControllerTest {
         .param("date", date))
                 .andDo(print())
                 .andExpect(jsonPath("$", hasSize(23)))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
     }
 

@@ -73,7 +73,7 @@ public class MarkControllerTest extends BaseControllerTest {
         mockMvc.perform(get(path).param("date", "2001-01-01"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$", hasSize(3)));
 
         verify(markService, only()).getMarksByDateRange(date);
@@ -112,7 +112,7 @@ public class MarkControllerTest extends BaseControllerTest {
         mockMvc.perform(get(path + "/{id}", 1))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.id").value("1"))
                 .andExpect(jsonPath("$.value").value("5"));
 

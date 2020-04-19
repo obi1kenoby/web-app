@@ -68,7 +68,7 @@ public class DepartmentControllerTest extends BaseControllerTest {
         MvcResult result = mockMvc.perform(get(PATH))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andReturn();
 
         String body = result.getResponse().getContentAsString();
@@ -109,7 +109,7 @@ public class DepartmentControllerTest extends BaseControllerTest {
         mockMvc.perform(post(PATH + "/{name}", "DepName")
                 .param("array[]", "1")
                 .param("array[]", "2")
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -130,7 +130,7 @@ public class DepartmentControllerTest extends BaseControllerTest {
         mockMvc.perform(post(PATH + "/{name}", "DepName")
                 .param("array[]", "1")
                 .param("array[]", "2")
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isNotFound());
 
@@ -145,7 +145,7 @@ public class DepartmentControllerTest extends BaseControllerTest {
         mockMvc.perform(post(PATH + "/{name}", depName)
                 .param("array[]", "1")
                 .param("array[]", "2")
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -158,13 +158,13 @@ public class DepartmentControllerTest extends BaseControllerTest {
 
         MvcResult result = this.mockMvc.perform(get(PATH + "/{id}", depId))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.id").value(String.valueOf(depId)))
                 .andExpect(jsonPath("$.name").value(depName))
                 .andDo(print())
                 .andReturn();
 
-        assertEquals("application/json;charset=UTF-8", result.getResponse().getContentType());
+        assertEquals("application/json", result.getResponse().getContentType());
 
         verify(departmentService, only()).getById(depId);
         verifyNoMoreInteractions(departmentService);
@@ -190,7 +190,7 @@ public class DepartmentControllerTest extends BaseControllerTest {
         when(departmentService.deleteById(id)).thenReturn(1);
 
         mockMvc.perform(delete(PATH + "/{id}", id)
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -211,7 +211,7 @@ public class DepartmentControllerTest extends BaseControllerTest {
         when(departmentService.deleteById(id)).thenReturn(0);
 
         mockMvc.perform(delete(PATH + "/{id}", id)
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 

@@ -34,7 +34,7 @@ public class DateController {
      * @param string {@link String} that represents assigned month and year in (yyyy-mm-dd) format.
      * @return {@link List} of {@link LocalDate}.
      */
-    @GetMapping(value = "/api/date", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/api/date", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<LocalDate>> dateList(@RequestParam(name="date") String string) {
         LocalDate date;
         if (string.isEmpty()) {

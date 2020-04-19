@@ -71,7 +71,7 @@ public class StudentControllerTest extends BaseControllerTest {
         mockMvc.perform(get(path))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$", hasSize(3)));
 
         verify(studentService, only()).getAll();
@@ -98,7 +98,7 @@ public class StudentControllerTest extends BaseControllerTest {
         mockMvc.perform(get(path + "/{id}", student.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.id", is(Long.valueOf(student.getId()).intValue())))
                 .andExpect(jsonPath("$.first_name", is(student.getFirst_name())))
                 .andExpect(jsonPath("$.last_name", is(student.getLast_name())));
@@ -209,7 +209,7 @@ public class StudentControllerTest extends BaseControllerTest {
         mockMvc.perform(get(path + "/department/{id}", department.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$", hasSize(3)));
 
         verify(departmentService, only()).getById(department.getId());

@@ -50,7 +50,7 @@ public class MarkController {
      * @param id department ID (primary key).
      * @return special {@link Mark}.
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> getById(@PathVariable("id") Long id) {
         if (id == null || id < 1) {
             log.info("IN getById: ID is NULL or less then 1.");
@@ -70,7 +70,7 @@ public class MarkController {
      * @param id array of marks ID's.
      * @return {@link Mark}.
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> deleteById(@PathVariable("id") Long id) {
         if (id == null || id < 1) {
             log.info("IN deleteById: mark id is NULL or less then 1.");
@@ -89,7 +89,7 @@ public class MarkController {
      *
      * @return list of {@link Mark}.
      */
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Model>> getMarksByDateRange(@RequestParam("date") String string) {
         LocalDate date;
         try {
@@ -119,7 +119,7 @@ public class MarkController {
      * @param subId ID of {@link Subject} that corresponds this {@link Mark}.
      * @return {@link HttpStatus}.
      */
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> save(@RequestParam("id") String id, @RequestParam("value") String value,
                                       @RequestParam("date") String date, @RequestParam("stud_id") String studId,
                                       @RequestParam("sub_id") String subId) {

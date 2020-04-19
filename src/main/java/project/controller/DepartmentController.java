@@ -41,7 +41,7 @@ public class DepartmentController {
      *
      * @return set of departments.
      */
-    @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Model>> list() {
         List<Model> departments = this.departmentService.getAll();
         if (departments.isEmpty()) {
@@ -59,7 +59,7 @@ public class DepartmentController {
      * @param name department name.
      * @return just created {@link Department} instance.
      */
-    @PostMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> save(@RequestParam(value="array[]") Long[] ids, @PathVariable("name") String name) {
         if (name == null || name.isEmpty() || ids.length < 1) {
             log.info("IN save: the name argument is empty or array of id's is empty.");
@@ -86,7 +86,7 @@ public class DepartmentController {
      *
      * @return BAD REQUEST.
      */
-    @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> saveEmptyName() {
         log.info("IN saveEmptyName: the department name can not be empty or equals null!");
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -98,7 +98,7 @@ public class DepartmentController {
      * @param ID department ID (primary key).
      * @return special {@link Department}.
      */
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> getById(@PathVariable("id") Long ID) {
         if (ID == null|| ID < 1L) {
             log.info("IN getById: ID is NULL or less then 1.");
@@ -118,7 +118,7 @@ public class DepartmentController {
      * @param id array of departments ID's.
      * @return {@link HttpStatus}.
      */
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> deleteById(@PathVariable("id") Long id) {
         if (id == null || id < 1) {
             log.info("IN deleteById: ID is NULL or less then 1.");

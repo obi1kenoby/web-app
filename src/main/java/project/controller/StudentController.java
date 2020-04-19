@@ -46,7 +46,7 @@ public class StudentController {
      *
      * @return set of students.
      */
-    @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Model>> list() {
         List<Model> students = this.studentService.getAll();
         if (students.isEmpty()) {
@@ -62,7 +62,7 @@ public class StudentController {
      * @param id department ID (primary key).
      * @return special {@link Student}.
      */
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> getById(@PathVariable("id") Long id){
         if (id == null || id <= 0) {
             log.info("IN getById: ID is NULL or less then 1.");
@@ -84,9 +84,12 @@ public class StudentController {
      * @param depId ID of {@link Department}.
      * @throws IOException if photo can't produce bytes.
      */
-    @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Student> save(@ModelAttribute("student") Student student, @RequestParam(value = "file", required = false) MultipartFile photo,
-                                        @RequestParam("day")String day, @RequestParam("month")String month, @RequestParam("year")String year,
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Student> save(@ModelAttribute("student") Student student,
+                                        @RequestParam(value = "file", required = false) MultipartFile photo,
+                                        @RequestParam("day")String day,
+                                        @RequestParam("month")String month,
+                                        @RequestParam("year")String year,
                                         @RequestParam("depId")String depId) throws IOException {
         if (student == null) {
             log.info("IN save: student can't be NULL.");
@@ -115,7 +118,7 @@ public class StudentController {
      * @param id array of Students ID
      * @return {@link HttpStatus}.
      */
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Student> deleteById(@PathVariable("id") Long id) {
         if (id == null || id < 1) {
             log.info("IN deleteById: student id is NULL or less then 1.");
@@ -136,7 +139,7 @@ public class StudentController {
      * @param depId of {@link Department}.
      * @return {@link List<Student>}.
      */
-    @RequestMapping(value = "/department/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/department/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Student>> getStudentsByDep(@PathVariable("id") String depId) {
         if (depId == null || Long.parseLong(depId) < 1L) {
             log.info("IN getStudentByDep: department id is NULL or less then 1.");
