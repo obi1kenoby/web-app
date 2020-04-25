@@ -1,7 +1,6 @@
 package project.controller;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -13,9 +12,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import project.model.Department;
+import project.model.Faculty;
 import project.model.Student;
-import project.service.DepartmentService;
+import project.service.FacultytService;
 import project.service.StudentService;
 
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ public class StudentControllerTest extends BaseControllerTest {
     private StudentService studentService;
 
     @Mock
-    private DepartmentService departmentService;
+    private FacultytService facultytService;
 
     @Spy
     private BCryptPasswordEncoder encoder;
@@ -63,10 +62,10 @@ public class StudentControllerTest extends BaseControllerTest {
 
     @Test
     public void testList() throws Exception {
-        Department dep1 = createDepartment(1L, "TEST DEPARTMENT 1");
-        Department dep2 = createDepartment(1L, "TEST DEPARTMENT 2");
-        Department dep3 = createDepartment(1L, "TEST DEPARTMENT 3");
-        when(studentService.getAll()).thenReturn(Arrays.asList(dep1, dep2, dep3));
+        Faculty fac1 = createFaculty(1L, "TEST FACULTY 1");
+        Faculty fac2 = createFaculty(1L, "TEST FACULTY 2");
+        Faculty fac3 = createFaculty(1L, "TEST FACULTY 3");
+        when(studentService.getAll()).thenReturn(Arrays.asList(fac1, fac2, fac3));
 
         mockMvc.perform(get(path))
                 .andDo(print())
@@ -166,15 +165,15 @@ public class StudentControllerTest extends BaseControllerTest {
 
     @Test
     public void testSaveSuccessful() throws Exception {
-        Department department = new Department();
-        department.setId(1L);
-        department.setName("Dep");
+        Faculty faculty = new Faculty();
+        faculty.setId(1L);
+        faculty.setName("Fac");
         Student student = new Student();
         student.setFirst_name("Firstname");
         student.setLast_name("Lastname");
         student.setPassword("password");
         student.setEmail("email@gmail.com");
-        when(departmentService.getById(1L)).thenReturn(department);
+        when(facultytService.getById(1L)).thenReturn(faculty);
         when(studentService.save(student)).thenReturn(true);
 
         MockMultipartFile file = new MockMultipartFile("file", "", "application/json", "{\"key1\": \"value1\"}".getBytes());
@@ -185,42 +184,42 @@ public class StudentControllerTest extends BaseControllerTest {
                 .param("day", "01")
                 .param("month", "01")
                 .param("year", "2001")
-                .param("depId", "1"))
+                .param("facId", "1"))
                 .andDo(print())
                 .andExpect(status().isCreated());
 
-        verify(departmentService, only()).getById(1L);
+        verify(facultytService, only()).getById(1L);
         verify(studentService, only()).save(any());
-        verifyNoMoreInteractions(departmentService);
+        verifyNoMoreInteractions(facultytService);
         verifyNoMoreInteractions(studentService);
     }
 
     @Test
-    public void getStudentsByDep() throws Exception {
+    public void getStudentsByFac() throws Exception {
         Student student1 = createStudent(1L, "FIRST NAME 1", "LAST NAME 1");
         Student student2 = createStudent(2L, "FIRST NAME 2", "LAST NAME 2");
         Student student3 = createStudent(3L, "FIRST NAME 3", "LAST NAME 3");
 
-        Department department = createDepartment(1L, "TEST DEPARTMENT");
-        department.setStudents(new HashSet<>(Arrays.asList(student1, student2, student3)));
+        Faculty faculty = createFaculty(1L, "TEST FACULTY");
+        faculty.setStudents(new HashSet<>(Arrays.asList(student1, student2, student3)));
 
-        when(departmentService.getById(department.getId())).thenReturn(department);
+        when(facultytService.getById(faculty.getId())).thenReturn(faculty);
 
-        mockMvc.perform(get(path + "/department/{id}", department.getId()))
+        mockMvc.perform(get(path + "/faculty/{id}", faculty.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$", hasSize(3)));
 
-        verify(departmentService, only()).getById(department.getId());
+        verify(facultytService, only()).getById(faculty.getId());
         verifyNoMoreInteractions(studentService);
     }
 
     @Test
-    public void getStudentsByDepIncorrectId() throws Exception {
+    public void getStudentsByFacIncorrectId() throws Exception {
         final long id = 0;
 
-        mockMvc.perform(get(path + "/department/{id}", id))
+        mockMvc.perform(get(path + "/faculty/{id}", id))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }

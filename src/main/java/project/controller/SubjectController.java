@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import project.model.Department;
+import project.model.Faculty;
 import project.model.Model;
 import project.model.Subject;
-import project.service.DepartmentService;
+import project.service.FacultytService;
 import project.service.Service;
 import project.service.SubjectService;
 
@@ -34,8 +34,8 @@ public class SubjectController {
     private Service subjectService;
 
     @Autowired
-    @Qualifier("departmentService")
-    private Service departmentService;
+    @Qualifier("facultyService")
+    private Service facultyService;
 
     /**
      * Returns list of {@link Subject} as JSON format.
@@ -91,7 +91,7 @@ public class SubjectController {
      * Creates new {@link Subject} by special name. Also links this
      * new subject with special departments.
      *
-     * @param ids array of IDs of {@link Department}.
+     * @param ids array of IDs of {@link Faculty}.
      * @param name subject name.
      * @return just created {@link Subject} instance.
      */
@@ -101,11 +101,11 @@ public class SubjectController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Subject subject = new Subject(name);
-        List<Model> departments = ((DepartmentService)this.departmentService).getListById(ids);
+        List<Model> departments = ((FacultytService)this.facultyService).getListById(ids);
         if (departments.size() != ids.length) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        departments.forEach(d -> subject.getDepartments().add((Department)d));
+        departments.forEach(d -> subject.getFaculties().add((Faculty)d));
         this.subjectService.save(subject);
         Model model = ((SubjectService)this.subjectService).getByName(name);
         if (model != null) {

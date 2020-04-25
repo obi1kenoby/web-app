@@ -18,9 +18,9 @@ import java.util.Set;
 @Entity
 @Table(name = "SUBJECT")
 @Data
-@EqualsAndHashCode(exclude = {"departments", "students", "marks"}, callSuper = true)
+@EqualsAndHashCode(exclude = {"faculties", "students", "marks"}, callSuper = true)
 @NoArgsConstructor
-@ToString(exclude = {"marks", "departments", "students"})
+@ToString(exclude = {"marks", "faculties", "students"})
 public class Subject extends Model {
 
     @Column(name = "NAME")
@@ -28,10 +28,10 @@ public class Subject extends Model {
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "SUBJECT_DEPARTMENT",
+    @JoinTable(name = "SUBJECT_FACULTY",
             joinColumns = @JoinColumn(name = "SUB_ID"),
-            inverseJoinColumns = @JoinColumn(name = "DEP_ID"))
-    private Set<Department> departments;
+            inverseJoinColumns = @JoinColumn(name = "FAC_ID"))
+    private Set<Faculty> faculties;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "subjects")
@@ -43,7 +43,7 @@ public class Subject extends Model {
 
     public Subject(String name) {
         this.name = name;
-        this.departments = new HashSet<>();
+        this.faculties = new HashSet<>();
         this.students = new HashSet<>();
         this.marks = new HashSet<>();
     }

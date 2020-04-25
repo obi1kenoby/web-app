@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import project.model.Department;
+import project.model.Faculty;
 import project.model.Model;
 import project.model.Role;
 import project.model.Student;
@@ -35,8 +35,8 @@ public class StudentController {
     private Service studentService;
 
     @Autowired
-    @Qualifier("departmentService")
-    private Service departmentService;
+    @Qualifier("facultyService")
+    private Service facultyService;
 
     @Autowired
     private BCryptPasswordEncoder encoder;
@@ -59,7 +59,7 @@ public class StudentController {
     /**
      * Returns special {@link Student} instance, by ID.
      *
-     * @param id department ID (primary key).
+     * @param id faculty ID (primary key).
      * @return special {@link Student}.
      */
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -81,7 +81,7 @@ public class StudentController {
      *
      * @param student {@link Student} instance for saving.
      * @param photo {@link MultipartFile} photo.
-     * @param depId ID of {@link Department}.
+     * @param facId ID of {@link Faculty}.
      * @throws IOException if photo can't produce bytes.
      */
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -90,18 +90,18 @@ public class StudentController {
                                         @RequestParam("day")String day,
                                         @RequestParam("month")String month,
                                         @RequestParam("year")String year,
-                                        @RequestParam("depId")String depId) throws IOException {
+                                        @RequestParam("facId")String facId) throws IOException {
         if (student == null) {
             log.info("IN save: student can't be NULL.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Department department = (Department)this.departmentService.getById(Long.parseLong(depId));
+        Faculty faculty = (Faculty)this.facultyService.getById(Long.parseLong(facId));
         if (photo != null) {
             student.setPhoto(Base64.getEncoder().encodeToString(photo.getBytes()));
         }
         try {
             student.setPassword(encoder.encode(student.getPassword()));
-            student.setDepartment(department);
+            student.setFaculty(faculty);
             student.setBirthday(LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)));
             student.setRole(Role.USER);
             this.studentService.save(student);
@@ -134,18 +134,18 @@ public class StudentController {
     }
 
     /**
-     * Returns list of {@link Student} by its {@link Department} ID.
+     * Returns list of {@link Student} by its {@link Faculty} ID.
      *
-     * @param depId of {@link Department}.
+     * @param depId of {@link Faculty}.
      * @return {@link List<Student>}.
      */
-    @RequestMapping(value = "/department/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/faculty/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Student>> getStudentsByDep(@PathVariable("id") String depId) {
         if (depId == null || Long.parseLong(depId) < 1L) {
-            log.info("IN getStudentByDep: department id is NULL or less then 1.");
+            log.info("IN getStudentByDep: faculty id is NULL or less then 1.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        List<Student> students = new ArrayList<>(((Department) departmentService.getById(Long.parseLong(depId))).getStudents());
+        List<Student> students = new ArrayList<>(((Faculty) facultyService.getById(Long.parseLong(depId))).getStudents());
         Collections.sort(students);
         return new ResponseEntity<>(students, HttpStatus.OK);
     }

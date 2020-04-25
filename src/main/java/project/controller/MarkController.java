@@ -47,7 +47,7 @@ public class MarkController {
     /**
      * Returns special {@link Mark} instance, by ID.
      *
-     * @param id department ID (primary key).
+     * @param id faculty ID (primary key).
      * @return special {@link Mark}.
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

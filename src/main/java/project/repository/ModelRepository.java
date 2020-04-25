@@ -16,10 +16,10 @@ public interface ModelRepository {
     /**
      * Gets needed {@link Model} from DB by name.
      *
-     * @param name of department.
+     * @param name of faculty.
      * @return {@link Model}.
      */
-    Optional<Model> getDepByName(String name);
+    Optional<Model> getFacByName(String name);
 
     /**
      * Gets needed {@link Model} from DB by name.
@@ -47,15 +47,15 @@ public interface ModelRepository {
     Optional<Model> getStudByEmail(String email);
 
     /**
-     * Gets needed {@link Student}'s from DB, by {@link Department} ID.
+     * Gets needed {@link Student}'s from DB, by {@link Faculty} ID.
      *
      * @param id of department.
      * @return list of {@link Student}.
      */
-    Optional<List<Model>> getStudsByDepId(Long id);
+    Optional<List<Model>> getStudsByFucId(Long id);
 
     /**
-     * Gets needed {@link Mark}'s from DB, by {@link Subject} name, {@link Department} ID,
+     * Gets needed {@link Mark}'s from DB, by {@link Subject} name, {@link Faculty} ID,
      * and special date range.
      *
      * @param depId id of department.

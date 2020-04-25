@@ -9,7 +9,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import project.config.ApplicationConfig;
 import project.config.DataConfig;
-import project.model.Department;
+import project.model.Faculty;
 import project.model.Mark;
 import project.model.Student;
 import project.model.Subject;
@@ -52,11 +52,11 @@ public class BaseControllerTest {
         return student;
     }
 
-    static Department createDepartment(Long id, String name) {
-        Department department = new Department();
-        department.setId(id);
-        department.setName(name);
-        return department;
+    static Faculty createFaculty(Long id, String name) {
+        Faculty faculty = new Faculty();
+        faculty.setId(id);
+        faculty.setName(name);
+        return faculty;
     }
 
     static Subject createSubject(Long id, String name) {

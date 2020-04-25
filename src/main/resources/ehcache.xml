@@ -4,7 +4,7 @@
 
     <diskStore path="java.io.tmpdir"/>
 
-    <cache name="department"
+    <cache name="faculty"
            maxElementsInMemory="100"
            eternal="false"
            timeToIdleSeconds="30"

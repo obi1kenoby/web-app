@@ -39,21 +39,21 @@ public class ModelRepositoryTest {
     private ModelRepository repository;
 
     @Test
-    public void getDepByNameNonexistentDepTest() {
+    public void getFacByNameNonexistentFacTest() {
         final String wrongName = "NON EXISTENT NAME";
-        Optional<Model> optional = repository.getDepByName(wrongName);
+        Optional<Model> optional = repository.getFacByName(wrongName);
         if (optional.isPresent()) {
             fail("optional must be empty!");
         }
     }
 
     @Test
-    @Sql(scripts = "classpath:sql/tests/add_identical_departments.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:sql/tests/add_identical_faculties.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
-    public void getDepByNameMultipleResult() {
+    public void getFacByNameMultipleResult() {
         final String name = "NON UNIQUE NAME";
         NonUniqueResultException exception = assertThrows(NonUniqueResultException.class,
-                () -> repository.getDepByName(name));
+                () -> repository.getFacByName(name));
         assertEquals("query did not return a unique result: 2", exception.getMessage());
     }
 
@@ -99,24 +99,24 @@ public class ModelRepositoryTest {
     }
 
     @Test
-    @Sql(scripts = "classpath:sql/tests/delete_department.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:sql/tests/delete_faculty.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
-    public void deleteDepartmentByIdTest() {
-        Optional<Model> optional = repository.getDepByName("DEPARTMENT");
+    public void deleteFacultyByIdTest() {
+        Optional<Model> optional = repository.getFacByName("FACULTY");
         long id = 0;
         if (optional.isPresent()) {
             id = optional.get().getId();
         }
-        repository.deleteById(Department.class, id);
-        optional = repository.getById(Department.class, id);
+        repository.deleteById(Faculty.class, id);
+        optional = repository.getById(Faculty.class, id);
         if (optional.isPresent()) {
             fail("optional must be empty!");
         }
     }
 
     @Test
-    public void deleteNonexistentDepTest() {
-        int result = repository.deleteById(Department.class, 4L);
+    public void deleteNonexistentFacTest() {
+        int result = repository.deleteById(Faculty.class, 4L);
         assertEquals(0, result);
     }
 
@@ -127,19 +127,19 @@ public class ModelRepositoryTest {
     }
 
     @Test
-    @Sql(scripts = "classpath:sql/tests/add_department.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:sql/tests/add_faculty.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
-    public void saveDepartmentTest() {
-        Department expected = new Department("DEPARTMENT");
+    public void saveFacultyTest() {
+        Faculty expected = new Faculty("FACULTY");
         Optional<List<Model>> optional = repository.getList(Subject.class);
         optional.ifPresent(list -> list.forEach(m -> {
             Subject subject = (Subject) m;
-            subject.getDepartments().add(expected);
+            subject.getFaculties().add(expected);
             repository.saveOrUpdate(subject);
         }));
-        Optional<Model> optional1 = repository.getDepByName("DEPARTMENT");
+        Optional<Model> optional1 = repository.getFacByName("FACULTY");
         optional1.ifPresent(m -> {
-            Department actual = (Department) m;
+            Faculty actual = (Faculty) m;
             assertEquals(expected.getName(), actual.getName());
             assertTrue(actual.getSubjects().size() > 0);
         });
@@ -150,14 +150,14 @@ public class ModelRepositoryTest {
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void saveSubjectTest() {
         Subject expected = new Subject("SUBJECT");
-        Optional<List<Model>> optional = repository.getList(Department.class);
-        optional.ifPresent(list -> list.forEach(i -> expected.getDepartments().add((Department) i)));
+        Optional<List<Model>> optional = repository.getList(Faculty.class);
+        optional.ifPresent(list -> list.forEach(i -> expected.getFaculties().add((Faculty) i)));
         repository.saveOrUpdate(expected);
         Optional<Model> optional1 = repository.getSubjectByName("SUBJECT");
         optional1.ifPresentOrElse(n -> {
             Subject actual = (Subject) n;
             assertEquals(expected.getName(), actual.getName());
-            assertTrue(actual.getDepartments().size() > 0);
+            assertTrue(actual.getFaculties().size() > 0);
         }, () -> fail("optional can't be empty!"));
     }
 
@@ -165,9 +165,9 @@ public class ModelRepositoryTest {
     @Sql(scripts = "classpath:sql/tests/add_student.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void saveStudentTest() {
-        Optional<Model> optional = repository.getDepByName("DEPARTMENT");
+        Optional<Model> optional = repository.getFacByName("FACULTY");
         if (optional.isPresent()) {
-            Department department = (Department) optional.get();
+            Faculty faculty = (Faculty) optional.get();
             Student expected = new Student();
             expected.setFirst_name("FIRST-NAME");
             expected.setLast_name("LAST-NAME");
@@ -175,14 +175,14 @@ public class ModelRepositoryTest {
             expected.setEmail("EMAIL");
             expected.setRole(Role.USER);
             expected.setBirthday(LocalDate.of(2001, 4, 14));
-            expected.setDepartment(department);
+            expected.setFaculty(faculty);
             repository.saveOrUpdate(expected);
             Optional<Model> optional1 = repository.getStudByFullName("FIRST-NAME", "LAST-NAME");
             optional1.ifPresentOrElse(m -> {
                 Student actual = (Student) m;
                 assertEquals(expected.getFirst_name(), actual.getFirst_name());
                 assertEquals(expected.getLast_name(), actual.getLast_name());
-                assertNotNull(expected.getDepartment());
+                assertNotNull(expected.getFaculty());
             }, () -> fail("optional can't be empty!"));
         }
     }
@@ -210,16 +210,16 @@ public class ModelRepositoryTest {
     @Test
     @Sql(scripts = "classpath:sql/tests/add_student.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
-    public void getDepByNameTest() {
-        Optional<Model> optional = repository.getDepByName("DEPARTMENT");
+    public void getFacByNameTest() {
+        Optional<Model> optional = repository.getFacByName("FACULTY");
         optional.ifPresentOrElse(m -> {
-            Department department = (Department) m;
-            assertEquals("DEPARTMENT", department.getName());
+            Faculty faculty = (Faculty) m;
+            assertEquals("FACULTY", faculty.getName());
         }, () -> fail("optional can't be empty!"));
     }
 
     @Test
-    @Sql(scripts = "classpath:sql/tests/add_department.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:sql/tests/add_faculty.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void getSubjectByNameTest() {
         Optional<Model> optional = repository.getSubjectByName("SUBJECT-1");
@@ -255,19 +255,19 @@ public class ModelRepositoryTest {
     @Test
     @Sql(scripts = "classpath:sql/tests/add_mark.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
-    public void getStudsByDepIdTest() {
-        Optional<Model> opDepartment = repository.getDepByName("TEST_DEPARTMENT");
+    public void getStudsByFacIdTest() {
+        Optional<Model> opFaculty = repository.getFacByName("TEST_FACULTY");
         long id = 0;
-        if (opDepartment.isPresent()) {
-            id = opDepartment.get().getId();
+        if (opFaculty.isPresent()) {
+            id = opFaculty.get().getId();
         }
-        Optional<List<Model>> optional = repository.getStudsByDepId(id);
-        long depId = id;
+        Optional<List<Model>> optional = repository.getStudsByFucId(id);
+        long facId = id;
         optional.ifPresentOrElse(m -> {
             assertTrue(m.size() > 0);
             m.forEach(i -> {
                 Student student = (Student) i;
-                assertEquals(depId, student.getDepartment().getId());
+                assertEquals(facId, student.getFaculty().getId());
             });
         }, () -> fail("optional can't be empty!"));
     }
@@ -276,7 +276,7 @@ public class ModelRepositoryTest {
     @Sql(scripts = "classpath:sql/tests/delete_student.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void getMarksForMonthTest() {
-        Optional<Model> optional = repository.getDepByName("DEPARTMENT");
+        Optional<Model> optional = repository.getFacByName("FACULTY");
         long id = 0;
         if (optional.isPresent()) {
             id = optional.get().getId();
@@ -295,12 +295,12 @@ public class ModelRepositoryTest {
     @Sql(scripts = "classpath:sql/tests/add_student.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void getByIdTest() {
-        Optional<Model> optional = repository.getById(Department.class, repository.getDepByName("DEPARTMENT").get().getId());
+        Optional<Model> optional = repository.getById(Faculty.class, repository.getFacByName("FACULTY").get().getId());
         optional.ifPresentOrElse(m -> m.getId(), () -> fail("optional can't be empty!"));
     }
 
     @Test
-    @Sql(scripts = "classpath:sql/tests/delete_department.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:sql/tests/delete_faculty.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void getListByIdTest() {
         Optional<List<Model>> optionalList = repository.getList(Subject.class);

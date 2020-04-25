@@ -9,9 +9,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import project.model.Department;
+import project.model.Faculty;
 import project.model.Subject;
-import project.service.DepartmentService;
+import project.service.FacultytService;
 import project.service.SubjectService;
 
 import java.util.Arrays;
@@ -44,7 +44,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     private SubjectService subjectService;
 
     @Mock
-    private DepartmentService departmentService;
+    private FacultytService facultytService;
 
     @BeforeEach
     public void setUp() {
@@ -110,22 +110,22 @@ public class SubjectControllerTest extends BaseControllerTest {
 
     @Test
     public void saveTest() throws Exception {
-        Department dep1 = new Department();
-        dep1.setId(1L);
-        dep1.setName("Dep1");
-        Department dep2 = new Department();
-        dep2.setId(2L);
-        dep2.setName("Dep2");
-        Department dep3 = new Department();
-        dep3.setId(3L);
-        dep3.setName("Dep3");
+        Faculty fac1 = new Faculty();
+        fac1.setId(1L);
+        fac1.setName("Fac1");
+        Faculty fac2 = new Faculty();
+        fac2.setId(2L);
+        fac2.setName("Fac2");
+        Faculty fac3 = new Faculty();
+        fac3.setId(3L);
+        fac3.setName("Fac3");
 
         Subject subject = new Subject();
         subject.setName("Subject");
 
         Long[] ids = {1L, 2L, 3L};
 
-        when(departmentService.getListById(ids)).thenReturn(Arrays.asList(dep1, dep2, dep3));
+        when(facultytService.getListById(ids)).thenReturn(Arrays.asList(fac1, fac2, fac3));
         when(subjectService.save(subject)).thenReturn(true);
         when(subjectService.getByName("Subject")).thenReturn(subject);
 
@@ -136,8 +136,8 @@ public class SubjectControllerTest extends BaseControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated());
 
-        verify(departmentService, only()).getListById(ids);
-        verifyNoMoreInteractions(departmentService);
+        verify(facultytService, only()).getListById(ids);
+        verifyNoMoreInteractions(facultytService);
         verify(subjectService, times(1)).save(subject);
         verify(subjectService, times(1)).getByName("Subject");
         verifyNoMoreInteractions(subjectService);

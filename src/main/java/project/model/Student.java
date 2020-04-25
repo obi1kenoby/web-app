@@ -20,8 +20,8 @@ import java.util.Set;
 @Entity
 @Table(name = "STUDENT")
 @Data
-@EqualsAndHashCode(exclude = {"marks", "subjects", "department"}, callSuper = true)
-@ToString(exclude = {"marks", "subjects", "password", "photo", "department"})
+@EqualsAndHashCode(exclude = {"marks", "subjects", "faculty"}, callSuper = true)
+@ToString(exclude = {"marks", "subjects", "password", "photo", "faculty"})
 @NoArgsConstructor
 public class Student extends Model implements Comparable<Student>{
 
@@ -61,8 +61,8 @@ public class Student extends Model implements Comparable<Student>{
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DEP_ID")
-    private Department department;
+    @JoinColumn(name = "FAC_ID")
+    private Faculty faculty;
 
     @Override
     public int compareTo(Student o) {

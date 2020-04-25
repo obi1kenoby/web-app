@@ -28,15 +28,15 @@ public class ModelRepositoryImpl implements ModelRepository {
     private SessionFactory sessionFactory;
 
     /**
-     * Implementation of ${@link ModelRepository#getDepByName(String)}.
+     * Implementation of ${@link ModelRepository#getFacByName(String)}.
      *
-     * @param name of department {@link Department}.
+     * @param name of department {@link Faculty}.
      * @return instance of {@link Optional<Model>}.
      */
     @Override
-    public Optional<Model> getDepByName(String name) {
+    public Optional<Model> getFacByName(String name) {
         Session session = getSession();
-        Query<Model> query = session.createQuery("SELECT DISTINCT d FROM Department d WHERE d.name =:name", Model.class);
+        Query<Model> query = session.createQuery("SELECT DISTINCT d FROM Faculty d WHERE d.name =:name", Model.class);
         query.setParameter("name", name);
         try {
             List<Model> models = query.getResultList();
@@ -44,14 +44,14 @@ public class ModelRepositoryImpl implements ModelRepository {
                 if (models.size() > 1) {
                     throw new NonUniqueResultException(models.size());
                 } else {
-                    log.info("IN getDepByName, Department with name: {} successfully loaded.", name);
-                    return Optional.of((Department)models.get(0));
+                    log.info("IN getFacByName, Department with name: {} successfully loaded.", name);
+                    return Optional.of((Faculty)models.get(0));
                 }
             }
         } catch (NoResultException e) {
-            log.error("IN getDepByName, error was occurred while loading Department with name: {}.", name, e);
+            log.error("IN getFacByName, error was occurred while loading Department with name: {}.", name, e);
         }
-        log.info("IN getDepByName, Department with name: {} is miss in db.", name);
+        log.info("IN getFacByName, Department with name: {} is miss in db.", name);
         return Optional.empty();
     }
 
@@ -123,13 +123,13 @@ public class ModelRepositoryImpl implements ModelRepository {
     /**
      * Load list fo students {@link List<Student>} from DB by their department.
      *
-     * @param id of department {@link Department}.
+     * @param id of department {@link Faculty}.
      * @return instance of {@link Optional<Student>}.
      */
     @Override
-    public Optional<List<Model>> getStudsByDepId(Long id) {
+    public Optional<List<Model>> getStudsByFucId(Long id) {
         Session session = getSession();
-        Query<Model> query = session.createQuery("SELECT s FROM Student s WHERE s.department.id =:id", Model.class);
+        Query<Model> query = session.createQuery("SELECT s FROM Student s WHERE s.faculty.id =:id", Model.class);
         query.setParameter("id", id);
         List<Model> result = query.getResultList();
         if (result.isEmpty()) {
@@ -145,7 +145,7 @@ public class ModelRepositoryImpl implements ModelRepository {
      * Loads list of all marks {@link Mark} by subject {@link Subject}, date between special dates range, and
      * student {@link Student} with special department id.
      *
-     * @param depId id of department {@link Department}.
+     * @param depId id of department {@link Faculty}.
      * @param subject name of subject {@link Subject}.
      * @param since start date {@link LocalDate}.
      * @param to end date {@link LocalDate}.
@@ -154,7 +154,7 @@ public class ModelRepositoryImpl implements ModelRepository {
     @Override
     public Optional<List<Model>> getMarksForMonth(Long depId, String subject, LocalDate since, LocalDate to) {
         Session session = getSession();
-        Query<Model> query = session.createQuery("SELECT m FROM Mark m WHERE m.date BETWEEN :since AND :to AND (m.subject.name =:subject) AND (m.student IN (SELECT s FROM Student s WHERE s.department.id =:depId))", Model.class);
+        Query<Model> query = session.createQuery("SELECT m FROM Mark m WHERE m.date BETWEEN :since AND :to AND (m.subject.name =:subject) AND (m.student IN (SELECT s FROM Student s WHERE s.faculty.id =:depId))", Model.class);
         query.setParameter("depId", depId);
         query.setParameter("subject", subject);
         query.setParameter("since", since);
@@ -235,7 +235,7 @@ public class ModelRepositoryImpl implements ModelRepository {
      * Implementation of ${@link ModelRepository#getListById(Class, Long[])}.
      *
      * @param clazz subclass of {@link Model}.
-     * @param ids array of needed departments {@link Department}.
+     * @param ids array of needed departments {@link Faculty}.
      * @return list of models {@link Optional<List<Mark>>}.
      */
     @Override

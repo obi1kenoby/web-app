@@ -97,8 +97,8 @@ public class ApplicationConfig implements ApplicationContextAware, WebMvcConfigu
     }
 
     @Bean
-    public Service departmentService() {
-        return new DepartmentService();
+    public Service facultyService() {
+        return new FacultytService();
     }
 
     @Bean
