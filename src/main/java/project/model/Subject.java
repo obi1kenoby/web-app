@@ -18,9 +18,9 @@ import java.util.Set;
 @Entity
 @Table(name = "SUBJECT")
 @Data
-@EqualsAndHashCode(exclude = {"faculties", "students", "marks"}, callSuper = true)
+@EqualsAndHashCode(exclude = {"faculties", "students", "grades"}, callSuper = true)
 @NoArgsConstructor
-@ToString(exclude = {"marks", "faculties", "students"})
+@ToString(exclude = {"grades", "faculties", "students"})
 public class Subject extends Model {
 
     @Column(name = "NAME")
@@ -39,12 +39,12 @@ public class Subject extends Model {
 
     @JsonIgnore
     @OneToMany(mappedBy = "subject")
-    private Set<Mark> marks;
+    private Set<Grade> grades;
 
     public Subject(String name) {
         this.name = name;
         this.faculties = new HashSet<>();
         this.students = new HashSet<>();
-        this.marks = new HashSet<>();
+        this.grades = new HashSet<>();
     }
 }

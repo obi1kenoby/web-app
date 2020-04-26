@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import project.model.Faculty;
 import project.model.Subject;
-import project.service.FacultytService;
+import project.service.FacultyService;
 import project.service.SubjectService;
 
 import java.util.Arrays;
@@ -44,7 +44,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     private SubjectService subjectService;
 
     @Mock
-    private FacultytService facultytService;
+    private FacultyService facultytService;
 
     @BeforeEach
     public void setUp() {

@@ -98,7 +98,7 @@ public class ApplicationConfig implements ApplicationContextAware, WebMvcConfigu
 
     @Bean
     public Service facultyService() {
-        return new FacultytService();
+        return new FacultyService();
     }
 
     @Bean
@@ -112,7 +112,7 @@ public class ApplicationConfig implements ApplicationContextAware, WebMvcConfigu
     }
 
     @Bean
-    public Service markService() {
-        return new MarkService();
+    public Service gradeService() {
+        return new GradeService();
     }
 }

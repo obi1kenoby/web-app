@@ -61,8 +61,8 @@ public class ModelRepositoryTest {
     @Sql(scripts = "classpath:sql/tests/delete_student.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void deleteMarkByIdTest() {
-        repository.deleteById(Mark.class, 1L);
-        Optional<Model> optional = repository.getById(Mark.class, 1L);
+        repository.deleteById(Grade.class, 1L);
+        Optional<Model> optional = repository.getById(Grade.class, 1L);
         if (optional.isPresent()) {
             fail("optional must be empty!");
         }
@@ -188,22 +188,23 @@ public class ModelRepositoryTest {
     }
 
     @Test
-    @Sql(scripts = "classpath:sql/tests/add_mark.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:sql/tests/add_grade.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void saveMarkTest() {
         Optional<Model> opStudent = repository.getStudByFullName("FIRST-NAME", "LAST-NAME");
         Optional<Model> opSubject = repository.getSubjectByName("SUBJECT");
-        Mark mark = new Mark();
-        mark.setValue(5);
-        mark.setDate(LocalDate.now());
-        opSubject.ifPresent(model -> mark.setSubject((Subject) model));
-        opStudent.ifPresent(model -> mark.setStudent((Student) model));
-        repository.saveOrUpdate(mark);
-        Optional<List<Model>> opMark = repository.getList(Mark.class);
+        Grade grade = new Grade();
+        grade.setValue(55.0);
+        grade.setGrade(GradeValue.getValueFromPercent(55.0));
+        grade.setDate(LocalDate.now());
+        opSubject.ifPresent(model -> grade.setSubject((Subject) model));
+        opStudent.ifPresent(model -> grade.setStudent((Student) model));
+        repository.saveOrUpdate(grade);
+        Optional<List<Model>> opMark = repository.getList(Grade.class);
         opMark.ifPresentOrElse(m -> m.forEach(i -> {
-            Mark mark1 = (Mark)i ;
-            assertEquals(mark.getValue(), mark1.getValue());
-            assertEquals(mark.getDate(), mark1.getDate());
+            Grade mark1 = (Grade)i ;
+            assertEquals(grade.getValue(), mark1.getValue());
+            assertEquals(grade.getDate(), mark1.getDate());
         }), () -> fail("optional can't be empty!"));
     }
 
@@ -230,7 +231,7 @@ public class ModelRepositoryTest {
     }
 
     @Test
-    @Sql(scripts = "classpath:sql/tests/add_mark.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:sql/tests/add_grade.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void getStudByFullNameTest() {
         Optional<Model> optional = repository.getStudByFullName("FIRST-NAME", "LAST-NAME");
@@ -242,7 +243,7 @@ public class ModelRepositoryTest {
     }
 
     @Test
-    @Sql(scripts = "classpath:sql/tests/add_mark.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:sql/tests/add_grade.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void getStudByEmailTest() {
         Optional<Model> optional = repository.getStudByEmail("EMAIL");
@@ -253,7 +254,7 @@ public class ModelRepositoryTest {
     }
 
     @Test
-    @Sql(scripts = "classpath:sql/tests/add_mark.sql", executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:sql/tests/add_grade.sql", executionPhase = BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:sql/tests/delete_all.sql", executionPhase = AFTER_TEST_METHOD)
     public void getStudsByFacIdTest() {
         Optional<Model> opFaculty = repository.getFacByName("TEST_FACULTY");
@@ -281,11 +282,11 @@ public class ModelRepositoryTest {
         if (optional.isPresent()) {
             id = optional.get().getId();
         }
-        Optional<List<Model>> listOptional = repository.getMarksForMonth(id, "SUBJECT", LocalDate.of(2018, 4, 1), LocalDate.of(2018, 5, 1));
+        Optional<List<Model>> listOptional = repository.getGradesForMonth(id, "SUBJECT", LocalDate.of(2018, 4, 1), LocalDate.of(2018, 5, 1));
         listOptional.ifPresentOrElse(m -> {
             assertEquals(2, m.size());
             m.forEach(i -> {
-                Mark mark = (Mark) i;
+                Grade mark = (Grade) i;
                 assertTrue(mark.getDate().isAfter(LocalDate.of(2018, 4, 1).minusDays(1)) && mark.getDate().isBefore(LocalDate.of(2018, 5, 1)));
             });
         }, () ->  fail("optional can't be empty!"));
@@ -323,12 +324,12 @@ public class ModelRepositoryTest {
         Optional<Model> student = repository.getStudByFullName("FIRST-NAME", "LAST-NAME");
         student.ifPresent(s -> {
             Student stud = (Student) s;
-            List<Long> list = stud.getMarks().stream().map(Model::getId).collect(Collectors.toList());
+            List<Long> list = stud.getGrades().stream().map(Model::getId).collect(Collectors.toList());
             Long[] ids = new Long[list.size()];
             for (Long id : list) {
                 ids[list.indexOf(id)] = id;
             }
-            Optional<List<Model>> optional = repository.getListById(Mark.class, ids);
+            Optional<List<Model>> optional = repository.getListById(Grade.class, ids);
             optional.ifPresentOrElse(m -> assertTrue(m.size() > 0), () -> fail("optional can't be empty!"));
         });
     }

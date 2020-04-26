@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import project.model.Faculty;
 import project.model.Model;
 import project.model.Subject;
-import project.service.FacultytService;
+import project.service.FacultyService;
 import project.service.Service;
 
 import java.util.Arrays;
@@ -71,8 +71,8 @@ public class FacultyController {
             log.info("IN save: subjects with id's: {} is not exist.", Arrays.toString(ids));
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        ((FacultytService)this.facultyService).saveWithSubject(faculty, subjects);
-        Model result = ((FacultytService)this.facultyService).getByName(name);
+        ((FacultyService)this.facultyService).saveWithSubject(faculty, subjects);
+        Model result = ((FacultyService)this.facultyService).getByName(name);
         if (result != null && result.getId() > 0) {
            return new ResponseEntity<>(faculty, HttpStatus.OK);
         }

@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import project.model.Faculty;
 import project.model.Model;
-import project.service.FacultytService;
+import project.service.FacultyService;
 import project.service.SubjectService;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class FacultyControllerTest extends BaseControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private FacultytService facultytService;
+    private FacultyService facultytService;
 
     @Mock
     private SubjectService subjectService;

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import project.model.Faculty;
 import project.model.Model;
 import project.model.Subject;
-import project.service.FacultytService;
+import project.service.FacultyService;
 import project.service.Service;
 import project.service.SubjectService;
 
@@ -101,7 +101,7 @@ public class SubjectController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Subject subject = new Subject(name);
-        List<Model> departments = ((FacultytService)this.facultyService).getListById(ids);
+        List<Model> departments = ((FacultyService)this.facultyService).getListById(ids);
         if (departments.size() != ids.length) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import project.model.Faculty;
 import project.model.Student;
-import project.service.FacultytService;
+import project.service.FacultyService;
 import project.service.StudentService;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class StudentControllerTest extends BaseControllerTest {
     private StudentService studentService;
 
     @Mock
-    private FacultytService facultytService;
+    private FacultyService facultytService;
 
     @Spy
     private BCryptPasswordEncoder encoder;

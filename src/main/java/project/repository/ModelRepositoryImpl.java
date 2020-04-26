@@ -142,19 +142,19 @@ public class ModelRepositoryImpl implements ModelRepository {
     }
 
     /**
-     * Loads list of all marks {@link Mark} by subject {@link Subject}, date between special dates range, and
+     * Loads list of all marks {@link Grade} by subject {@link Subject}, date between special dates range, and
      * student {@link Student} with special department id.
      *
      * @param depId id of department {@link Faculty}.
      * @param subject name of subject {@link Subject}.
      * @param since start date {@link LocalDate}.
      * @param to end date {@link LocalDate}.
-     * @return list of marks {@link Optional<List<Mark>>}.
+     * @return list of marks {@link Optional<List< Grade >>}.
      */
     @Override
-    public Optional<List<Model>> getMarksForMonth(Long depId, String subject, LocalDate since, LocalDate to) {
+    public Optional<List<Model>> getGradesForMonth(Long depId, String subject, LocalDate since, LocalDate to) {
         Session session = getSession();
-        Query<Model> query = session.createQuery("SELECT m FROM Mark m WHERE m.date BETWEEN :since AND :to AND (m.subject.name =:subject) AND (m.student IN (SELECT s FROM Student s WHERE s.faculty.id =:depId))", Model.class);
+        Query<Model> query = session.createQuery("SELECT m FROM Grade m WHERE m.date BETWEEN :since AND :to AND (m.subject.name =:subject) AND (m.student IN (SELECT s FROM Student s WHERE s.faculty.id =:depId))", Model.class);
         query.setParameter("depId", depId);
         query.setParameter("subject", subject);
         query.setParameter("since", since);
@@ -195,7 +195,7 @@ public class ModelRepositoryImpl implements ModelRepository {
      * Implementation of ${@link ModelRepository#getById(Class, Long)}.
      *
      * @param clazz subclass of {@link Model}.
-     * @param id of mark {@link Mark}.
+     * @param id of mark {@link Grade}.
      * @return instance of model {@link Optional<Model>}.
      */
     @Override
@@ -215,7 +215,7 @@ public class ModelRepositoryImpl implements ModelRepository {
      * Implementation of ${@link ModelRepository#getList}.
      *
      * @param clazz subclass of {@link Model}.
-     * @return list of models {@link Optional<List<Mark>>}.
+     * @return list of models {@link Optional<List< Grade >>}.
      */
     @Override
     public Optional<List<Model>> getList(Class<? extends Model> clazz) {
@@ -236,7 +236,7 @@ public class ModelRepositoryImpl implements ModelRepository {
      *
      * @param clazz subclass of {@link Model}.
      * @param ids array of needed departments {@link Faculty}.
-     * @return list of models {@link Optional<List<Mark>>}.
+     * @return list of models {@link Optional<List< Grade >>}.
      */
     @Override
     public Optional<List<Model>> getListById(Class<? extends Model> clazz, Long[] ids) {

@@ -1,0 +1,128 @@
+package project.service;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import project.model.Grade;
+import project.model.Model;
+import project.repository.ModelRepositoryImpl;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
+
+/**
+ * Test class for {@link GradeService} class.
+ *
+ * @author Alexander Naumov.
+ */
+@ExtendWith(MockitoExtension.class)
+public class GradeServiceTest {
+
+    @InjectMocks
+    private GradeService service;
+
+    @Mock
+    private ModelRepositoryImpl repository;
+
+    @Test
+    public void getById() {
+        Grade mark = Grade.builder().date(LocalDate.of(2001, 1, 1)).value(1).build();
+        mark.setId(1L);
+        when(repository.getById(Grade.class, 1L)).thenReturn(Optional.of(mark));
+
+        Model model = service.getById(1L);
+
+        assertNotNull(model);
+        assertEquals(model.getId(), 1L);
+        assertTrue(model instanceof Grade);
+        verify(repository, only()).getById(Grade.class, 1L);
+        verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    public void getByIdWithError() {
+        when(repository.getById(Grade.class, -1L)).thenThrow(new RuntimeException());
+
+        Model model = service.getById(-1L);
+
+        assertNull(model);
+        verify(repository, only()).getById(Grade.class, -1L);
+        verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    public void getAll() {
+        List<Model> marks = Arrays.asList(createMark(0), createMark(0), createMark(0));
+        when(repository.getList(Grade.class)).thenReturn(Optional.of(marks));
+
+        List<Model> res = service.getAll();
+
+        res.forEach(m -> assertTrue(m instanceof Grade));
+        assertNotNull(marks);
+        assertEquals(marks.size(), res.size());
+        verify(repository, only()).getList(Grade.class);
+        verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    public void deleteById() {
+        when(repository.deleteById(Grade.class, 1L)).thenReturn(1);
+
+        int result = service.deleteById(1L);
+
+        assertEquals(result, 1);
+        verify(repository).deleteById(Grade.class, 1L);
+        verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    public void save() {
+        Grade mark = createMark(0);
+        doNothing().when(repository).saveOrUpdate(mark);
+
+        boolean res = service.save(mark);
+
+        assertTrue(res);
+        verify(repository, only()).saveOrUpdate(mark);
+        verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    public void getGradesByDateRange() {
+        int mon = 4;
+        List<Model> models = Arrays.asList(createMark(mon), createMark(mon), createMark(mon));
+        when(repository.getList(Grade.class)).thenReturn(Optional.of(models));
+
+        List<Model> marks = service.getGradesByDateRange(LocalDate.of(2001, mon, 1));
+
+        assertNotNull(marks);
+        assertEquals(marks.size(), models.size());
+        marks.forEach(m -> assertTrue(((Grade)m).getDate().getMonthValue() == mon));
+        verify(repository).getList(Grade.class);
+        verifyNoMoreInteractions(repository);
+    }
+
+    private Grade createMark(int mon) {
+        Random random = new Random();
+        Grade mark = new Grade();
+        mark.setId(random.nextInt(9) + 1);
+        mark.setValue(random.nextInt(4) + 1);
+        if (mon == 0) {
+            mark.setDate(LocalDate.of(2001, (random.nextInt(12) + 1), random.nextInt(30) + 1));
+        } else {
+            mark.setDate(LocalDate.of(2001, mon, random.nextInt(25) + 1));
+        }
+        return mark;
+    }
+}

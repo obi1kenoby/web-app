@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import project.model.Model;
 import project.model.Subject;
 import project.repository.ModelRepository;
-import project.repository.ModelRepositoryImpl;
 
 import java.util.*;
 

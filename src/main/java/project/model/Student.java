@@ -20,8 +20,8 @@ import java.util.Set;
 @Entity
 @Table(name = "STUDENT")
 @Data
-@EqualsAndHashCode(exclude = {"marks", "subjects", "faculty"}, callSuper = true)
-@ToString(exclude = {"marks", "subjects", "password", "photo", "faculty"})
+@EqualsAndHashCode(exclude = {"grades", "subjects", "faculty"}, callSuper = true)
+@ToString(exclude = {"grades", "subjects", "password", "photo", "faculty"})
 @NoArgsConstructor
 public class Student extends Model implements Comparable<Student>{
 
@@ -50,7 +50,7 @@ public class Student extends Model implements Comparable<Student>{
     private String photo;
 
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "student")
-    private Set<Mark> marks;
+    private Set<Grade> grades;
 
     @JsonIgnore
     @ManyToMany

@@ -9,10 +9,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import project.config.ApplicationConfig;
 import project.config.DataConfig;
-import project.model.Faculty;
-import project.model.Mark;
-import project.model.Student;
-import project.model.Subject;
+import project.model.*;
 
 import java.time.LocalDate;
 
@@ -36,12 +33,13 @@ public class BaseControllerTest {
         assertNotNull(context);
     }
 
-    static Mark createMark(Long id, Integer value, LocalDate date) {
-        Mark mark = new Mark();
-        mark.setId(id);
-        mark.setDate(date);
-        mark.setValue(value);
-        return mark;
+    static Grade createGrade(Long id, Double percent, LocalDate date) {
+        Grade grade = new Grade();
+        grade.setId(id);
+        grade.setDate(date);
+        grade.setValue(percent);
+        grade.setGrade(GradeValue.getValueFromPercent(percent));
+        return grade;
     }
 
     static Student createStudent(Long id, String firstName, String lastName) {

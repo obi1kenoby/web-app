@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 
 
 /**
- * Test class for {@link FacultytService} class.
+ * Test class for {@link FacultyService} class.
  *
  * @author Alexander Naumov.
  */
@@ -30,7 +30,7 @@ public class FacultyServiceTest {
     private static Random random = new Random();
 
     @InjectMocks
-    private FacultytService service;
+    private FacultyService service;
 
     @Mock
     private ModelRepositoryImpl repository;

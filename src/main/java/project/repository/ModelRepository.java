@@ -55,16 +55,16 @@ public interface ModelRepository {
     Optional<List<Model>> getStudsByFucId(Long id);
 
     /**
-     * Gets needed {@link Mark}'s from DB, by {@link Subject} name, {@link Faculty} ID,
+     * Gets needed {@link Grade}'s from DB, by {@link Subject} name, {@link Faculty} ID,
      * and special date range.
      *
      * @param depId id of department.
      * @param subject name of subject.
      * @param since start date.
      * @param to end date.
-     * @return list of {@link Mark}.
+     * @return list of {@link Grade}.
      */
-    Optional<List<Model>> getMarksForMonth(Long depId, String subject, LocalDate since, LocalDate to);
+    Optional<List<Model>> getGradesForMonth(Long depId, String subject, LocalDate since, LocalDate to);
 
     /**
      * Saves or updates {@link Model} to DB.

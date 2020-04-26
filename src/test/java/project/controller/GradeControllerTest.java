@@ -1,0 +1,221 @@
+package project.controller;
+
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import project.model.Grade;
+import project.model.Student;
+import project.model.Subject;
+import project.service.GradeService;
+import project.service.StudentService;
+import project.service.SubjectService;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+/**
+ * Test class for controller {@link GradeController} class.
+ *
+ * @author Alexander Naumov.
+ */
+public class GradeControllerTest extends BaseControllerTest {
+
+    private static final String path = "/api/grade";
+
+    private MockMvc mockMvc;
+
+    @InjectMocks
+    private GradeController markController;
+
+    @Mock
+    private GradeService gradeService;
+
+    @Mock
+    private StudentService studentService;
+
+    @Mock
+    private SubjectService subjectService;
+
+    @BeforeEach
+    public void init() {
+        if (mockMvc == null) {
+            MockitoAnnotations.initMocks(this);
+            mockMvc = MockMvcBuilders.standaloneSetup(markController).build();
+        }
+    }
+
+    @Test
+    public void getGradesByDateRangeTest() throws Exception {
+        LocalDate date = LocalDate.of(2001, 1, 1);
+        when(gradeService.getGradesByDateRange(date))
+                .thenReturn(Arrays.asList(createGrade(1L, 80d, LocalDate.of(2001, 1, 1)),
+                        createGrade(2L, 35d, LocalDate.of(2001, 1, 2)),
+                        createGrade(3L, 74d, LocalDate.of(2001, 1, 1))));
+
+        mockMvc.perform(get(path).param("date", "2001-01-01"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$", hasSize(3)));
+
+        verify(gradeService, only()).getGradesByDateRange(date);
+        verifyNoMoreInteractions(gradeService);
+    }
+
+    @Test
+    public void getGradesByDateRangeBadDate() throws Exception {
+        final String[] dates = {"$3sf5", "2001/11/01", "2001-dec-31"};
+        for (String date: dates) {
+            mockMvc.perform(get(path).param("date", date))
+                    .andDo(print())
+                    .andExpect(status().isBadRequest());
+        }
+    }
+
+    @Test
+    public void getGradesByDateRangeMarksNotFound() throws Exception {
+        final String date = "1999-01-01";
+        final LocalDate localDate = LocalDate.of(1999, 1, 1);
+        when(gradeService.getGradesByDateRange(localDate))
+                .thenReturn(new ArrayList<>());
+
+        mockMvc.perform(get(path).param("date", date))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+        verify(gradeService, only()).getGradesByDateRange(localDate);
+        verifyNoMoreInteractions(gradeService);
+    }
+
+    @Test
+    public void getMarkByIdTest() throws Exception {
+        when(gradeService.getById(1L)).thenReturn(createGrade(1L, 55d, LocalDate.of(2001, 1, 1)));
+
+        mockMvc.perform(get(path + "/{id}", 1))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.value").value("55.0"));
+
+        verify(gradeService, times(1)).getById(1L);
+        verifyNoMoreInteractions(gradeService);
+    }
+
+    @Test
+    public void getGradeByIdIncorrectId() throws Exception {
+        final Long[] ids = {-1L, 0L, null};
+
+        for (Long id : ids) {
+            mockMvc.perform(get(path + "/{id}", id))
+                    .andDo(print())
+                    .andExpect(status().isBadRequest());
+        }
+    }
+
+    @Test
+    public void getGradeByIdNonexistentGrade() throws Exception {
+        final long id = 100L;
+        when(gradeService.getById(id)).thenReturn(null);
+
+        mockMvc.perform(get(path + "/{id}", id))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+        verify(gradeService, only()).getById(id);
+        verifyNoMoreInteractions(gradeService);
+    }
+
+    @Test
+    public void deleteGradeById() throws Exception {
+        Grade grade = createGrade(1L, 82d, LocalDate.of(2001, 1, 1));
+        when(gradeService.deleteById(grade.getId())).thenReturn(1);
+
+        mockMvc.perform(delete(path + "/{id}", grade.getId()))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        verify(gradeService, only()).deleteById(grade.getId());
+        verifyNoMoreInteractions(gradeService);
+    }
+
+    @Test
+    public void deleteGradeByIdIncorrectId() throws Exception {
+        final Long[] ids = {-1L, 0L};
+
+        for (Long id : ids) {
+            mockMvc.perform(delete(path + "/{id}", id))
+                    .andDo(print())
+                    .andExpect(status().isBadRequest());
+        }
+    }
+
+    @Test
+    public void deleteGradeByIdNonexistentGrade() throws Exception {
+        final long id = 100L;
+        when(gradeService.deleteById(id)).thenReturn(0);
+
+        mockMvc.perform(delete(path + "/{id}", id))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+        verify(gradeService, only()).deleteById(id);
+        verifyNoMoreInteractions(gradeService);
+    }
+
+    @Test
+    public void saveGrade() throws Exception {
+        Grade grade = createGrade(1L, 63d, LocalDate.of(2001, 1, 1));
+        Student student = createStudent(1L, "firstName", "lastName");
+        Subject subject = createSubject(1L, "subject");
+        grade.setStudent(student);
+        grade.setSubject(subject);
+        when(gradeService.save(grade)).thenReturn(true);
+        when(subjectService.getById(1L)).thenReturn(subject);
+        when(studentService.getById(1L)).thenReturn(student);
+
+        mockMvc.perform(post(path)
+                .param("id", "1")
+                .param("percent", "63.0")
+                .param("date", "2001-01-01")
+                .param("stud_id", "1")
+                .param("sub_id", "1"))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post(path)
+                .param("id", "0")
+                .param("percent", "")
+                .param("date", "2002-03-08")
+                .param("stud_id", "2")
+                .param("sub_id", "4"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+        verify(gradeService, times(1)).save(grade);
+        verify(subjectService, times(1)).getById(1L);
+        verify(studentService, times(1)).getById(1L);
+
+        verifyNoMoreInteractions(gradeService);
+        verifyNoMoreInteractions(subjectService);
+        verifyNoMoreInteractions(studentService);
+    }
+}

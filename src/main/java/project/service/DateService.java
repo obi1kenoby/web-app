@@ -14,14 +14,14 @@ public class DateService {
     /**
      * Calculates and returns all weekdays within month.
      *
-     * @param current_date represents date that in needed month.
+     * @param currentDate represents date that in needed month.
      * @return list of dates {@link List<LocalDate>}.
      */
-    public List<LocalDate> month(LocalDate current_date){
+    public List<LocalDate> month(LocalDate currentDate){
         List<LocalDate> dates = new ArrayList<>();
-        for (int i = 1; i <= current_date.lengthOfMonth(); i++) {
-            int year = current_date.getYear();
-            int month = current_date.getMonthValue();
+        for (int i = 1; i <= currentDate.lengthOfMonth(); i++) {
+            int year = currentDate.getYear();
+            int month = currentDate.getMonthValue();
             if (LocalDate.of(year, month, i).getDayOfWeek().getValue() < 6) {
                 dates.add(LocalDate.of(year, month, i));
             }
