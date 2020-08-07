@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="alex" id="1596916410941-1">
+        <createSequence sequenceName="department_id_seq"/>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-2">
+        <createSequence sequenceName="mark_id_seq"/>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-3">
+        <createSequence sequenceName="student_id_seq"/>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-4">
+        <createSequence sequenceName="subject_id_seq"/>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-5">
+        <createTable tableName="department">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="pkdepid"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-6">
+        <createTable tableName="mark">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="pkmarkid"/>
+            </column>
+            <column name="value" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stud_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subj_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-7">
+        <createTable tableName="student">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="pkstudid"/>
+            </column>
+            <column name="first_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="birthday" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="photo" type="TEXT"/>
+            <column name="dep_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-8">
+        <createTable tableName="subject">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="pksubjid"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-9">
+        <createTable tableName="subject_department">
+            <column name="sub_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dep_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-10">
+        <createTable tableName="subject_student">
+            <column name="sub_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stud_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-11">
+        <addUniqueConstraint columnNames="email" constraintName="student_email_key" tableName="student"/>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-12">
+        <addUniqueConstraint columnNames="sub_id, dep_id" constraintName="subject_department_sub_id_dep_id_key" tableName="subject_department"/>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-13">
+        <addUniqueConstraint columnNames="sub_id, stud_id" constraintName="subject_student_sub_id_stud_id_key" tableName="subject_student"/>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-14">
+        <addForeignKeyConstraint baseColumnNames="stud_id" baseTableName="mark" constraintName="fkmarkstudid" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="student"/>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-15">
+        <addForeignKeyConstraint baseColumnNames="subj_id" baseTableName="mark" constraintName="fkmarksubjid" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="subject"/>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-16">
+        <addForeignKeyConstraint baseColumnNames="dep_id" baseTableName="student" constraintName="fkstudid" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="department"/>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-17">
+        <addForeignKeyConstraint baseColumnNames="dep_id" baseTableName="subject_department" constraintName="fksubdepdepid" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="department"/>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-18">
+        <addForeignKeyConstraint baseColumnNames="sub_id" baseTableName="subject_department" constraintName="fksubdepsubjid" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="subject"/>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-19">
+        <addForeignKeyConstraint baseColumnNames="stud_id" baseTableName="subject_student" constraintName="fksubstudstudid" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="student"/>
+    </changeSet>
+    <changeSet author="alex" id="1596916410941-20">
+        <addForeignKeyConstraint baseColumnNames="sub_id" baseTableName="subject_student" constraintName="fksubstudsubid" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="subject"/>
+    </changeSet>
+</databaseChangeLog>

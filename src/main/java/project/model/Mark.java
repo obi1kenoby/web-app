@@ -25,7 +25,7 @@ public class Mark extends Model {
     private int value;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "DATE", columnDefinition = "DATE")
+    @Column(name = "DATE")
     private LocalDate date;
 
     @JsonIgnore

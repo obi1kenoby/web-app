@@ -1,0 +1,693 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="alex" id="1596916676774-1">
+        <insert tableName="department">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="WALL"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="KING'S LANDING"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="CASTERLY ROCK"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="4"/>
+            <column name="name" value="DORN"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="5"/>
+            <column name="name" value="WINTERFELL"/>
+        </insert>
+    </changeSet>
+    <changeSet author="alex" id="1596916676774-2">
+        <insert tableName="student">
+            <column name="id" valueNumeric="1"/>
+            <column name="first_name" value="Jaime"/>
+            <column name="last_name" value="Lannister"/>
+            <column name="email" value="test@gmail.com"/>
+            <column name="birthday" valueDate="1988-05-10"/>
+            <column name="password" value="$2a$10$IMATNREoRGEKmCR4MOHaMeuTEvtWo/RV9q5W9Kez2.LdaTiq21aia"/>
+            <column name="role" value="ADMIN"/>
+            <column name="photo"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="student">
+            <column name="id" valueNumeric="2"/>
+            <column name="first_name" value="Catelyn"/>
+            <column name="last_name" value="Stark"/>
+            <column name="email" value="CStar@yahoo.com"/>
+            <column name="birthday" valueDate="1988-05-11"/>
+            <column name="password" value="$2a$10$cA8tWjBsQDF.yIvr4.9WN.sSYNcQcH8EqasAHD0UtWkA1h7iRpwTS"/>
+            <column name="role" value="ADMIN"/>
+            <column name="photo"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="student">
+            <column name="id" valueNumeric="3"/>
+            <column name="first_name" value="Cersei"/>
+            <column name="last_name" value="Lannister"/>
+            <column name="email" value="CerseiQueen@gmail.com"/>
+            <column name="birthday" valueDate="1988-05-12"/>
+            <column name="password" value="******"/>
+            <column name="role" value="USER"/>
+            <column name="photo"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="student">
+            <column name="id" valueNumeric="4"/>
+            <column name="first_name" value="Daenerys"/>
+            <column name="last_name" value="Targaryen"/>
+            <column name="email" value="DanyT@yahoo.com"/>
+            <column name="birthday" valueDate="1988-05-13"/>
+            <column name="password" value="******"/>
+            <column name="role" value="USER"/>
+            <column name="photo"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="student">
+            <column name="id" valueNumeric="5"/>
+            <column name="first_name" value="Jorah"/>
+            <column name="last_name" value="Mormont"/>
+            <column name="email" value="MormontBear4@yahoo.com"/>
+            <column name="birthday" valueDate="1988-05-14"/>
+            <column name="password" value="******"/>
+            <column name="role" value="USER"/>
+            <column name="photo"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="student">
+            <column name="id" valueNumeric="6"/>
+            <column name="first_name" value="Viserys"/>
+            <column name="last_name" value="Targaryen"/>
+            <column name="email" value="BigDragon@yahoo.com"/>
+            <column name="birthday" valueDate="1988-05-15"/>
+            <column name="password" value="******"/>
+            <column name="role" value="USER"/>
+            <column name="photo"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="student">
+            <column name="id" valueNumeric="7"/>
+            <column name="first_name" value="Jon"/>
+            <column name="last_name" value="Snow"/>
+            <column name="email" value="KnowNothing@yahoo.com"/>
+            <column name="birthday" valueDate="1988-05-16"/>
+            <column name="password" value="******"/>
+            <column name="role" value="USER"/>
+            <column name="photo"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="student">
+            <column name="id" valueNumeric="8"/>
+            <column name="first_name" value="Sansa"/>
+            <column name="last_name" value="Stark"/>
+            <column name="email" value="SuperSansa@gmail.com"/>
+            <column name="birthday" valueDate="1988-05-17"/>
+            <column name="password" value="******"/>
+            <column name="role" value="USER"/>
+            <column name="photo"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="student">
+            <column name="id" valueNumeric="9"/>
+            <column name="first_name" value="Arya"/>
+            <column name="last_name" value="Stark"/>
+            <column name="email" value="AryaStar@yahoo.com"/>
+            <column name="birthday" valueDate="1988-05-18"/>
+            <column name="password" value="******"/>
+            <column name="role" value="USER"/>
+            <column name="photo"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="student">
+            <column name="id" valueNumeric="10"/>
+            <column name="first_name" value="Robb"/>
+            <column name="last_name" value="Stark"/>
+            <column name="email" value="HeadlessRob@yahoo.com"/>
+            <column name="birthday" valueDate="1988-05-19"/>
+            <column name="password" value="******"/>
+            <column name="role" value="USER"/>
+            <column name="photo"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="student">
+            <column name="id" valueNumeric="11"/>
+            <column name="first_name" value="Theon"/>
+            <column name="last_name" value="Greyjoy"/>
+            <column name="email" value="GreyjoyT@gmail.com"/>
+            <column name="birthday" valueDate="1988-05-20"/>
+            <column name="password" value="******"/>
+            <column name="role" value="USER"/>
+            <column name="photo"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="student">
+            <column name="id" valueNumeric="12"/>
+            <column name="first_name" value="Bran"/>
+            <column name="last_name" value="Stark"/>
+            <column name="email" value="StarB@yahoo.com"/>
+            <column name="birthday" valueDate="1988-05-21"/>
+            <column name="password" value="******"/>
+            <column name="role" value="USER"/>
+            <column name="photo"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="student">
+            <column name="id" valueNumeric="13"/>
+            <column name="first_name" value="Joffrey"/>
+            <column name="last_name" value="Baratheon"/>
+            <column name="email" value="AngryJoff@gmail.com"/>
+            <column name="birthday" valueDate="1988-05-22"/>
+            <column name="password" value="******"/>
+            <column name="role" value="USER"/>
+            <column name="photo"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="student">
+            <column name="id" valueNumeric="14"/>
+            <column name="first_name" value="Tyrion"/>
+            <column name="last_name" value="Lannister"/>
+            <column name="email" value="TyrionLan@gmail.com"/>
+            <column name="birthday" valueDate="1988-05-23"/>
+            <column name="password" value="******"/>
+            <column name="role" value="USER"/>
+            <column name="photo"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="student">
+            <column name="id" valueNumeric="15"/>
+            <column name="first_name" value="Stannis"/>
+            <column name="last_name" value="Baratheon"/>
+            <column name="email" value="RealKing@gmail.com"/>
+            <column name="birthday" valueDate="1988-05-24"/>
+            <column name="password" value="******"/>
+            <column name="role" value="USER"/>
+            <column name="photo"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+    <changeSet author="alex" id="1596916676774-3">
+        <insert tableName="subject">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="MATHEMATICS"/>
+        </insert>
+        <insert tableName="subject">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="ENGLISH"/>
+        </insert>
+        <insert tableName="subject">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="COMPUTER SCIENCE"/>
+        </insert>
+        <insert tableName="subject">
+            <column name="id" valueNumeric="4"/>
+            <column name="name" value="ART &amp; DESIGN"/>
+        </insert>
+        <insert tableName="subject">
+            <column name="id" valueNumeric="5"/>
+            <column name="name" value="PHILOSOPHY"/>
+        </insert>
+    </changeSet>
+    <changeSet author="alex" id="1596916676774-4">
+        <insert tableName="mark">
+            <column name="id" valueNumeric="1"/>
+            <column name="value" valueNumeric="4"/>
+            <column name="date" valueDate="2019-05-15"/>
+            <column name="stud_id" valueNumeric="12"/>
+            <column name="subj_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="mark">
+            <column name="id" valueNumeric="2"/>
+            <column name="value" valueNumeric="2"/>
+            <column name="date" valueDate="2019-05-05"/>
+            <column name="stud_id" valueNumeric="12"/>
+            <column name="subj_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="mark">
+            <column name="id" valueNumeric="3"/>
+            <column name="value" valueNumeric="2"/>
+            <column name="date" valueDate="2019-05-14"/>
+            <column name="stud_id" valueNumeric="11"/>
+            <column name="subj_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="mark">
+            <column name="id" valueNumeric="4"/>
+            <column name="value" valueNumeric="5"/>
+            <column name="date" valueDate="2019-05-24"/>
+            <column name="stud_id" valueNumeric="7"/>
+            <column name="subj_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="mark">
+            <column name="id" valueNumeric="5"/>
+            <column name="value" valueNumeric="1"/>
+            <column name="date" valueDate="2019-05-09"/>
+            <column name="stud_id" valueNumeric="6"/>
+            <column name="subj_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="mark">
+            <column name="id" valueNumeric="6"/>
+            <column name="value" valueNumeric="4"/>
+            <column name="date" valueDate="2019-05-01"/>
+            <column name="stud_id" valueNumeric="1"/>
+            <column name="subj_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="mark">
+            <column name="id" valueNumeric="7"/>
+            <column name="value" valueNumeric="4"/>
+            <column name="date" valueDate="0201-05-31"/>
+            <column name="stud_id" valueNumeric="5"/>
+            <column name="subj_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="mark">
+            <column name="id" valueNumeric="8"/>
+            <column name="value" valueNumeric="5"/>
+            <column name="date" valueDate="2019-05-03"/>
+            <column name="stud_id" valueNumeric="10"/>
+            <column name="subj_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="mark">
+            <column name="id" valueNumeric="9"/>
+            <column name="value" valueNumeric="3"/>
+            <column name="date" valueDate="2019-04-14"/>
+            <column name="stud_id" valueNumeric="14"/>
+            <column name="subj_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="mark">
+            <column name="id" valueNumeric="10"/>
+            <column name="value" valueNumeric="3"/>
+            <column name="date" valueDate="2019-06-06"/>
+            <column name="stud_id" valueNumeric="15"/>
+            <column name="subj_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+    <changeSet author="alex" id="1596916676774-5">
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="dep_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="dep_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="dep_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="dep_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="dep_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="dep_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="dep_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="dep_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="dep_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="dep_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="dep_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="dep_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="dep_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="dep_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="dep_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="dep_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="dep_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="dep_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="dep_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="dep_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="subject_department">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="dep_id" valueNumeric="5"/>
+        </insert>
+    </changeSet>
+    <changeSet author="alex" id="1596916676774-6">
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="stud_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="stud_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="stud_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="stud_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="stud_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="stud_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="stud_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="stud_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="stud_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="stud_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="stud_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="stud_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="stud_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="stud_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="stud_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="stud_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="stud_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="stud_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="stud_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="stud_id" valueNumeric="4"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="stud_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="stud_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="stud_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="stud_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="stud_id" valueNumeric="5"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="stud_id" valueNumeric="6"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="stud_id" valueNumeric="6"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="stud_id" valueNumeric="6"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="stud_id" valueNumeric="6"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="stud_id" valueNumeric="6"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="stud_id" valueNumeric="7"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="stud_id" valueNumeric="7"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="stud_id" valueNumeric="7"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="stud_id" valueNumeric="7"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="stud_id" valueNumeric="7"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="stud_id" valueNumeric="8"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="stud_id" valueNumeric="8"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="stud_id" valueNumeric="8"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="stud_id" valueNumeric="8"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="stud_id" valueNumeric="8"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="stud_id" valueNumeric="9"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="stud_id" valueNumeric="9"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="stud_id" valueNumeric="9"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="stud_id" valueNumeric="9"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="stud_id" valueNumeric="9"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="stud_id" valueNumeric="10"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="stud_id" valueNumeric="10"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="stud_id" valueNumeric="10"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="stud_id" valueNumeric="10"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="stud_id" valueNumeric="10"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="stud_id" valueNumeric="11"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="stud_id" valueNumeric="11"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="stud_id" valueNumeric="11"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="stud_id" valueNumeric="11"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="stud_id" valueNumeric="11"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="stud_id" valueNumeric="12"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="stud_id" valueNumeric="12"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="stud_id" valueNumeric="12"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="stud_id" valueNumeric="12"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="stud_id" valueNumeric="12"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="stud_id" valueNumeric="13"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="stud_id" valueNumeric="13"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="stud_id" valueNumeric="13"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="stud_id" valueNumeric="13"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="stud_id" valueNumeric="13"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="stud_id" valueNumeric="14"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="stud_id" valueNumeric="14"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="stud_id" valueNumeric="14"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="stud_id" valueNumeric="14"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="stud_id" valueNumeric="14"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="1"/>
+            <column name="stud_id" valueNumeric="15"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="2"/>
+            <column name="stud_id" valueNumeric="15"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="3"/>
+            <column name="stud_id" valueNumeric="15"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="4"/>
+            <column name="stud_id" valueNumeric="15"/>
+        </insert>
+        <insert tableName="subject_student">
+            <column name="sub_id" valueNumeric="5"/>
+            <column name="stud_id" valueNumeric="15"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
