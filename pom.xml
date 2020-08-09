@@ -22,7 +22,7 @@
         <mockito.version>3.2.4</mockito.version>
         <servlet.version>4.0.1</servlet.version>
         <spring.version>5.2.3.RELEASE</spring.version>
-        <spring-security.version>5.2.1.RELEASE</spring-security.version>
+        <spring-security.version>5.3.4.RELEASE</spring-security.version>
         <hibernate.version>5.2.12.Final</hibernate.version>
         <hibernate-ehcache.version>5.2.10.Final</hibernate-ehcache.version>
         <dbcp.version>2.6.0</dbcp.version>
