@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import project.model.Permission;
 import project.security.StudentDetailService;
 
 
@@ -36,9 +38,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/image/**").permitAll()
                 .antMatchers("/contacts").access("hasAnyAuthority('ADMIN', 'USER')")
-                .antMatchers("/api/**").access("hasAnyAuthority('ADMIN', 'USER')")
-                .antMatchers("/admin").access("hasAuthority('ADMIN')")
-                .antMatchers("/table/**").access("hasAnyAuthority('ADMIN', 'USER')")
+                .antMatchers(HttpMethod.GET, "/api/department/**").hasAuthority(Permission.DEPARTMENT_READ.getPermission())
+                .antMatchers(HttpMethod.GET, "/api/subject/**").hasAuthority(Permission.SUBJECT_READ.getPermission())
+                .antMatchers(HttpMethod.GET, "/api/student/**").hasAuthority(Permission.STUDENT_READ.getPermission())
+                .antMatchers(HttpMethod.GET, "/api/mark/**").hasAuthority(Permission.MARK_READ.getPermission())
+                .antMatchers(HttpMethod.POST, "/api/department/**").hasAuthority(Permission.DEPARTMENT_WRITE.getPermission())
+                .antMatchers(HttpMethod.POST, "/api/subject/**").hasAuthority(Permission.SUBJECT_WRITE.getPermission())
+                .antMatchers(HttpMethod.POST, "/api/student/**").hasAuthority(Permission.STUDENT_WRITE.getPermission())
+                .antMatchers(HttpMethod.POST, "/api/mark/**").hasAuthority(Permission.MARK_WRITE.getPermission())
+                .antMatchers(HttpMethod.DELETE, "/api/department/**").hasAuthority(Permission.SUBJECT_WRITE.getPermission())
+                .antMatchers(HttpMethod.DELETE, "/api/subject/**").hasAuthority(Permission.DEPARTMENT_WRITE.getPermission())
+                .antMatchers(HttpMethod.DELETE, "/api/student/**").hasAuthority(Permission.STUDENT_WRITE.getPermission())
+                .antMatchers(HttpMethod.DELETE, "/api/mark/**").hasAuthority(Permission.MARK_WRITE.getPermission())
+                .antMatchers("/admin").access("hasRole('ADMIN')")
+                .antMatchers("/table/**").access("hasAnyRole('ADMIN', 'USER')")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -61,5 +74,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         return new StudentDetailService();
     }
-
 }
