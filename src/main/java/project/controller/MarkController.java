@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import project.model.Mark;
 import project.model.Model;
@@ -50,6 +51,7 @@ public class MarkController {
      * @param id department ID (primary key).
      * @return special {@link Mark}.
      */
+    @PreAuthorize("hasAuthority('marks:read')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> getById(@PathVariable("id") Long id) {
         if (id == null || id < 1) {
@@ -70,6 +72,7 @@ public class MarkController {
      * @param id array of marks ID's.
      * @return {@link Mark}.
      */
+    @PreAuthorize("hasAuthority('marks:write')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> deleteById(@PathVariable("id") Long id) {
         if (id == null || id < 1) {
@@ -89,6 +92,7 @@ public class MarkController {
      *
      * @return list of {@link Mark}.
      */
+    @PreAuthorize("hasAuthority('marks:read')")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Model>> getMarksByDateRange(@RequestParam("date") String string) {
         LocalDate date;
@@ -119,6 +123,7 @@ public class MarkController {
      * @param subId ID of {@link Subject} that corresponds this {@link Mark}.
      * @return {@link HttpStatus}.
      */
+    @PreAuthorize("hasAuthority('marks:write')")
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> save(@RequestParam("id") String id, @RequestParam("value") String value,
                                       @RequestParam("date") String date, @RequestParam("stud_id") String studId,

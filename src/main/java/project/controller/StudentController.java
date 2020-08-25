@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +47,7 @@ public class StudentController {
      *
      * @return set of students.
      */
+    @PreAuthorize("hasAuthority('students:read')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Model>> list() {
         List<Model> students = this.studentService.getAll();
@@ -62,6 +64,7 @@ public class StudentController {
      * @param id department ID (primary key).
      * @return special {@link Student}.
      */
+    @PreAuthorize("hasAuthority('students:read')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> getById(@PathVariable("id") Long id){
         if (id == null || id <= 0) {
@@ -84,6 +87,7 @@ public class StudentController {
      * @param depId ID of {@link Department}.
      * @throws IOException if photo can't produce bytes.
      */
+    @PreAuthorize("hasAuthority('students:write')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Student> save(@ModelAttribute("student") Student student,
                                         @RequestParam(value = "file", required = false) MultipartFile photo,
@@ -118,6 +122,7 @@ public class StudentController {
      * @param id array of Students ID
      * @return {@link HttpStatus}.
      */
+    @PreAuthorize("hasAuthority('students:write')")
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Student> deleteById(@PathVariable("id") Long id) {
         if (id == null || id < 1) {
@@ -139,6 +144,7 @@ public class StudentController {
      * @param depId of {@link Department}.
      * @return {@link List<Student>}.
      */
+    @PreAuthorize("hasAuthority('students:read')")
     @RequestMapping(value = "/department/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Student>> getStudentsByDep(@PathVariable("id") String depId) {
         if (depId == null || Long.parseLong(depId) < 1L) {

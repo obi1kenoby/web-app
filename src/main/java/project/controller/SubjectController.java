@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +43,7 @@ public class SubjectController {
      *
      * @return set of {@link ResponseEntity}.
      */
+    @PreAuthorize("hasAuthority('subjects:read')")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Model>> list() {
         List<Model> models = this.subjectService.getAll();
@@ -57,6 +59,7 @@ public class SubjectController {
      * @param id department ID (primary key).
      * @return {@link ResponseEntity}.
      */
+    @PreAuthorize("hasAuthority('subjects:read')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> getByid(@PathVariable("id")Long id) {
         Model model = this.subjectService.getById(id);
@@ -75,6 +78,7 @@ public class SubjectController {
      * @param id array of subjects ID's.
      * @return {@link HttpStatus}.
      */
+    @PreAuthorize("hasAuthority('subjects:write')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> delete(@PathVariable("id")Long id) {
         if (id == 0) {
@@ -95,6 +99,7 @@ public class SubjectController {
      * @param name subject name.
      * @return just created {@link Subject} instance.
      */
+    @PreAuthorize("hasAuthority('subjects:write')")
     @RequestMapping(value = "/{name}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> save(@PathVariable("name")String name, @RequestParam("ids")Long[] ids) {
         if (name == null || name.isEmpty() || ids.length < 1) {

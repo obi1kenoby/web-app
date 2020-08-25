@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="utf-8"/>
     <title>Header</title>
     <link rel="shortcut icon" th:href="@{/image/logo.png}"/>
     <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}">
+    <link rel="stylesheet"
+          th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"/>
 </head>
 <body>
@@ -41,10 +43,15 @@
         </div>
         <div id="right">
             <div class="head-box" id="admin">
-                <button onclick="location.href='/admin'" sec:authorize="hasAuthority('ADMIN')" id="admin-btn" class="box-btn">Admin</button>
+                <button onclick="location.href='/admin'" sec:authorize="hasAuthority('ADMIN')" id="admin-btn"
+                        class="box-btn">Admin
+                </button>
             </div>
             <div class="head-box" id="login">
-                <button onclick="location.href='/logout'" sec:authorize="isAuthenticated()" id="logout-btn" class="box-btn">Logout</button>
+                <form action="/auth/logout" method="POST">
+                    <button type="submit" sec:authorize="isAuthenticated()" id="logout-btn" class="box-btn">Logout
+                    </button>
+                </form>
             </div>
         </div>
     </div>

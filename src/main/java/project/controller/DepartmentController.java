@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import project.model.Model;
 import project.model.Subject;
@@ -41,6 +42,7 @@ public class DepartmentController {
      *
      * @return set of departments.
      */
+    @PreAuthorize("hasAuthority('departments:read')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Model>> list() {
         List<Model> departments = this.departmentService.getAll();
@@ -59,6 +61,7 @@ public class DepartmentController {
      * @param name department name.
      * @return just created {@link Department} instance.
      */
+    @PreAuthorize("hasAuthority('departmetns:write')")
     @PostMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> save(@RequestParam(value="array[]") Long[] ids, @PathVariable("name") String name) {
         if (name == null || name.isEmpty() || ids.length < 1) {
@@ -86,6 +89,7 @@ public class DepartmentController {
      *
      * @return BAD REQUEST.
      */
+    @PreAuthorize("hasAuthority('departmetns:write')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> saveEmptyName() {
         log.info("IN saveEmptyName: the department name can not be empty or equals null!");
@@ -98,6 +102,7 @@ public class DepartmentController {
      * @param ID department ID (primary key).
      * @return special {@link Department}.
      */
+    @PreAuthorize("hasAuthority('departments:read')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> getById(@PathVariable("id") Long ID) {
         if (ID == null|| ID < 1L) {
@@ -118,6 +123,7 @@ public class DepartmentController {
      * @param id array of departments ID's.
      * @return {@link HttpStatus}.
      */
+    @PreAuthorize("hasAuthority('departmetns:write')")
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> deleteById(@PathVariable("id") Long id) {
         if (id == null || id < 1) {
