@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.model.Department;
 import project.model.Model;
-import project.model.Role;
 import project.model.Student;
 import project.service.Service;
 
@@ -107,7 +106,6 @@ public class StudentController {
             student.setPassword(encoder.encode(student.getPassword()));
             student.setDepartment(department);
             student.setBirthday(LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)));
-            student.setRole(Role.USER);
             this.studentService.save(student);
         } catch (Exception e) {
             log.info("IN save: saving user was failed.");

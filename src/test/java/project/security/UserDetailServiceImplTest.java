@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import project.model.Role;
+import project.model.Status;
 import project.model.Student;
 import project.repository.ModelRepository;
 
@@ -23,12 +24,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static project.model.Role.USER;
+import static project.model.Status.ACTIVE;
 
 @ExtendWith(MockitoExtension.class)
-public class StudentDetailServiceTest {
+public class UserDetailServiceImplTest {
 
     @InjectMocks
-    private StudentDetailService detailService;
+    private UserDetailServiceImpl detailService;
 
     @Mock
     private ModelRepository repository;
@@ -41,8 +43,9 @@ public class StudentDetailServiceTest {
     final String email = "test@gmail.com";
     final String incorrectEmail = "test1@gmail.com";
     final String password = "$2a$10$0dTU0xPhG5k1uO279gGCVuypHzjcvbmnMwqxbnf/.7FbeCgDE3UU.";
-    final LocalDate birthday = LocalDate.of(2019, 10, 8);
+    final LocalDate birthday = LocalDate.now().minusYears(20);
     final Role role = USER;
+    final Status status = ACTIVE;
 
     @BeforeEach
     public void setUp() {
@@ -53,6 +56,7 @@ public class StudentDetailServiceTest {
         student.setPassword(password);
         student.setEmail(email);
         student.setRole(role);
+        student.setStatus(status);
 
         userDetails = new User(email, password, true, true, true, true, Collections.singletonList(new SimpleGrantedAuthority("USER")));
     }

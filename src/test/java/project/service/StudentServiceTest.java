@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import project.model.Model;
-import project.model.Role;
 import project.model.Student;
 import project.repository.ModelRepositoryImpl;
 
@@ -99,7 +98,6 @@ public class StudentServiceTest {
         student.setLast_name("LastName" + random.nextInt(1000));
         student.setEmail("email." + random.nextInt(1000) + "@gmail.com");
         student.setPassword("****************");
-        student.setRole(Role.USER);
         student.setBirthday(LocalDate.of(2001, random.nextInt(12) + 1, random.nextInt(25) + 1));
         return student;
     }

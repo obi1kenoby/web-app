@@ -64,9 +64,10 @@
             <column name="password" type="VARCHAR(500)">
                 <constraints nullable="false"/>
             </column>
-            <column name="role" type="VARCHAR(255)">
+            <column name="role" type="VARCHAR(10)" defaultValue="USER">
                 <constraints nullable="false"/>
             </column>
+            <column name="status" type="VARCHAR(10)" defaultValue="ACTIVE"/>
             <column name="photo" type="TEXT"/>
             <column name="dep_id" type="BIGINT">
                 <constraints nullable="false"/>

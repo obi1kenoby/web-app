@@ -45,6 +45,10 @@ public class Student extends Model implements Comparable<Student>{
     @Column(name  = "ROLE")
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name  = "STATUS")
+    private Status status;
+
     @Lob
     @Column(name = "PHOTO")
     private String photo;

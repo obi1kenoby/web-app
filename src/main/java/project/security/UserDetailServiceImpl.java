@@ -17,23 +17,15 @@ import java.util.Optional;
  *
  * @author Alexander Naumov.
  */
-public class StudentDetailService implements UserDetailsService {
+public class UserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
     private ModelRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<Model> o = repository.getStudByEmail(email);
-        User.UserBuilder builder;
-        if (o.isPresent()) {
-            Student user = (Student) o.get();
-            builder = org.springframework.security.core.userdetails.User.withUsername(email);
-            builder.password(user.getPassword());
-            builder.authorities(user.getRole().getAuthorities());
-        } else {
-            throw new UsernameNotFoundException("User not found.");
-        }
-        return builder.build();
+        Student student = (Student) repository.getStudByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+        return SecurityUser.fromStudent(student);
     }
 }
