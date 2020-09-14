@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import project.model.Model;
 import project.model.Student;
 import project.repository.ModelRepository;
-import project.repository.ModelRepositoryImpl;
 
 import java.util.*;
 
@@ -20,7 +19,6 @@ public class StudentService implements Service {
 
     @Autowired
     private ModelRepository repository;
-
 
     /**
      * Implementation of {@link Service#getAll()}.

@@ -2,6 +2,11 @@ package project.model;
 
 import java.util.Set;
 
+/**
+ * Represents user permission access.
+ *
+ * @author Alexander Naumov.
+ */
 public enum Permission {
 
     STUDENT_READ("students:read"),

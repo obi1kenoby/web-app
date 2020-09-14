@@ -12,6 +12,11 @@ import project.model.Student;
 import java.util.Collection;
 import java.util.Set;
 
+/**
+ * Wrapper over simple user as user for Spring security.
+ *
+ * @author Alexander Naumov.
+ */
 @Data
 @AllArgsConstructor
 public class SecurityUser implements UserDetails {
